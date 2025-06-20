@@ -1,0 +1,33 @@
+{
+  "entities": [],
+  "activities": [],
+  "products": [],
+  "document_relevance": [
+    {
+      "document_id": "mock_doc_1",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "section_relevance": {}
+    },
+    {
+      "document_id": "mock_doc_2",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "section_relevance": {}
+    }
+  ],
+  "created_at": "2025-06-20 20:34:09.206179",
+  "updated_at": "2025-06-20 20:34:17.874358",
+  "version": "1.0",
+  "metadata": {
+    "query": "Identify regulated activities, entities, and products",
+    "total_documents": 2,
+    "total_entities": 0,
+    "total_activities": 0,
+    "total_products": 0,
+    "errors": [],
+    "warnings": []
+  }
+}
