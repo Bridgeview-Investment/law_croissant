@@ -1,295 +1,397 @@
 #!/usr/bin/env python3
 """
-RegGenome Deep Research Multi-agent System
-
-Main entry point for running the deep research workflow to identify regulated
-activities, entities, and products from regulatory documents.
-
-Usage:
-    python main.py --help                    # Show help
-    python main.py --mock                    # Run with mock data (no API key needed)
-    python main.py --config config.env       # Specify custom config file
-    python main.py --output results.json     # Specify output file
+RegGenome Entity Mapper - Main Entry Point
 """
 
 import asyncio
-import argparse
-import logging
+import os
 import sys
-import json
 from pathlib import Path
-from typing import Optional
+from typing import List, Dict, Optional
+import pandas as pd
+import json
+from datetime import datetime
+from loguru import logger
+from dotenv import load_dotenv
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.append(str(Path(__file__).parent / "src"))
 
-from src.config import config
-from src.deep_research_orchestrator import DeepResearchOrchestrator, run_deep_research
-
-
-def setup_logging(log_level: str = "INFO", log_file: Optional[str] = None):
-    """Set up logging configuration."""
-    
-    # Configure log level
-    numeric_level = getattr(logging, log_level.upper(), logging.INFO)
-    
-    # Create formatters
-    console_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
-    
-    file_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
-    
-    # Configure root logger
-    root_logger = logging.getLogger()
-    root_logger.setLevel(numeric_level)
-    
-    # Console handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(numeric_level)
-    console_handler.setFormatter(console_formatter)
-    root_logger.addHandler(console_handler)
-    
-    # File handler if specified
-    if log_file:
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(numeric_level)
-        file_handler.setFormatter(file_formatter)
-        root_logger.addHandler(file_handler)
-    
-    # Reduce noise from external libraries
-    logging.getLogger("aiohttp").setLevel(logging.WARNING)
-    logging.getLogger("httpx").setLevel(logging.WARNING)
-    logging.getLogger("urllib3").setLevel(logging.WARNING)
+from api.client import RegGenomeClient
+from extractors.entity_extractor import EntityExtractor
+from extractors.financial_entities import FinancialEntityExtractor
+from hierarchical.hierarchy_builder import HierarchyBuilder
+from classifiers.relevance_predictor import RelevancePredictor
+from definitions.definition_extractor import DefinitionExtractor
 
 
-def validate_configuration():
-    """Validate configuration and return validation errors."""
-    errors = config.validate_config()
-    return errors
-
-
-def print_banner():
-    """Print application banner."""
-    banner = """
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                    RegGenome Deep Research Multi-agent System                ║
-║                                                                              ║
-║   Automated extraction of regulated activities, entities, and products      ║
-║   from regulatory documents using AI-powered deep research agents           ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-"""
-    print(banner)
-
-
-async def run_research_workflow(args):
-    """Run the research workflow with the provided arguments."""
+class EntityMapper:
+    """Main class for RegGenome entity mapping solution"""
     
-    # Validate configuration if not using mock API
-    if not args.mock:
-        validation_errors = validate_configuration()
-        if validation_errors:
-            print("❌ Configuration validation failed:")
-            for error in validation_errors:
-                print(f"   • {error}")
-            print("\nPlease check your configuration and try again.")
-            return 1
-    
-    try:
-        # Create orchestrator
-        orchestrator = DeepResearchOrchestrator(use_mock_api=args.mock)
+    def __init__(self, api_key: Optional[str] = None):
+        load_dotenv()
         
-        print(f"🔍 Starting deep research workflow...")
-        if args.mock:
-            print("🧪 Using mock API for demonstration")
+        self.api_key = api_key or os.getenv("REGGENOME_API_KEY")
+        if not self.api_key:
+            raise ValueError("RegGenome API key not provided")
         
-        # Run the research
-        taxonomy = await orchestrator.run_research(
-            query=args.query,
-            save_results=True,
-            output_file=args.output
+        # Initialize components
+        self.api_client = None
+        self.entity_extractor = EntityExtractor()
+        self.financial_extractor = FinancialEntityExtractor()
+        self.hierarchy_builder = HierarchyBuilder()
+        self.relevance_predictor = RelevancePredictor()
+        self.definition_extractor = DefinitionExtractor()
+        
+        # Storage
+        self.documents = []
+        self.entities = []
+        self.definitions = []
+        self.hierarchy = None
+        self.relevance_predictions = {}
+        
+        # Output directory
+        self.output_dir = Path(os.getenv("OUTPUT_DIR", "./outputs"))
+        self.output_dir.mkdir(exist_ok=True)
+        
+        logger.info("EntityMapper initialized")
+    
+    async def process_initiatives(
+        self,
+        initiative_names: List[str],
+        limit: Optional[int] = None
+    ) -> Dict:
+        """Process documents for specified initiatives"""
+        
+        logger.info(f"Processing initiatives: {initiative_names}")
+        
+        async with RegGenomeClient(self.api_key) as client:
+            self.api_client = client
+            
+            # Fetch documents
+            logger.info("Fetching documents from RegGenome API...")
+            documents = await client.fetch_all_documents_for_initiatives(initiative_names)
+            
+            if limit:
+                documents = documents[:limit]
+            
+            self.documents = documents
+            logger.info(f"Fetched {len(documents)} documents")
+            
+            # Process documents
+            results = await self._process_documents(documents)
+            
+            return results
+    
+    async def _process_documents(self, documents: List[Dict]) -> Dict:
+        """Process documents through the pipeline"""
+        
+        # 1. Extract entities
+        logger.info("Extracting entities...")
+        all_entities = []
+        financial_entities = []
+        
+        for doc in documents:
+            # General entity extraction
+            doc_entities = self.entity_extractor.extract_from_document(doc)
+            all_entities.extend(doc_entities)
+            
+            # Financial entity extraction
+            doc_text = self._get_document_text(doc)
+            fin_entities = self.financial_extractor.extract_financial_entities(doc_text)
+            financial_entities.extend(fin_entities)
+        
+        # Combine and deduplicate
+        unique_entities = self._merge_entity_types(all_entities, financial_entities)
+        self.entities = unique_entities
+        logger.info(f"Extracted {len(unique_entities)} unique entities")
+        
+        # 2. Build hierarchy
+        logger.info("Building entity hierarchy...")
+        self.hierarchy = self.hierarchy_builder.build_entity_hierarchy(unique_entities)
+        
+        # 3. Extract definitions
+        logger.info("Extracting definitions...")
+        all_definitions = []
+        
+        for doc in documents:
+            doc_id = doc.get("document_id")
+            
+            # Extract from each section
+            if "source_text" in doc:
+                for section in doc["source_text"]:
+                    section_text = section.get("text", "")
+                    section_id = section.get("section_id", "unknown")
+                    
+                    if section_text:
+                        definitions = self.definition_extractor.extract_definitions(
+                            section_text, doc_id, section_id
+                        )
+                        all_definitions.extend(definitions)
+        
+        self.definitions = all_definitions
+        logger.info(f"Extracted {len(all_definitions)} definitions")
+        
+        # 4. Predict relevance
+        logger.info("Predicting entity relevance...")
+        entity_names = [e["name"] for e in unique_entities]
+        self.relevance_predictions = self.relevance_predictor.predict_relevance(
+            documents, entity_names
         )
         
-        # Print summary statistics
-        stats = orchestrator.get_summary_statistics()
-        print("\n" + "="*80)
-        print("📊 RESEARCH RESULTS SUMMARY")
-        print("="*80)
+        # 5. Link definitions to entities
+        logger.info("Linking definitions to entities...")
+        entity_definitions = self.definition_extractor.link_definitions_to_entities(
+            entity_names, all_definitions
+        )
         
-        print(f"📋 Query: {stats['query']}")
-        print(f"📄 Documents processed: {stats['totals']['documents']}")
-        print(f"🏢 Entities extracted: {stats['totals']['entities']}")
-        print(f"⚡ Activities extracted: {stats['totals']['activities']}")
-        print(f"📦 Products extracted: {stats['totals']['products']}")
+        # Compile results
+        results = {
+            "documents_processed": len(documents),
+            "entities_extracted": len(unique_entities),
+            "definitions_found": len(all_definitions),
+            "hierarchy_nodes": self.hierarchy.number_of_nodes(),
+            "timestamp": datetime.now().isoformat()
+        }
         
-        # Print breakdown by type
-        if stats['entity_breakdown']:
-            print("\n🏢 Entity Breakdown:")
-            for entity_type, count in stats['entity_breakdown'].items():
-                print(f"   • {entity_type}: {count}")
+        # Generate outputs
+        self._generate_outputs(entity_definitions)
         
-        if stats['activity_breakdown']:
-            print("\n⚡ Activity Breakdown:")
-            for activity_type, count in stats['activity_breakdown'].items():
-                print(f"   • {activity_type}: {count}")
+        return results
+    
+    def _get_document_text(self, document: Dict) -> str:
+        """Extract all text from document"""
+        text_parts = []
         
-        if stats['product_breakdown']:
-            print("\n📦 Product Breakdown:")
-            for product_type, count in stats['product_breakdown'].items():
-                print(f"   • {product_type}: {count}")
+        if "title" in document:
+            text_parts.append(document["title"])
         
-        # Print errors and warnings
-        if stats['errors']:
-            print(f"\n⚠️  Errors ({len(stats['errors'])}):")
-            for error in stats['errors']:
-                print(f"   • {error}")
+        if "source_text" in document:
+            for section in document["source_text"]:
+                if "text" in section:
+                    text_parts.append(section["text"])
         
-        if stats['warnings']:
-            print(f"\n⚠️  Warnings ({len(stats['warnings'])}):")
-            for warning in stats['warnings']:
-                print(f"   • {warning}")
+        return "\n\n".join(text_parts)
+    
+    def _merge_entity_types(self, general_entities, financial_entities) -> List[Dict]:
+        """Merge different types of entities"""
         
-        # Create and save hierarchical table (Task 1 deliverable)
-        if args.table_output:
-            print(f"\n📋 Creating hierarchical table...")
-            hierarchical_table = await orchestrator.create_hierarchical_table()
+        entity_dict = {}
+        
+        # Add general entities
+        for entity in general_entities:
+            key = (entity.text.lower(), entity.entity_type)
+            if key not in entity_dict:
+                entity_dict[key] = {
+                    "name": entity.text,
+                    "entity_type": entity.entity_type,
+                    "confidence": entity.confidence,
+                    "occurrences": 1
+                }
+            else:
+                entity_dict[key]["occurrences"] += 1
+                entity_dict[key]["confidence"] = max(
+                    entity_dict[key]["confidence"],
+                    entity.confidence
+                )
+        
+        # Add financial entities
+        for entity in financial_entities:
+            key = (entity.name.lower(), entity.entity_type)
+            if key not in entity_dict:
+                entity_dict[key] = {
+                    "name": entity.name,
+                    "entity_type": entity.entity_type,
+                    "category": entity.category,
+                    "subcategory": entity.subcategory,
+                    "confidence": entity.confidence,
+                    "occurrences": 1
+                }
+            else:
+                entity_dict[key]["occurrences"] += 1
+                if "category" not in entity_dict[key]:
+                    entity_dict[key]["category"] = entity.category
+                    entity_dict[key]["subcategory"] = entity.subcategory
+        
+        # Convert to list and filter by confidence
+        threshold = float(os.getenv("CONFIDENCE_THRESHOLD", "0.7"))
+        unique_entities = [
+            entity for entity in entity_dict.values()
+            if entity["confidence"] >= threshold
+        ]
+        
+        return unique_entities
+    
+    def _generate_outputs(self, entity_definitions: Dict):
+        """Generate all output files"""
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_subdir = self.output_dir / timestamp
+        output_subdir.mkdir(exist_ok=True)
+        
+        # 1. Entity table
+        logger.info("Generating entity table...")
+        entity_df = self.hierarchy_builder.get_entity_hierarchy_table()
+        entity_df.to_csv(output_subdir / "entities.csv", index=False)
+        
+        # 2. Relevance predictions
+        logger.info("Exporting relevance predictions...")
+        self.relevance_predictor.export_predictions(
+            self.relevance_predictions,
+            str(output_subdir / "relevance.json")
+        )
+        
+        # 3. Definitions
+        logger.info("Exporting definitions...")
+        self.definition_extractor.export_definitions(
+            self.definitions,
+            str(output_subdir / "definitions.json")
+        )
+        
+        # 4. Entity-definition links
+        logger.info("Exporting entity-definition links...")
+        with open(output_subdir / "entity_definitions.json", 'w') as f:
+            json.dump(
+                {k: [d.__dict__ for d in v] for k, v in entity_definitions.items()},
+                f, indent=2, default=str
+            )
+        
+        # 5. Hierarchy visualization
+        logger.info("Creating hierarchy visualization...")
+        self.hierarchy_builder.visualize_hierarchy(
+            str(output_subdir / "hierarchy.png")
+        )
+        
+        # 6. Summary report
+        logger.info("Generating summary report...")
+        self._generate_summary_report(output_subdir)
+        
+        logger.info(f"All outputs saved to {output_subdir}")
+    
+    def _generate_summary_report(self, output_dir: Path):
+        """Generate summary report"""
+        
+        report = {
+            "summary": {
+                "documents_processed": len(self.documents),
+                "entities_extracted": len(self.entities),
+                "definitions_found": len(self.definitions),
+                "hierarchy_nodes": self.hierarchy.number_of_nodes() if self.hierarchy else 0,
+                "timestamp": datetime.now().isoformat()
+            },
+            "entity_breakdown": self._get_entity_breakdown(),
+            "top_entities": self._get_top_entities(20),
+            "coverage": self._calculate_coverage()
+        }
+        
+        with open(output_dir / "summary_report.json", 'w') as f:
+            json.dump(report, f, indent=2)
+    
+    def _get_entity_breakdown(self) -> Dict:
+        """Get breakdown by entity type"""
+        breakdown = {}
+        for entity in self.entities:
+            entity_type = entity.get("entity_type", "UNKNOWN")
+            if entity_type not in breakdown:
+                breakdown[entity_type] = 0
+            breakdown[entity_type] += 1
+        return breakdown
+    
+    def _get_top_entities(self, n: int) -> List[Dict]:
+        """Get top N entities by occurrence"""
+        sorted_entities = sorted(
+            self.entities,
+            key=lambda e: e.get("occurrences", 0),
+            reverse=True
+        )
+        return [
+            {
+                "name": e["name"],
+                "type": e["entity_type"],
+                "occurrences": e.get("occurrences", 0),
+                "confidence": e["confidence"]
+            }
+            for e in sorted_entities[:n]
+        ]
+    
+    def _calculate_coverage(self) -> Dict:
+        """Calculate coverage statistics"""
+        
+        docs_with_entities = 0
+        docs_with_definitions = 0
+        
+        for doc in self.documents:
+            doc_id = doc.get("document_id")
             
-            with open(args.table_output, 'w', encoding='utf-8') as f:
-                json.dump(hierarchical_table, f, indent=2, default=str)
+            if doc_id in self.relevance_predictions:
+                if self.relevance_predictions[doc_id]["document_level"]:
+                    docs_with_entities += 1
             
-            print(f"✅ Hierarchical table saved to: {args.table_output}")
+            if any(d.document_id == doc_id for d in self.definitions):
+                docs_with_definitions += 1
         
-        print(f"\n✅ Research completed successfully!")
-        if args.output:
-            print(f"📁 Full results saved to: {args.output}")
+        total_docs = len(self.documents)
         
-        return 0
-        
-    except Exception as e:
-        print(f"\n❌ Research workflow failed: {e}")
-        logging.exception("Detailed error information:")
-        return 1
-
-
-def parse_arguments():
-    """Parse command line arguments."""
-    
-    parser = argparse.ArgumentParser(
-        description="RegGenome Deep Research Multi-agent System",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python main.py --mock                                 # Demo with mock data
-  python main.py --output my_results.json              # Save to specific file
-  python main.py --table-output task1_table.json       # Create Task 1 table
-  python main.py --query "UCITS regulations"           # Custom research query
-  python main.py --log-level DEBUG --log-file debug.log # Detailed logging
-        """
-    )
-    
-    parser.add_argument(
-        "--mock",
-        action="store_true",
-        help="Use mock API client (no API key required, for testing)"
-    )
-    
-    parser.add_argument(
-        "--query",
-        type=str,
-        default="Identify regulated activities, entities, and products",
-        help="Research query to guide the analysis"
-    )
-    
-    parser.add_argument(
-        "--output",
-        type=str,
-        help="Output file for complete results (default: auto-generated)"
-    )
-    
-    parser.add_argument(
-        "--table-output",
-        type=str,
-        default="regulatory_hierarchy_table.json",
-        help="Output file for hierarchical table (Task 1 deliverable)"
-    )
-    
-    parser.add_argument(
-        "--config",
-        type=str,
-        help="Path to configuration file (default: .env)"
-    )
-    
-    parser.add_argument(
-        "--log-level",
-        type=str,
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        default="INFO",
-        help="Logging level"
-    )
-    
-    parser.add_argument(
-        "--log-file",
-        type=str,
-        help="Log file path (default: console only)"
-    )
-    
-    parser.add_argument(
-        "--no-banner",
-        action="store_true",
-        help="Skip printing the banner"
-    )
-    
-    return parser.parse_args()
+        return {
+            "documents_with_entities": docs_with_entities,
+            "documents_with_definitions": docs_with_definitions,
+            "entity_coverage": docs_with_entities / total_docs if total_docs > 0 else 0,
+            "definition_coverage": docs_with_definitions / total_docs if total_docs > 0 else 0
+        }
 
 
 async def main():
-    """Main entry point."""
+    """Main entry point"""
+    
+    # Configure logging
+    logger.remove()
+    logger.add(sys.stderr, level="INFO", format="{time} | {level} | {message}")
+    logger.add("logs/entity_mapper_{time}.log", rotation="500 MB", level="DEBUG")
     
     # Parse arguments
-    args = parse_arguments()
-    
-    # Set up logging
-    setup_logging(
-        log_level=args.log_level,
-        log_file=args.log_file or config.logging.log_file
+    import argparse
+    parser = argparse.ArgumentParser(description="RegGenome Entity Mapper")
+    parser.add_argument(
+        "--initiatives",
+        nargs="+",
+        default=[
+            "US - Investment Advisers Act (1940)",
+            "US - Investment Company Act, 1940",
+            "EU - UCITS Directives",
+            "UK - The Undertakings for Collective Investment in Transferable Securities (UCITS) Regulations, 2011 - 2016"
+        ],
+        help="Initiative names to process"
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of documents to process"
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="RegGenome API key"
     )
     
-    # Print banner
-    if not args.no_banner:
-        print_banner()
+    args = parser.parse_args()
     
-    # Load custom config if specified
-    if args.config:
-        import os
-        from dotenv import load_dotenv
+    # Run processing
+    try:
+        mapper = EntityMapper(api_key=args.api_key)
+        results = await mapper.process_initiatives(
+            args.initiatives,
+            limit=args.limit
+        )
         
-        if not os.path.exists(args.config):
-            print(f"❌ Configuration file not found: {args.config}")
-            return 1
+        logger.info("Processing complete!")
+        logger.info(json.dumps(results, indent=2))
         
-        load_dotenv(args.config, override=True)
-        print(f"📁 Loaded configuration from: {args.config}")
-    
-    # Run the research workflow
-    return await run_research_workflow(args)
+    except Exception as e:
+        logger.error(f"Error during processing: {e}")
+        raise
 
 
 if __name__ == "__main__":
-    # Handle Windows event loop policy
-    if sys.platform.startswith('win'):
-        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-    
-    try:
-        exit_code = asyncio.run(main())
-        sys.exit(exit_code)
-    except KeyboardInterrupt:
-        print("\n🛑 Interrupted by user")
-        sys.exit(130)
-    except Exception as e:
-        print(f"\n💥 Unexpected error: {e}")
-        logging.exception("Unexpected error details:")
-        sys.exit(1) 
+    asyncio.run(main())
