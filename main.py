@@ -18,13 +18,15 @@ import logging
 import sys
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
+from datetime import datetime
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from src.config import config
 from src.deep_research_orchestrator import DeepResearchOrchestrator, run_deep_research
+from src.auth import token_manager
 
 
 def setup_logging(log_level: str = "INFO", log_file: Optional[str] = None):
@@ -84,6 +86,59 @@ def print_banner():
 ╚══════════════════════════════════════════════════════════════════════════════╝
 """
     print(banner)
+
+
+def display_auth_status():
+    """Display authentication status information."""
+    print("\n=== Authentication Status ===")
+    
+    if config.reggenome.use_jwt_auth:
+        token_info = token_manager.get_token_info()
+        
+        if token_info['status'] == 'valid':
+            print("✓ JWT Authentication: ACTIVE")
+            print(f"  Username: {token_info.get('username', 'N/A')}")
+            print(f"  Email: {token_info.get('email', 'N/A')}")
+            print(f"  Expires: {token_info.get('expires_at', 'N/A')}")
+            
+            if token_info.get('is_expired'):
+                print("  ⚠️  Status: EXPIRED")
+            else:
+                print("  ✓ Status: VALID")
+                
+        elif token_info['status'] == 'no_tokens':
+            print("✗ JWT Authentication: NO TOKENS FOUND")
+            print("  Please ensure key.txt file exists and contains valid tokens")
+            
+        elif token_info['status'] == 'error':
+            print("✗ JWT Authentication: ERROR")
+            print(f"  Error: {token_info.get('error', 'Unknown error')}")
+            
+    else:
+        if config.reggenome.api_key:
+            print("✓ API Key Authentication: CONFIGURED")
+        else:
+            print("✗ No Authentication: NOT CONFIGURED")
+    
+    print("==============================\n")
+
+
+async def test_api_connection():
+    """Test connection to RegGenome API."""
+    print("Testing API connection...")
+    
+    try:
+        from src.api_client import RegGenomeAPIClient
+        
+        async with RegGenomeAPIClient() as client:
+            # Try to get legislative initiatives as a simple test
+            initiatives = await client.get_legislative_initiatives()
+            print(f"✓ API Connection successful. Found {len(initiatives)} legislative initiatives.")
+            return True
+            
+    except Exception as e:
+        print(f"✗ API Connection failed: {e}")
+        return False
 
 
 async def run_research_workflow(args):
@@ -243,6 +298,18 @@ Examples:
         help="Skip printing the banner"
     )
     
+    parser.add_argument(
+        "--auth-status",
+        action="store_true",
+        help="Show authentication status and exit"
+    )
+    
+    parser.add_argument(
+        "--api-test",
+        action="store_true",
+        help="Test API connection and exit"
+    )
+    
     return parser.parse_args()
 
 
@@ -273,6 +340,17 @@ async def main():
         
         load_dotenv(args.config, override=True)
         print(f"📁 Loaded configuration from: {args.config}")
+    
+    # Display authentication status
+    display_auth_status()
+    
+    # Handle specific commands
+    if args.auth_status:
+        return 0
+    
+    if args.api_test:
+        success = await test_api_connection()
+        return 0 if success else 1
     
     # Run the research workflow
     return await run_research_workflow(args)

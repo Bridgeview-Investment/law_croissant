@@ -10,6 +10,7 @@ from urllib.parse import urljoin
 
 from .config import config
 from .models import RegGenomeDocument, DocumentType
+from .auth import token_manager
 
 
 logger = logging.getLogger(__name__)
@@ -31,8 +32,25 @@ class RegGenomeAPIClient:
         self.request_timeout = config.reggenome.request_timeout
         self.max_retries = config.reggenome.max_retries
         
-        if not self.api_key:
-            logger.warning("No RegGenome API key provided. Some functionality may be limited.")
+        # Use JWT authentication if available and enabled
+        self.use_jwt = config.reggenome.use_jwt_auth
+        
+        if self.use_jwt:
+            jwt_token = token_manager.get_access_token()
+            if jwt_token:
+                logger.info("Using JWT authentication for RegGenome API")
+                if token_manager.is_token_expired():
+                    logger.warning("JWT token appears to be expired")
+                else:
+                    token_info = token_manager.get_token_info()
+                    if token_info.get('expires_at'):
+                        logger.info(f"JWT token expires at: {token_info['expires_at']}")
+            else:
+                logger.warning("JWT authentication enabled but no token available")
+                self.use_jwt = False
+        
+        if not self.use_jwt and not self.api_key:
+            logger.warning("No RegGenome authentication available. Some functionality may be limited.")
     
     async def __aenter__(self):
         """Async context manager entry."""
@@ -47,11 +65,28 @@ class RegGenomeAPIClient:
         """Ensure aiohttp session is created."""
         if self.session is None:
             timeout = aiohttp.ClientTimeout(total=self.request_timeout)
+            
+            # Set up authentication headers
+            if self.use_jwt:
+                jwt_token = token_manager.get_access_token()
+                if jwt_token:
+                    auth_header = f'Bearer {jwt_token}'
+                    logger.debug("Using JWT Bearer token for authentication")
+                else:
+                    logger.error("JWT authentication enabled but no token available")
+                    auth_header = ''
+            else:
+                auth_header = f'Bearer {self.api_key}' if self.api_key else ''
+                logger.debug("Using API key for authentication")
+            
             headers = {
-                'Authorization': f'Bearer {self.api_key}',
                 'Content-Type': 'application/json',
                 'User-Agent': 'RegGenome-DeepResearch/1.0'
             }
+            
+            if auth_header:
+                headers['Authorization'] = auth_header
+            
             self.session = aiohttp.ClientSession(
                 timeout=timeout,
                 headers=headers
@@ -63,6 +98,13 @@ class RegGenomeAPIClient:
             await self.session.close()
             self.session = None
     
+    def _check_token_refresh(self):
+        """Check if JWT token needs to be refreshed."""
+        if self.use_jwt and token_manager.is_token_expired():
+            logger.warning("JWT token has expired. Consider refreshing the token.")
+            # Note: Token refresh would need to be implemented based on RegGenome's refresh mechanism
+            # For now, we'll continue with the expired token and let the API return 401 if needed
+    
     async def _make_request(
         self,
         method: str,
@@ -73,6 +115,9 @@ class RegGenomeAPIClient:
     ) -> Dict[str, Any]:
         """Make an HTTP request with retry logic."""
         await self._ensure_session()
+        
+        # Check token status if using JWT
+        self._check_token_refresh()
         
         url = urljoin(self.base_url, endpoint)
         
@@ -94,7 +139,14 @@ class RegGenomeAPIClient:
                     else:
                         raise RegGenomeAPIError(f"Rate limited after {self.max_retries} retries")
                 elif response.status == 401:
-                    raise RegGenomeAPIError("Authentication failed. Check your API key.")
+                    if self.use_jwt:
+                        token_info = token_manager.get_token_info()
+                        if token_info.get('is_expired'):
+                            raise RegGenomeAPIError("JWT token has expired. Please refresh your authentication.")
+                        else:
+                            raise RegGenomeAPIError("JWT authentication failed. Check your token validity.")
+                    else:
+                        raise RegGenomeAPIError("Authentication failed. Check your API key.")
                 elif response.status == 404:
                     raise RegGenomeAPIError(f"Endpoint not found: {endpoint}")
                 else:
@@ -112,104 +164,121 @@ class RegGenomeAPIClient:
     
     async def get_document_metadata(self, document_id: str) -> Dict[str, Any]:
         """Get metadata for a specific document."""
-        endpoint = f"/customer/documents/{document_id}"
+        endpoint = f"/api/v1/customer/documents/{document_id}"
         return await self._make_request("GET", endpoint)
     
-    async def get_document_content(self, document_id: str) -> Dict[str, Any]:
-        """Get full content for a specific document."""
-        endpoint = f"/customer/documents/{document_id}/content"
-        return await self._make_request("GET", endpoint)
+    async def get_document_file(self, document_id: str) -> str:
+        """Get document file URL (returns presigned S3 URL)."""
+        endpoint = f"/api/v1/customer/documents/{document_id}/file"
+        # This endpoint returns a 307 redirect to S3 presigned URL
+        response = await self._make_request("GET", endpoint)
+        return response
     
     async def search_documents(
         self,
         query: Optional[str] = None,
-        jurisdiction: Optional[str] = None,
-        publisher: Optional[str] = None,
-        document_type: Optional[str] = None,
-        legislative_initiative: Optional[str] = None,
-        publication_date_from: Optional[str] = None,
-        publication_date_to: Optional[str] = None,
-        limit: int = 50,
-        offset: int = 0
+        publishers: Optional[List[Dict[str, Any]]] = None,
+        initiatives: Optional[List[int]] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        doctypes: Optional[List[str]] = None,
+        page: int = 1,
+        page_size: int = 100
     ) -> Dict[str, Any]:
-        """Search for documents based on criteria."""
-        endpoint = "/customer/documents/search"
+        """Search for documents using RegGenome API filters."""
+        endpoint = "/api/v1/customer/documents"
         
-        params = {
-            "limit": limit,
-            "offset": offset
+        # Build filter payload according to RegGenome API documentation
+        filter_data = {
+            "remove_near_duplicates": False,
+            "document_restriction": ["unrestricted", "partially_restricted"]
         }
         
-        # Add optional parameters
+        # Add optional filters
+        if publishers:
+            filter_data["publishers"] = publishers
+        if initiatives:
+            filter_data["initiatives"] = initiatives
+        if start_date:
+            filter_data["start_date"] = start_date
+        if end_date:
+            filter_data["end_date"] = end_date
+        if doctypes:
+            filter_data["doctypes"] = doctypes
         if query:
-            params["query"] = query
-        if jurisdiction:
-            params["jurisdiction"] = jurisdiction
-        if publisher:
-            params["publisher"] = publisher
-        if document_type:
-            params["document_type"] = document_type
-        if legislative_initiative:
-            params["legislative_initiative"] = legislative_initiative
-        if publication_date_from:
-            params["publication_date_from"] = publication_date_from
-        if publication_date_to:
-            params["publication_date_to"] = publication_date_to
+            filter_data["title"] = query
             
-        return await self._make_request("GET", endpoint, params=params)
+        # Add pagination
+        params = {
+            "page": page,
+            "page_size": page_size
+        }
+            
+        return await self._make_request("POST", endpoint, params=params, data=filter_data)
     
-    async def get_legislative_initiatives(self) -> List[str]:
+    async def get_legislative_initiatives(self) -> List[Dict[str, Any]]:
         """Get available legislative initiatives."""
-        endpoint = "/customer/legislative-initiatives"
+        endpoint = "/api/v1/customer/initiatives"
         try:
             response = await self._make_request("GET", endpoint)
             return response.get("initiatives", [])
         except RegGenomeAPIError:
             # Fallback to configured initiatives if API call fails
-            return config.research.legislative_initiatives
+            return [{"name": initiative, "id": i+1} for i, initiative in enumerate(config.research.legislative_initiatives)]
     
     async def get_documents_by_legislative_initiative(
         self,
-        initiative: str,
-        limit: int = 100
+        initiative_id: int,
+        page_size: int = 100,
+        max_documents: int = 10  # Limit documents per initiative
     ) -> AsyncGenerator[RegGenomeDocument, None]:
-        """Get all documents for a specific legislative initiative."""
-        offset = 0
+        """Get documents for a specific legislative initiative with limit."""
+        page = 1
+        total_yielded = 0
         
-        while True:
+        while total_yielded < max_documents:
             try:
                 response = await self.search_documents(
-                    legislative_initiative=initiative,
-                    limit=min(limit, config.reggenome.max_documents_per_batch),
-                    offset=offset
+                    initiatives=[initiative_id],
+                    page=page,
+                    page_size=min(page_size, config.reggenome.max_documents_per_batch)
                 )
                 
-                documents = response.get("documents", [])
+                documents = response if isinstance(response, list) else response.get("documents", [])
                 if not documents:
                     break
                 
                 for doc_data in documents:
-                    # Get full content for each document
+                    if total_yielded >= max_documents:
+                        break
+                        
+                    # Extract content from source_text if available
                     try:
-                        content_response = await self.get_document_content(doc_data["id"])
-                        doc_data["content"] = content_response.get("content", "")
-                    except RegGenomeAPIError as e:
-                        logger.warning(f"Failed to get content for document {doc_data['id']}: {e}")
-                        doc_data["content"] = ""
+                        if doc_data.get("source_text") and isinstance(doc_data["source_text"], list):
+                            doc_data["content"] = "\n".join([
+                                text.get("text", "") for text in doc_data["source_text"] 
+                                if isinstance(text, dict) and text.get("text")
+                            ])
+                        if not doc_data.get("content"):
+                            doc_data["content"] = doc_data.get("title", "")
+                    except Exception as e:
+                        logger.warning(f"Failed to extract content for document {doc_data.get('document_id', 'unknown')}: {e}")
+                        doc_data["content"] = doc_data.get("title", "")
                     
                     yield self._parse_document(doc_data)
+                    total_yielded += 1
                 
-                # Check if we've reached the end
-                if len(documents) < config.reggenome.max_documents_per_batch:
+                # Check if we've reached the limit or end of documents
+                if total_yielded >= max_documents or len(documents) < min(page_size, config.reggenome.max_documents_per_batch):
                     break
                     
-                offset += len(documents)
+                page += 1
                 
                 # Rate limiting
                 await asyncio.sleep(0.1)
                 
             except RegGenomeAPIError as e:
-                logger.error(f"Error fetching documents for initiative {initiative}: {e}")
+                logger.error(f"Error fetching documents for initiative {initiative_id}: {e}")
                 break
     
     async def get_all_relevant_documents(self) -> AsyncGenerator[RegGenomeDocument, None]:
@@ -217,42 +286,81 @@ class RegGenomeAPIClient:
         initiatives = await self.get_legislative_initiatives()
         
         for initiative in initiatives:
-            logger.info(f"Fetching documents for initiative: {initiative}")
-            async for document in self.get_documents_by_legislative_initiative(initiative):
-                yield document
+            initiative_name = initiative.get("name", f"Initiative {initiative.get('id', 'unknown')}")
+            initiative_id = initiative.get("id")
+            
+            if initiative_id:
+                logger.info(f"Fetching documents for initiative: {initiative_name} (ID: {initiative_id})")
+                async for document in self.get_documents_by_legislative_initiative(initiative_id, max_documents=5):
+                    yield document
+            else:
+                logger.warning(f"Skipping initiative without ID: {initiative_name}")
     
     def _parse_document(self, doc_data: Dict[str, Any]) -> RegGenomeDocument:
         """Parse API response data into RegGenomeDocument model."""
         # Parse publication date
         publication_date = None
-        if doc_data.get("publication_date"):
+        if doc_data.get("published"):
             try:
-                publication_date = datetime.fromisoformat(doc_data["publication_date"].replace("Z", "+00:00"))
+                publication_date = datetime.fromisoformat(doc_data["published"].replace("Z", "+00:00"))
             except (ValueError, AttributeError):
-                logger.warning(f"Could not parse publication date: {doc_data.get('publication_date')}")
+                logger.warning(f"Could not parse publication date: {doc_data.get('published')}")
         
         # Parse document type
         document_type = None
-        if doc_data.get("document_type"):
+        if doc_data.get("doctype"):
             try:
-                document_type = DocumentType(doc_data["document_type"].lower())
+                document_type = DocumentType(doc_data["doctype"].lower())
             except ValueError:
                 document_type = DocumentType.OTHER
         
+        # Extract content from source_text if available
+        content = doc_data.get("content", "")
+        if not content and doc_data.get("source_text"):
+            content = "\n".join([text.get("text", "") for text in doc_data["source_text"] if text.get("text")])
+        
+        # Extract publisher information
+        publisher = None
+        if doc_data.get("publishers") and len(doc_data["publishers"]) > 0:
+            publisher = doc_data["publishers"][0].get("name", doc_data["publishers"][0].get("id", ""))
+        
+        # Extract jurisdiction from publishers
+        jurisdiction = None
+        if doc_data.get("publishers"):
+            for pub in doc_data["publishers"]:
+                if pub.get("jurisdiction"):
+                    jurisdiction = pub["jurisdiction"]
+                    break
+        
+        # Extract initiative information
+        legislative_initiative = None
+        if doc_data.get("initiatives") and len(doc_data["initiatives"]) > 0:
+            legislative_initiative = doc_data["initiatives"][0].get("name", "")
+        
         return RegGenomeDocument(
-            document_id=doc_data["id"],
+            document_id=doc_data.get("document_id", ""),
             title=doc_data.get("title", ""),
-            content=doc_data.get("content", ""),
-            url=doc_data.get("url"),
-            publisher=doc_data.get("publisher"),
+            content=content,
+            url=doc_data.get("source_urls", [None])[0] if doc_data.get("source_urls") else None,
+            publisher=publisher,
             publication_date=publication_date,
             document_type=document_type,
-            jurisdiction=doc_data.get("jurisdiction"),
-            legislative_initiative=doc_data.get("legislative_initiative"),
-            metadata=doc_data.get("metadata", {}),
-            sections=doc_data.get("sections", []),
-            thematic_tags=doc_data.get("thematic_tags", []),
-            relevance_scores=doc_data.get("relevance_scores", {})
+            jurisdiction=jurisdiction,
+            legislative_initiative=legislative_initiative,
+            metadata={
+                "authoritative": doc_data.get("authoritative", []),
+                "sector": doc_data.get("sector", {}),
+                "reg_scores": doc_data.get("reg_scores", {}),
+                "languages": doc_data.get("languages", {}),
+                "restriction": doc_data.get("restriction", ""),
+                "last_updated": doc_data.get("last_updated", "")
+            },
+            sections=doc_data.get("signposts") or [],
+            thematic_tags=[],  # Not directly available in new API
+            relevance_scores={
+                domain: score.get("reg_score", 0.0) if isinstance(score, dict) else score 
+                for domain, score in doc_data.get("reg_scores", {}).items()
+            }
         )
 
 
@@ -262,47 +370,64 @@ class MockRegGenomeAPIClient(RegGenomeAPIClient):
     def __init__(self):
         super().__init__(api_key="mock_key", base_url="https://mock.reg-genome.com")
     
+    async def get_legislative_initiatives(self) -> List[Dict[str, Any]]:
+        """Return mock initiatives."""
+        return [
+            {"id": 1, "name": "US - Investment Advisers Act (1940)"},
+            {"id": 2, "name": "EU - UCITS Directives"}
+        ]
+    
     async def get_all_relevant_documents(self) -> AsyncGenerator[RegGenomeDocument, None]:
         """Return mock documents for testing."""
         mock_documents = [
             {
-                "id": "mock_doc_1",
+                "document_id": "mock_doc_1",
                 "title": "Investment Advisers Act of 1940 - Section 3(a)(1)",
-                "content": """
-                For the purposes of this title, the term "investment adviser" means any person who, 
-                for compensation, engages in the business of advising others, either directly or 
-                through publications or writings, as to the value of securities or as to the 
-                advisability of investing in, purchasing, or selling securities, or who, for 
-                compensation and as part of a regular business, issues or promulgates analyses 
-                or reports concerning securities.
-                """,
-                "publisher": "SEC",
-                "publication_date": "1940-08-22T00:00:00Z",
-                "document_type": "act",
-                "jurisdiction": "US",
-                "legislative_initiative": "US - Investment Advisers Act (1940)",
-                "metadata": {"section": "3(a)(1)"},
-                "sections": [{"id": "3a1", "title": "Definition of Investment Adviser"}],
-                "thematic_tags": ["definition", "investment_adviser"]
+                "published": "1940-08-22",
+                "doctype": "act",
+                "publishers": [{"name": "SEC", "jurisdiction": "US"}],
+                "initiatives": [{"name": "US - Investment Advisers Act (1940)", "id": 1}],
+                "source_text": [
+                    {
+                        "text": """For the purposes of this title, the term "investment adviser" means any person who, 
+                        for compensation, engages in the business of advising others, either directly or 
+                        through publications or writings, as to the value of securities or as to the 
+                        advisability of investing in, purchasing, or selling securities, or who, for 
+                        compensation and as part of a regular business, issues or promulgates analyses 
+                        or reports concerning securities."""
+                    }
+                ],
+                "authoritative": ["securities"],
+                "sector": {"level_1": "financial_services"},
+                "reg_scores": {"securities": 0.95},
+                "languages": {"en": 1.0},
+                "restriction": "unrestricted",
+                "signposts": [{"id": "3a1", "title": "Definition of Investment Adviser"}],
+                "source_urls": ["https://www.sec.gov/about/laws/iaa40.pdf"]
             },
             {
-                "id": "mock_doc_2",
+                "document_id": "mock_doc_2", 
                 "title": "UCITS Directive - Definition of UCITS",
-                "content": """
-                'UCITS' means an undertaking for collective investment in transferable securities
-                which is subject to the restrictions on the types of assets in which it may invest.
-                Such undertakings may be constituted according to the law of contract (as common funds
-                managed by management companies) or trust law (as unit trusts) or under statute
-                (as investment companies).
-                """,
-                "publisher": "European Commission",
-                "publication_date": "2009-07-13T00:00:00Z",
-                "document_type": "directive",
-                "jurisdiction": "EU",
-                "legislative_initiative": "EU - UCITS Directives",
-                "metadata": {"article": "1"},
-                "sections": [{"id": "art1", "title": "Definitions"}],
-                "thematic_tags": ["definition", "ucits", "collective_investment"]
+                "published": "2009-07-13",
+                "doctype": "directive",
+                "publishers": [{"name": "European Commission", "jurisdiction": "EU"}],
+                "initiatives": [{"name": "EU - UCITS Directives", "id": 2}],
+                "source_text": [
+                    {
+                        "text": """'UCITS' means an undertaking for collective investment in transferable securities
+                        which is subject to the restrictions on the types of assets in which it may invest.
+                        Such undertakings may be constituted according to the law of contract (as common funds
+                        managed by management companies) or trust law (as unit trusts) or under statute
+                        (as investment companies)."""
+                    }
+                ],
+                "authoritative": ["investment_funds"],
+                "sector": {"level_1": "financial_services"},
+                "reg_scores": {"investment_funds": 0.90},
+                "languages": {"en": 1.0},
+                "restriction": "unrestricted",
+                "signposts": [{"id": "art1", "title": "Definitions"}],
+                "source_urls": ["https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009L0065"]
             }
         ]
         

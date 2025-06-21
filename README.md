@@ -33,13 +33,68 @@ The system uses a **multi-agent architecture** with specialized agents for diffe
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+## 🔐 Authentication
+
+The system supports both API key and JWT authentication for the RegGenome API:
+
+### JWT Authentication (Recommended)
+Place your JWT authentication tokens in a `key.txt` file in the root directory. The system will automatically:
+- Parse the JWT tokens from the file
+- Validate token expiration
+- Use the access token for API authentication
+- Provide detailed authentication status
+
+### API Key Authentication (Fallback)
+Set the `REGGENOME_API_KEY` environment variable if JWT authentication is not available.
+
+## ⚙️ Configuration
+
+### JSON Configuration (Recommended)
+The system uses `config.json` for easy configuration. The file allows you to specify:
+
+```json
+{
+  "llm": {
+    "provider": "openai",
+    "models": {
+      "research": "gpt-4o",
+      "extraction": "gpt-4o-mini",
+      "classification": "gpt-4o-mini",
+      "default": "gpt-4o-mini"
+    },
+    "parameters": {
+      "temperature": 0.1,
+      "max_tokens": 4000,
+      "timeout": 60
+    }
+  },
+  "reggenome": {
+    "authentication": {
+      "use_jwt": true,
+      "jwt_token_file": "key.txt"
+    },
+    "api": {
+      "base_url": "https://api.reg-genome.com/api/v1",
+      "max_documents_per_batch": 50,
+      "max_retries": 3,
+      "request_timeout": 30
+    }
+  },
+  "research": {
+    "confidence_threshold": 0.7,
+    "enable_caching": true
+  }
+}
+```
+
+### Environment Variables (Fallback)
+You can also use environment variables. See `config.env.template` for all options.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- Python 3.8 or higher
-- OpenAI API key or Anthropic API key
-- RegGenome API key (optional - can run with mock data)
+1. **RegGenome API Access**: Either a `key.txt` file with JWT tokens or `REGGENOME_API_KEY` environment variable
+2. **LLM API Key**: Set either `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`
 
 ### Installation
 
@@ -71,33 +126,146 @@ ANTHROPIC_API_KEY=your_anthropic_api_key_here
 
 # RegGenome API Configuration (optional for demo)
 REGGENOME_API_KEY=your_reggenome_api_key_here
+
+# RegGenome API Configuration
+USE_JWT_AUTH=true
+JWT_TOKEN_FILE=key.txt
+REGGENOME_BASE_URL=https://api.reg-genome.com/api/v1
+
+# LLM Configuration
+DEFAULT_LLM_PROVIDER=openai
+DEFAULT_LLM_MODEL=gpt-4o-mini
+
+# Research Configuration
+LEGISLATIVE_INITIATIVES=US - Investment Advisers Act (1940),US - Investment Company Act (1940),EU - UCITS Directives,UK - The Undertakings for Collective Investment in Transferable Securities (UCITS) Regulations
 ```
 
-### Running the System
+## 🎯 One-For-All Interface
 
-#### 🧪 Demo Mode (No API Keys Required)
+The simplest way to generate all RegGenome deliverables with a single command:
+
+### Command Line Interface
 ```bash
-python main.py --mock
+# Basic usage - generates all deliverables
+python reggenome_research.py "investment advisers"
+
+# With custom output directory
+python reggenome_research.py "UCITS funds" --output my_results
+
+# With specific model
+python reggenome_research.py "hedge funds" --model gpt-4o
+
+# Quick mode (faster, minimal config)
+python reggenome_research.py "pension funds" --quick
+
+# Using mock data (no API required)
+python reggenome_research.py "mutual funds" --mock
 ```
 
-#### 🔑 With Real RegGenome API
-```bash
-python main.py
+### Programmatic Interface
+```python
+from src.unified_interface import run_complete_analysis
+
+# One function call generates all deliverables
+results = run_complete_analysis(
+    query="UCITS fund regulations and compliance",
+    output_dir="my_analysis",
+    use_real_api=True
+)
+
+print(f"Found {len(results.taxonomy.entities)} entities")
+print(f"Task 1 file: {results.output_files['hierarchical_table']}")
 ```
 
-#### 📁 Custom Output Files
-```bash
-python main.py --output my_results.json --table-output task1_deliverable.json
+### Ultra-Simple Interface
+```python
+from src.unified_interface import quick_research
+
+# One line for complete research
+summary_file = quick_research("investment advisers", "my_results")
+print(f"Results saved to: {summary_file}")
 ```
 
-#### 🔍 Custom Research Query
-```bash
-python main.py --query "UCITS directive regulations and compliance requirements"
+## 📋 Generated Deliverables
+
+The unified interface automatically generates all RegGenome challenge requirements:
+
+### Task 1: Hierarchical Table
+- **File**: `task1_hierarchical_table_*.json`
+- **Content**: Structured table of regulated activities, entities, and products (free of redundancy)
+
+### Task 2: Document Relevance Assessment
+- **File**: `task2_document_relevance_*.json`
+- **Content**: Document-level and sub-document level relevance predictions
+
+### Task 3: Regulatory Taxonomy
+- **File**: `task3_regulatory_taxonomy_*.json`
+- **Content**: Complete regulatory taxonomy with source document links and full definition text
+
+### Complete Summary
+- **File**: `complete_results_summary_*.json`
+- **Content**: Comprehensive summary with metadata, processing info, and file locations
+
+## 🎛️ Advanced Usage
+
+### Custom Model Configuration
+```python
+from src.unified_interface import run_complete_analysis
+
+# Use custom models for different tasks
+custom_config = {
+    "llm": {
+        "provider": "openai",
+        "models": {
+            "research": "gpt-4o",        # Most powerful for complex analysis
+            "extraction": "gpt-4o-mini", # Faster for data extraction
+            "classification": "gpt-4o-mini"
+        },
+        "parameters": {
+            "temperature": 0.0,  # More deterministic
+            "max_tokens": 8000   # Longer responses
+        }
+    }
+}
+
+results = run_complete_analysis(
+    query="Complex derivatives regulations",
+    custom_config=custom_config
+)
 ```
 
-#### 🛠️ Debug Mode
+### Batch Processing Multiple Topics
+```python
+topics = ["investment advisers", "UCITS funds", "hedge funds", "pension funds"]
+
+for topic in topics:
+    print(f"Processing {topic}...")
+    results = run_complete_analysis(
+        query=f"Regulations for {topic}",
+        output_dir=f"analysis_{topic.replace(' ', '_')}",
+        use_real_api=True
+    )
+    print(f"✅ {topic}: {len(results.taxonomy.entities)} entities found")
+```
+
+### Traditional CLI Interface
+For more granular control, you can still use the traditional interface:
+
 ```bash
-python main.py --log-level DEBUG --log-file debug.log
+# Check authentication status
+python main.py --auth-status
+
+# Test API connection
+python main.py --api-test
+
+# Run with specific query
+python main.py --query "Investment advisers and fund regulations"
+
+# Generate only Task 1 deliverable
+python main.py --table-output regulatory_hierarchy.json
+
+# Debug mode
+python main.py --log-level DEBUG --mock
 ```
 
 ## 📊 Output Files

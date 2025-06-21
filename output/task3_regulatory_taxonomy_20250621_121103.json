@@ -1,0 +1,24 @@
+{
+  "regulatory_definitions": {
+    "entities": [
+      {
+        "name": "",
+        "type": "other",
+        "formal_definitions": [],
+        "source_documents": [
+          "04a3e172-eede-e588-efa7-1ab0eb530225"
+        ],
+        "regulatory_framework": [
+          "Technical Standards Under MiFIR"
+        ]
+      }
+    ],
+    "activities": [],
+    "products": []
+  },
+  "metadata": {
+    "extraction_timestamp": "2025-06-21T11:11:31.389003",
+    "methodology": "AI-powered definition extraction from regulatory documents",
+    "confidence_threshold": 0.7
+  }
+}

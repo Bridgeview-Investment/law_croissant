@@ -26,7 +26,7 @@ class LLMManager:
     
     def get_model(self, model_name: Optional[str] = None, provider: Optional[str] = None) -> BaseChatModel:
         """Get an LLM model instance."""
-        provider = provider or config.llm.default_provider
+        provider = provider or config.llm.provider
         model_name = model_name or config.llm.default_model
         
         cache_key = f"{provider}:{model_name}"
@@ -39,8 +39,8 @@ class LLMManager:
                 self._models_cache[cache_key] = ChatOpenAI(
                     model=model_name,
                     api_key=config.llm.openai_api_key,
-                    temperature=0.1,
-                    max_tokens=4000
+                    temperature=config.llm.temperature,
+                    max_tokens=config.llm.max_tokens
                 )
             
             elif provider.lower() == "anthropic":
@@ -50,8 +50,8 @@ class LLMManager:
                 self._models_cache[cache_key] = ChatAnthropic(
                     model=model_name,
                     api_key=config.llm.anthropic_api_key,
-                    temperature=0.1,
-                    max_tokens=4000
+                    temperature=config.llm.temperature,
+                    max_tokens=config.llm.max_tokens
                 )
             
             else:
@@ -61,15 +61,15 @@ class LLMManager:
     
     def get_research_model(self) -> BaseChatModel:
         """Get the configured research model."""
-        return self.get_model(config.llm.research_model, config.llm.default_provider)
+        return self.get_model(config.llm.research_model, config.llm.provider)
     
     def get_extraction_model(self) -> BaseChatModel:
         """Get the configured extraction model."""
-        return self.get_model(config.llm.extraction_model, config.llm.default_provider)
+        return self.get_model(config.llm.extraction_model, config.llm.provider)
     
     def get_classification_model(self) -> BaseChatModel:
         """Get the configured classification model."""
-        return self.get_model(config.llm.classification_model, config.llm.default_provider)
+        return self.get_model(config.llm.classification_model, config.llm.provider)
 
 
 # Global LLM manager instance

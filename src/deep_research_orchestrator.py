@@ -16,6 +16,7 @@ from .api_client import RegGenomeAPIClient, MockRegGenomeAPIClient
 from .agents.entity_extraction_agent import EntityExtractionAgent, EntityMerger
 from .agents.activity_extraction_agent import ActivityExtractionAgent, ActivityMerger
 from .agents.product_extraction_agent import ProductExtractionAgent, ProductMerger
+from .auth import token_manager
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ class DeepResearchOrchestrator:
         """Initialize the orchestrator with all agents."""
         
         # Initialize API client
-        if use_mock_api or not config.reggenome.api_key:
+        if use_mock_api or not self._has_valid_authentication():
             logger.info("Using mock API client for testing")
             self.api_client = MockRegGenomeAPIClient()
         else:
@@ -46,6 +47,39 @@ class DeepResearchOrchestrator:
         # Research state
         self.current_state: Optional[ResearchState] = None
     
+    def _has_valid_authentication(self) -> bool:
+        """Check if we have valid authentication credentials for the real API."""
+        # Check for JWT authentication
+        if config.reggenome.use_jwt_auth:
+            jwt_token = token_manager.get_access_token()
+            if jwt_token and not token_manager.is_token_expired():
+                logger.info("Found valid JWT authentication")
+                return True
+            elif jwt_token and token_manager.is_token_expired():
+                logger.warning("JWT token is expired")
+                return False
+            else:
+                logger.warning("JWT authentication enabled but no token available")
+        
+        # Check for traditional API key
+        if config.reggenome.api_key:
+            logger.info("Found API key authentication")
+            return True
+        
+        logger.warning("No valid authentication method found (JWT or API key)")
+        return False
+    
+    async def _test_api_connectivity(self) -> bool:
+        """Test if the RegGenome API is accessible."""
+        try:
+            async with self.api_client:
+                # Try a simple request to test connectivity
+                await self.api_client._make_request('GET', '/health')
+                return True
+        except Exception as e:
+            logger.error(f"API connectivity test failed: {e}")
+            return False
+    
     async def run_research(
         self,
         query: str = "Identify regulated activities, entities, and products",
@@ -58,6 +92,11 @@ class DeepResearchOrchestrator:
         
         # Initialize research state
         self.current_state = ResearchState(query=query)
+        
+        # Check if using mock API and warn user
+        if isinstance(self.api_client, MockRegGenomeAPIClient):
+            logger.warning("🧪 Using mock API client - results will be synthetic/demo data")
+            logger.warning("📡 Real RegGenome API may be unreachable or authentication may be invalid")
         
         try:
             # Step 1: Fetch documents
@@ -80,6 +119,9 @@ class DeepResearchOrchestrator:
             if save_results:
                 await self._save_results(taxonomy, output_file)
             
+            if isinstance(self.api_client, MockRegGenomeAPIClient):
+                logger.warning("⚠️  Results are from mock data - not real regulatory documents")
+            
             logger.info("Deep research workflow completed successfully")
             return taxonomy
             
@@ -98,15 +140,79 @@ class DeepResearchOrchestrator:
         
         try:
             documents = []
+            max_docs_per_initiative = 5  # Limit docs per initiative
+            
             async with self.api_client:
-                async for document in self.api_client.get_all_relevant_documents():
-                    documents.append(document)
-                    logger.debug(f"Fetched document: {document.title}")
+                # First try to search for documents matching the query
+                if self.current_state.query and self.current_state.query.lower() != "identify regulated activities, entities, and products":
+                    logger.info(f"Searching for documents matching: {self.current_state.query}")
+                    
+                    # Try searching with title parameter
+                    response = await self.api_client.search_documents(
+                        query=self.current_state.query,
+                        page_size=config.research.max_documents_to_process
+                    )
+                    
+                    doc_list = response if isinstance(response, list) else response.get("documents", [])
+                    logger.info(f"Title search returned {len(doc_list)} documents")
+                    
+                    for doc_data in doc_list[:config.research.max_documents_to_process]:
+                        try:
+                            # Extract content if needed
+                            if doc_data.get("source_text") and isinstance(doc_data["source_text"], list):
+                                doc_data["content"] = "\n".join([
+                                    text.get("text", "") for text in doc_data["source_text"] 
+                                    if isinstance(text, dict) and text.get("text")
+                                ])
+                            if not doc_data.get("content"):
+                                doc_data["content"] = doc_data.get("title", "")
+                                
+                            parsed_doc = self.api_client._parse_document(doc_data)
+                            documents.append(parsed_doc)
+                            logger.info(f"✓ Fetched: {parsed_doc.title[:80]}...")
+                        except Exception as e:
+                            logger.warning(f"Failed to parse document: {e}")
+                            continue
+                
+                # If no documents found with title search, try fetching from initiatives
+                if len(documents) == 0:
+                    logger.info("No documents found with title search, trying initiative-based search...")
+                    
+                    # Look for UCITS-related initiatives if query contains "UCITS"
+                    initiatives = await self.api_client.get_legislative_initiatives()
+                    relevant_initiatives = []
+                    
+                    if "ucits" in self.current_state.query.lower():
+                        relevant_initiatives = [i for i in initiatives if "UCITS" in i.get("name", "")]
+                        logger.info(f"Found {len(relevant_initiatives)} UCITS-related initiatives")
+                    
+                    # Use relevant initiatives or fall back to all initiatives
+                    initiatives_to_use = relevant_initiatives if relevant_initiatives else initiatives[:3]
+                    
+                    for initiative in initiatives_to_use:
+                        initiative_name = initiative.get("name", "Unknown")
+                        initiative_id = initiative.get("id")
+                        
+                        if initiative_id:
+                            logger.info(f"Fetching from initiative: {initiative_name}")
+                            async for document in self.api_client.get_documents_by_legislative_initiative(
+                                initiative_id, 
+                                max_documents=min(5, config.research.max_documents_to_process - len(documents))
+                            ):
+                                documents.append(document)
+                                logger.info(f"✓ Fetched: {document.title[:80]}...")
+                                
+                                if len(documents) >= config.research.max_documents_to_process:
+                                    logger.info(f"Reached document limit ({config.research.max_documents_to_process})")
+                                    break
+                        
+                        if len(documents) >= config.research.max_documents_to_process:
+                            break
             
             self.current_state.documents = documents
             self.current_state.documents_fetched = True
             
-            logger.info(f"Successfully fetched {len(documents)} documents")
+            logger.info(f"✅ Successfully fetched {len(documents)} documents for analysis")
             
         except Exception as e:
             error_msg = f"Failed to fetch documents: {e}"
@@ -140,17 +246,26 @@ class DeepResearchOrchestrator:
     
     async def _extract_entities(self):
         """Extract entities from all documents."""
-        logger.info("Extracting entities...")
+        logger.info(f"🔍 Extracting entities from {len(self.current_state.documents)} documents...")
         
         try:
-            entities = await self.entity_agent.extract_entities_batch(
-                self.current_state.documents
-            )
+            # Process documents in smaller batches to show progress
+            batch_size = 5
+            all_entities = []
             
-            self.current_state.taxonomy.entities = entities
+            for i in range(0, len(self.current_state.documents), batch_size):
+                batch = self.current_state.documents[i:i + batch_size]
+                logger.info(f"  Processing batch {i//batch_size + 1}/{(len(self.current_state.documents) + batch_size - 1)//batch_size}...")
+                
+                entities = await self.entity_agent.extract_entities_batch(batch)
+                all_entities.extend(entities)
+                
+                logger.info(f"  ✓ Extracted {len(entities)} entities from batch")
+            
+            self.current_state.taxonomy.entities = all_entities
             self.current_state.entities_extracted = True
             
-            logger.info(f"Extracted {len(entities)} entities")
+            logger.info(f"✅ Extracted total of {len(all_entities)} entities")
             
         except Exception as e:
             error_msg = f"Entity extraction failed: {e}"
@@ -159,17 +274,26 @@ class DeepResearchOrchestrator:
     
     async def _extract_activities(self):
         """Extract activities from all documents."""
-        logger.info("Extracting activities...")
+        logger.info(f"⚡ Extracting activities from {len(self.current_state.documents)} documents...")
         
         try:
-            activities = await self.activity_agent.extract_activities_batch(
-                self.current_state.documents
-            )
+            # Process documents in smaller batches to show progress
+            batch_size = 5
+            all_activities = []
             
-            self.current_state.taxonomy.activities = activities
+            for i in range(0, len(self.current_state.documents), batch_size):
+                batch = self.current_state.documents[i:i + batch_size]
+                logger.info(f"  Processing batch {i//batch_size + 1}/{(len(self.current_state.documents) + batch_size - 1)//batch_size}...")
+                
+                activities = await self.activity_agent.extract_activities_batch(batch)
+                all_activities.extend(activities)
+                
+                logger.info(f"  ✓ Extracted {len(activities)} activities from batch")
+            
+            self.current_state.taxonomy.activities = all_activities
             self.current_state.activities_extracted = True
             
-            logger.info(f"Extracted {len(activities)} activities")
+            logger.info(f"✅ Extracted total of {len(all_activities)} activities")
             
         except Exception as e:
             error_msg = f"Activity extraction failed: {e}"
@@ -178,17 +302,26 @@ class DeepResearchOrchestrator:
     
     async def _extract_products(self):
         """Extract products from all documents."""
-        logger.info("Extracting products...")
+        logger.info(f"📦 Extracting products from {len(self.current_state.documents)} documents...")
         
         try:
-            products = await self.product_agent.extract_products_batch(
-                self.current_state.documents
-            )
+            # Process documents in smaller batches to show progress
+            batch_size = 5
+            all_products = []
             
-            self.current_state.taxonomy.products = products
+            for i in range(0, len(self.current_state.documents), batch_size):
+                batch = self.current_state.documents[i:i + batch_size]
+                logger.info(f"  Processing batch {i//batch_size + 1}/{(len(self.current_state.documents) + batch_size - 1)//batch_size}...")
+                
+                products = await self.product_agent.extract_products_batch(batch)
+                all_products.extend(products)
+                
+                logger.info(f"  ✓ Extracted {len(products)} products from batch")
+            
+            self.current_state.taxonomy.products = all_products
             self.current_state.products_extracted = True
             
-            logger.info(f"Extracted {len(products)} products")
+            logger.info(f"✅ Extracted total of {len(all_products)} products")
             
         except Exception as e:
             error_msg = f"Product extraction failed: {e}"

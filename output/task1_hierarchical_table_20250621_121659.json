@@ -1,0 +1,45 @@
+{
+  "regulated_entities": {
+    "other": [
+      {
+        "id": "entity_844a9eac",
+        "name": "",
+        "description": "",
+        "jurisdictions": [
+          "EU"
+        ],
+        "regulatory_framework": [
+          "Technical Standards Under MiFIR"
+        ],
+        "source_documents": [
+          "16a7d6d2-07da-354b-9c95-b13e0bdb4f99"
+        ],
+        "confidence_score": 0.5
+      }
+    ]
+  },
+  "regulated_activities": {},
+  "regulated_products": {
+    "other": [
+      {
+        "id": "product_844a9eac",
+        "name": "",
+        "description": "",
+        "applicable_entities": [],
+        "regulatory_classification": [
+          "Subject to Technical Standards Under MiFIR"
+        ],
+        "compliance_requirements": [],
+        "source_documents": [
+          "0eb9dfa3-14af-3328-1302-73dd36009f0b"
+        ],
+        "confidence_score": 0.5
+      }
+    ]
+  },
+  "metadata": {
+    "created_at": "2025-06-21T11:17:27.012999",
+    "total_items": 2,
+    "source_documents": 10
+  }
+}

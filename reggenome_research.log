@@ -45,3 +45,664 @@ parent_activity
 2025-06-20 21:34:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:237 - Deduplicating taxonomy...
 2025-06-20 21:34:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:296 - Results saved to: regulatory_taxonomy_20250620_213417.json
 2025-06-20 21:34:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:83 - Deep research workflow completed successfully
+2025-06-21 11:19:01 - src.api_client - INFO - api_client.py:41 - Using JWT authentication for RegGenome API
+2025-06-21 11:19:01 - src.api_client - INFO - api_client.py:47 - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:31 - Using mock API client for testing
+2025-06-21 11:19:08 - src.api_client - INFO - api_client.py:41 - Using JWT authentication for RegGenome API
+2025-06-21 11:19:08 - src.api_client - INFO - api_client.py:47 - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:57 - Starting deep research workflow: Investment advisers and fund management regulations
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:97 - Fetching documents from RegGenome API...
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:109 - Successfully fetched 2 documents
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:119 - Extracting regulatory information from documents...
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:143 - Extracting entities...
+2025-06-21 11:19:08 - src.agents.entity_extraction_agent - INFO - entity_extraction_agent.py:176 - Extracting entities from 2 documents
+2025-06-21 11:19:08 - src.agents.entity_extraction_agent - INFO - entity_extraction_agent.py:69 - Extracting entities from document: Investment Advisers Act of 1940 - Section 3(a)(1)
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:162 - Extracting activities...
+2025-06-21 11:19:08 - src.agents.activity_extraction_agent - INFO - activity_extraction_agent.py:177 - Extracting activities from 2 documents
+2025-06-21 11:19:08 - src.agents.activity_extraction_agent - INFO - activity_extraction_agent.py:72 - Extracting activities from document: Investment Advisers Act of 1940 - Section 3(a)(1)
+2025-06-21 11:19:08 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:181 - Extracting products...
+2025-06-21 11:19:08 - src.agents.product_extraction_agent - INFO - product_extraction_agent.py:176 - Extracting products from 2 documents
+2025-06-21 11:19:08 - src.agents.product_extraction_agent - INFO - product_extraction_agent.py:71 - Extracting products from document: Investment Advisers Act of 1940 - Section 3(a)(1)
+2025-06-21 11:19:10 - src.agents.product_extraction_agent - INFO - product_extraction_agent.py:91 - Extracted 0 products from document mock_doc_1
+2025-06-21 11:19:10 - src.agents.product_extraction_agent - INFO - product_extraction_agent.py:71 - Extracting products from document: UCITS Directive - Definition of UCITS
+2025-06-21 11:19:12 - src.agents.activity_extraction_agent - INFO - activity_extraction_agent.py:92 - Extracted 1 activities from document mock_doc_1
+2025-06-21 11:19:12 - src.agents.activity_extraction_agent - INFO - activity_extraction_agent.py:72 - Extracting activities from document: UCITS Directive - Definition of UCITS
+2025-06-21 11:19:13 - src.agents.product_extraction_agent - INFO - product_extraction_agent.py:91 - Extracted 1 products from document mock_doc_2
+2025-06-21 11:19:13 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:191 - Extracted 1 products
+2025-06-21 11:19:14 - src.agents.entity_extraction_agent - INFO - entity_extraction_agent.py:89 - Extracted 1 entities from document mock_doc_1
+2025-06-21 11:19:14 - src.agents.entity_extraction_agent - INFO - entity_extraction_agent.py:69 - Extracting entities from document: UCITS Directive - Definition of UCITS
+2025-06-21 11:19:15 - src.agents.activity_extraction_agent - INFO - activity_extraction_agent.py:92 - Extracted 1 activities from document mock_doc_2
+2025-06-21 11:19:15 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:172 - Extracted 2 activities
+2025-06-21 11:19:17 - src.agents.entity_extraction_agent - INFO - entity_extraction_agent.py:89 - Extracted 1 entities from document mock_doc_2
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:153 - Extracted 2 entities
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:133 - Successfully completed all extractions
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:200 - Assessing document relevance...
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:228 - Assessed relevance for 2 documents
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:237 - Deduplicating taxonomy...
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:246 - Merged entities: 1 final entities
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:254 - Merged activities: 1 final activities
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:262 - Merged products: 1 final products
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:296 - Results saved to: real_api_results.json
+2025-06-21 11:19:17 - src.deep_research_orchestrator - INFO - deep_research_orchestrator.py:83 - Deep research workflow completed successfully
+2025-06-21 12:05:42,051 - __main__ - ERROR - Analysis failed: run_complete_analysis() got an unexpected keyword argument 'model_name'
+Traceback (most recent call last):
+  File "/Users/xiaobocheng/law_croissant/reggenome_research.py", line 148, in main
+    results = run_complete_analysis(
+              ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_complete_analysis() got an unexpected keyword argument 'model_name'
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - Starting RegGenome challenge deliverables generation
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - Query: What is the definition of UCITS and what are the key regulated activities, entities, and products in the UCITS framework?
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - Output directory: output
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - API Mode: Real
+2025-06-21 12:07:06,792 - src.deep_research_orchestrator - INFO - Found valid JWT authentication
+2025-06-21 12:07:06,792 - src.api_client - INFO - Using JWT authentication for RegGenome API
+2025-06-21 12:07:06,792 - src.api_client - INFO - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - Using real API
+2025-06-21 12:07:06,792 - src.unified_interface - INFO - ✅ JWT Authentication valid for: henryzha@outlook.com
+2025-06-21 12:07:06,792 - src.deep_research_orchestrator - INFO - Starting deep research workflow: What is the definition of UCITS and what are the key regulated activities, entities, and products in the UCITS framework?
+2025-06-21 12:07:06,792 - src.deep_research_orchestrator - INFO - Fetching documents from RegGenome API...
+2025-06-21 12:07:06,792 - src.deep_research_orchestrator - INFO - Searching for documents matching: What is the definition of UCITS and what are the key regulated activities, entities, and products in the UCITS framework?
+2025-06-21 12:07:12,417 - src.deep_research_orchestrator - INFO - Title search returned 0 documents
+2025-06-21 12:07:12,418 - src.deep_research_orchestrator - INFO - No documents found with title search, trying initiative-based search...
+2025-06-21 12:07:12,470 - src.deep_research_orchestrator - INFO - Found 2 UCITS-related initiatives
+2025-06-21 12:07:12,470 - src.deep_research_orchestrator - INFO - Fetching from initiative: EU - Undertaking for Collective Investment in Transferrable Securities (UCITS) Directives
+2025-06-21 12:07:14,261 - src.deep_research_orchestrator - INFO - ✓ Fetched: SWD(2012) 186 final: COMMISSION STAFF WORKING DOCUMENT EXECUTIVE SUMMARY OF THE ...
+2025-06-21 12:07:14,261 - src.deep_research_orchestrator - INFO - ✓ Fetched: ESMA/2016/411: Guidelines on sound remuneration policies under the UCITS Directi...
+2025-06-21 12:07:14,261 - src.deep_research_orchestrator - INFO - ✓ Fetched: CESR/09-1034: Peer Review of the Implementation of CESR’s Guidelines to simplify...
+2025-06-21 12:07:14,261 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2024/911 of 15 December 2023 supplementing ...
+2025-06-21 12:07:14,261 - src.deep_research_orchestrator - INFO - ✓ Fetched: Directive 2009/65/EC of the European Parliament and of the Council of 13 July 20...
+2025-06-21 12:07:14,266 - src.deep_research_orchestrator - INFO - Fetching from initiative: UK - The Undertakings for Collective Investment in Transferable Securities (UCITS) Regulations, 2011 and 2016
+2025-06-21 12:07:16,227 - src.deep_research_orchestrator - INFO - ✓ Fetched: FCA 2013/77: Capital Requirements Directive IV (AIFMD and UCITS Consequential Am...
+2025-06-21 12:07:16,227 - src.deep_research_orchestrator - INFO - ✓ Fetched: Collective Investment Schemes: COLL 7: Suspension of dealings, termination of au...
+2025-06-21 12:07:16,227 - src.deep_research_orchestrator - INFO - ✓ Fetched: Collective Investment Schemes: COLL 14: Charity authorised investment funds...
+2025-06-21 12:07:16,228 - src.deep_research_orchestrator - INFO - ✓ Fetched: Collective Investment Schemes: COLL 10: Fees...
+2025-06-21 12:07:16,228 - src.deep_research_orchestrator - INFO - ✓ Fetched: Collective Investment Schemes: COLL 13: Operation of feeder NURS...
+2025-06-21 12:07:16,228 - src.deep_research_orchestrator - INFO - Reached document limit (10)
+2025-06-21 12:07:16,228 - src.deep_research_orchestrator - INFO - ✅ Successfully fetched 10 documents for analysis
+2025-06-21 12:07:16,228 - src.deep_research_orchestrator - INFO - Extracting regulatory information from documents...
+2025-06-21 12:07:16,236 - src.deep_research_orchestrator - INFO - 🔍 Extracting entities from 10 documents...
+2025-06-21 12:07:16,236 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:07:16,236 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:07:16,236 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: SWD(2012) 186 final: COMMISSION STAFF WORKING DOCUMENT EXECUTIVE SUMMARY OF THE IMPACT ASSESSMENT Accompanying the document Proposal for a DIRECTIVE OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL amending Directive 2009/65/EC on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS) as regards depositary functions, remuneration policies and sanctions
+2025-06-21 12:07:16,347 - src.deep_research_orchestrator - INFO - ⚡ Extracting activities from 10 documents...
+2025-06-21 12:07:16,348 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:07:16,348 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:07:16,348 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: SWD(2012) 186 final: COMMISSION STAFF WORKING DOCUMENT EXECUTIVE SUMMARY OF THE IMPACT ASSESSMENT Accompanying the document Proposal for a DIRECTIVE OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL amending Directive 2009/65/EC on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS) as regards depositary functions, remuneration policies and sanctions
+2025-06-21 12:07:16,348 - src.deep_research_orchestrator - INFO - 📦 Extracting products from 10 documents...
+2025-06-21 12:07:16,348 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:07:16,348 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:07:16,348 - src.agents.product_extraction_agent - INFO - Extracting products from document: SWD(2012) 186 final: COMMISSION STAFF WORKING DOCUMENT EXECUTIVE SUMMARY OF THE IMPACT ASSESSMENT Accompanying the document Proposal for a DIRECTIVE OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL amending Directive 2009/65/EC on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS) as regards depositary functions, remuneration policies and sanctions
+2025-06-21 12:07:18,248 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:18,300 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 06ad140c-f194-3985-159c-4e9fd89c0c86
+2025-06-21 12:07:18,300 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: ESMA/2016/411: Guidelines on sound remuneration policies under the UCITS Directive and AIFMD
+2025-06-21 12:07:19,739 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:19,743 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 071171f3-3e74-4310-6f8a-f6c8dfc3c3b6
+2025-06-21 12:07:19,743 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: CESR/09-1034: Peer Review of the Implementation of CESR’s Guidelines to simplify the notification procedure of UCITS
+2025-06-21 12:07:20,298 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:20,311 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 06ad140c-f194-3985-159c-4e9fd89c0c86
+2025-06-21 12:07:20,311 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: ESMA/2016/411: Guidelines on sound remuneration policies under the UCITS Directive and AIFMD
+2025-06-21 12:07:20,443 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:20,460 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 06ad140c-f194-3985-159c-4e9fd89c0c86
+2025-06-21 12:07:20,460 - src.agents.product_extraction_agent - INFO - Extracting products from document: ESMA/2016/411: Guidelines on sound remuneration policies under the UCITS Directive and AIFMD
+2025-06-21 12:07:21,017 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:21,023 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 07c73936-c542-fd5b-0a75-242123799185
+2025-06-21 12:07:21,023 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2024/911 of 15 December 2023 supplementing Directive 2009/65/EC of the European Parliament and of the Council with regard to regulatory technical standards specifying the information to be notified in relation to the cross-border activities of management companies and undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:22,065 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:22,071 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 071171f3-3e74-4310-6f8a-f6c8dfc3c3b6
+2025-06-21 12:07:22,072 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: CESR/09-1034: Peer Review of the Implementation of CESR’s Guidelines to simplify the notification procedure of UCITS
+2025-06-21 12:07:22,669 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:22,675 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 15acb7f8-ea8a-b3c4-c07b-d0ea890ca036
+2025-06-21 12:07:22,675 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Directive 2009/65/EC of the European Parliament and of the Council of 13 July 2009 on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:22,994 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:23,001 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 071171f3-3e74-4310-6f8a-f6c8dfc3c3b6
+2025-06-21 12:07:23,001 - src.agents.product_extraction_agent - INFO - Extracting products from document: CESR/09-1034: Peer Review of the Implementation of CESR’s Guidelines to simplify the notification procedure of UCITS
+2025-06-21 12:07:24,621 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:24,639 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 15b404e5-0d66-1761-1c92-c3366ab1b41f
+2025-06-21 12:07:24,639 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:07:24,639 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:07:24,639 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:07:24,639 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: FCA 2013/77: Capital Requirements Directive IV (AIFMD and UCITS Consequential Amendments) Instrument 2013
+2025-06-21 12:07:25,645 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:25,652 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 07c73936-c542-fd5b-0a75-242123799185
+2025-06-21 12:07:25,652 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2024/911 of 15 December 2023 supplementing Directive 2009/65/EC of the European Parliament and of the Council with regard to regulatory technical standards specifying the information to be notified in relation to the cross-border activities of management companies and undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:26,032 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:26,038 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0091f201-37d8-1d8d-ccfe-c324bf3f7c5b
+2025-06-21 12:07:26,039 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Collective Investment Schemes: COLL 7: Suspension of dealings, termination of authorised funds and side pockets
+2025-06-21 12:07:26,276 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:26,283 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 07c73936-c542-fd5b-0a75-242123799185
+2025-06-21 12:07:26,283 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2024/911 of 15 December 2023 supplementing Directive 2009/65/EC of the European Parliament and of the Council with regard to regulatory technical standards specifying the information to be notified in relation to the cross-border activities of management companies and undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:27,323 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:27,334 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 02bad069-4f41-6d8e-8179-e7bbf7e3c3ec
+2025-06-21 12:07:27,334 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Collective Investment Schemes: COLL 14: Charity authorised investment funds
+2025-06-21 12:07:29,066 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:29,078 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 045293ac-d43d-6357-0e08-38c08083498b
+2025-06-21 12:07:29,078 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Collective Investment Schemes: COLL 10: Fees
+2025-06-21 12:07:30,330 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:30,345 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 15acb7f8-ea8a-b3c4-c07b-d0ea890ca036
+2025-06-21 12:07:30,345 - src.agents.product_extraction_agent - INFO - Extracting products from document: Directive 2009/65/EC of the European Parliament and of the Council of 13 July 2009 on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:30,476 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:30,482 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 196f268b-8030-34b6-c57b-7efeae8f3e1f
+2025-06-21 12:07:30,482 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Collective Investment Schemes: COLL 13: Operation of feeder NURS
+2025-06-21 12:07:30,672 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:30,701 - src.agents.entity_extraction_agent - INFO - Extracted 2 entities from document 15acb7f8-ea8a-b3c4-c07b-d0ea890ca036
+2025-06-21 12:07:30,701 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Directive 2009/65/EC of the European Parliament and of the Council of 13 July 2009 on the coordination of laws, regulations and administrative provisions relating to undertakings for collective investment in transferable securities (UCITS)
+2025-06-21 12:07:32,132 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:32,141 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1dd72595-6158-9319-f2b3-0573f25d81aa
+2025-06-21 12:07:32,141 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:07:32,141 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 0 activities
+2025-06-21 12:07:34,137 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:34,159 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 15b404e5-0d66-1761-1c92-c3366ab1b41f
+2025-06-21 12:07:34,159 - src.deep_research_orchestrator - INFO -   ✓ Extracted 4 products from batch
+2025-06-21 12:07:34,159 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:07:34,159 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:07:34,159 - src.agents.product_extraction_agent - INFO - Extracting products from document: FCA 2013/77: Capital Requirements Directive IV (AIFMD and UCITS Consequential Amendments) Instrument 2013
+2025-06-21 12:07:35,203 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:35,227 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 15b404e5-0d66-1761-1c92-c3366ab1b41f
+2025-06-21 12:07:35,227 - src.deep_research_orchestrator - INFO -   ✓ Extracted 5 entities from batch
+2025-06-21 12:07:35,227 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:07:35,227 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:07:35,227 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: FCA 2013/77: Capital Requirements Directive IV (AIFMD and UCITS Consequential Amendments) Instrument 2013
+2025-06-21 12:07:35,615 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:35,623 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0091f201-37d8-1d8d-ccfe-c324bf3f7c5b
+2025-06-21 12:07:35,623 - src.agents.product_extraction_agent - INFO - Extracting products from document: Collective Investment Schemes: COLL 7: Suspension of dealings, termination of authorised funds and side pockets
+2025-06-21 12:07:36,786 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:36,792 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 02bad069-4f41-6d8e-8179-e7bbf7e3c3ec
+2025-06-21 12:07:36,792 - src.agents.product_extraction_agent - INFO - Extracting products from document: Collective Investment Schemes: COLL 14: Charity authorised investment funds
+2025-06-21 12:07:37,109 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:37,118 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0091f201-37d8-1d8d-ccfe-c324bf3f7c5b
+2025-06-21 12:07:37,118 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Collective Investment Schemes: COLL 7: Suspension of dealings, termination of authorised funds and side pockets
+2025-06-21 12:07:39,433 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:39,449 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 02bad069-4f41-6d8e-8179-e7bbf7e3c3ec
+2025-06-21 12:07:39,450 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Collective Investment Schemes: COLL 14: Charity authorised investment funds
+2025-06-21 12:07:39,811 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:39,827 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 045293ac-d43d-6357-0e08-38c08083498b
+2025-06-21 12:07:39,827 - src.agents.product_extraction_agent - INFO - Extracting products from document: Collective Investment Schemes: COLL 10: Fees
+2025-06-21 12:07:41,451 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:41,458 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 196f268b-8030-34b6-c57b-7efeae8f3e1f
+2025-06-21 12:07:41,458 - src.agents.product_extraction_agent - INFO - Extracting products from document: Collective Investment Schemes: COLL 13: Operation of feeder NURS
+2025-06-21 12:07:41,701 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:41,711 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 045293ac-d43d-6357-0e08-38c08083498b
+2025-06-21 12:07:41,711 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Collective Investment Schemes: COLL 10: Fees
+2025-06-21 12:07:44,317 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:44,326 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 196f268b-8030-34b6-c57b-7efeae8f3e1f
+2025-06-21 12:07:44,326 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Collective Investment Schemes: COLL 13: Operation of feeder NURS
+2025-06-21 12:07:45,060 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:45,085 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 1dd72595-6158-9319-f2b3-0573f25d81aa
+2025-06-21 12:07:45,085 - src.deep_research_orchestrator - INFO -   ✓ Extracted 2 products from batch
+2025-06-21 12:07:45,085 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 6 products
+2025-06-21 12:07:50,225 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:07:50,245 - src.agents.entity_extraction_agent - INFO - Extracted 2 entities from document 1dd72595-6158-9319-f2b3-0573f25d81aa
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO -   ✓ Extracted 2 entities from batch
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 7 entities
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Successfully completed all extractions
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Assessing document relevance...
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Assessed relevance for 10 documents
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Deduplicating taxonomy...
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Merged entities: 1 final entities
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Merged products: 1 final products
+2025-06-21 12:07:50,245 - src.deep_research_orchestrator - INFO - Deep research workflow completed successfully
+2025-06-21 12:07:50,249 - src.unified_interface - INFO - ✅ All RegGenome challenge deliverables generated successfully!
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - Starting RegGenome challenge deliverables generation
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - Query: How does a UK fund ensure compliance with both the EU and UK when verifying foreign investors post-Brexit?
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - Output directory: output
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - API Mode: Real
+2025-06-21 12:11:03,956 - src.deep_research_orchestrator - INFO - Found valid JWT authentication
+2025-06-21 12:11:03,956 - src.api_client - INFO - Using JWT authentication for RegGenome API
+2025-06-21 12:11:03,956 - src.api_client - INFO - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - Using real API
+2025-06-21 12:11:03,956 - src.unified_interface - INFO - ✅ JWT Authentication valid for: henryzha@outlook.com
+2025-06-21 12:11:03,956 - src.deep_research_orchestrator - INFO - Starting deep research workflow: How does a UK fund ensure compliance with both the EU and UK when verifying foreign investors post-Brexit?
+2025-06-21 12:11:03,956 - src.deep_research_orchestrator - INFO - Fetching documents from RegGenome API...
+2025-06-21 12:11:03,957 - src.deep_research_orchestrator - INFO - Searching for documents matching: How does a UK fund ensure compliance with both the EU and UK when verifying foreign investors post-Brexit?
+2025-06-21 12:11:10,633 - src.deep_research_orchestrator - INFO - Title search returned 0 documents
+2025-06-21 12:11:10,633 - src.deep_research_orchestrator - INFO - No documents found with title search, trying initiative-based search...
+2025-06-21 12:11:10,685 - src.deep_research_orchestrator - INFO - Fetching from initiative: Technical Standards Under MiFIR
+2025-06-21 12:11:12,179 - src.deep_research_orchestrator - INFO - ✓ Fetched: Corrigendum to Commission Implementing Regulation (EU) 2017/2382 of 14 December ...
+2025-06-21 12:11:12,179 - src.deep_research_orchestrator - INFO - ✓ Fetched: Corrigendum to Commission Delegated Regulation (EU) 2022/1299 of 24 March 2022 s...
+2025-06-21 12:11:12,179 - src.deep_research_orchestrator - INFO - ✓ Fetched: Official Journal of the European Union: COMMISSION DELEGATED REGULATION (EU) 202...
+2025-06-21 12:11:12,179 - src.deep_research_orchestrator - INFO - ✓ Fetched: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 suppleme...
+2025-06-21 12:11:12,179 - src.deep_research_orchestrator - INFO - ✓ Fetched: EBA/GL/2021/06, ESMA35-36-2319: Joint EBA and ESMA Guidelines on the assessment ...
+2025-06-21 12:11:12,180 - src.deep_research_orchestrator - INFO - Fetching from initiative: UK - FCA Consumer Duty, 2022
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - ✓ Fetched: Payments Consumer Duty multi-firm review...
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and ...
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty for the Debt Advice portfolio...
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses – Release 36...
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses: PRIN 2A: The Consumer Duty...
+2025-06-21 12:11:13,974 - src.deep_research_orchestrator - INFO - Reached document limit (10)
+2025-06-21 12:11:13,975 - src.deep_research_orchestrator - INFO - ✅ Successfully fetched 10 documents for analysis
+2025-06-21 12:11:13,975 - src.deep_research_orchestrator - INFO - Extracting regulatory information from documents...
+2025-06-21 12:11:13,978 - src.deep_research_orchestrator - INFO - 🔍 Extracting entities from 10 documents...
+2025-06-21 12:11:13,978 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:11:13,979 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:11:13,979 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Corrigendum to Commission Implementing Regulation (EU) 2017/2382 of 14 December 2017 laying down implementing technical standards with regard to standard forms, templates and procedures for the transmission of information in accordance with Directive 2014/65/EU of the European Parliament and of the Council
+2025-06-21 12:11:14,092 - src.deep_research_orchestrator - INFO - ⚡ Extracting activities from 10 documents...
+2025-06-21 12:11:14,092 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:11:14,092 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:11:14,092 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Corrigendum to Commission Implementing Regulation (EU) 2017/2382 of 14 December 2017 laying down implementing technical standards with regard to standard forms, templates and procedures for the transmission of information in accordance with Directive 2014/65/EU of the European Parliament and of the Council
+2025-06-21 12:11:14,093 - src.deep_research_orchestrator - INFO - 📦 Extracting products from 10 documents...
+2025-06-21 12:11:14,093 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:11:14,093 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:11:14,093 - src.agents.product_extraction_agent - INFO - Extracting products from document: Corrigendum to Commission Implementing Regulation (EU) 2017/2382 of 14 December 2017 laying down implementing technical standards with regard to standard forms, templates and procedures for the transmission of information in accordance with Directive 2014/65/EU of the European Parliament and of the Council
+2025-06-21 12:11:15,721 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:15,786 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:15,789 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 001b1c76-fdd1-bddf-c062-ae37dbc9fd43
+2025-06-21 12:11:15,789 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Corrigendum to Commission Delegated Regulation (EU) 2022/1299 of 24 March 2022 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards specifying the content of position management controls by trading venues (Official Journal of the European Union L 197 of 26 July 2022)
+2025-06-21 12:11:15,791 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 001b1c76-fdd1-bddf-c062-ae37dbc9fd43
+2025-06-21 12:11:15,791 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Corrigendum to Commission Delegated Regulation (EU) 2022/1299 of 24 March 2022 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards specifying the content of position management controls by trading venues (Official Journal of the European Union L 197 of 26 July 2022)
+2025-06-21 12:11:15,878 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:15,884 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 001b1c76-fdd1-bddf-c062-ae37dbc9fd43
+2025-06-21 12:11:15,884 - src.agents.product_extraction_agent - INFO - Extracting products from document: Corrigendum to Commission Delegated Regulation (EU) 2022/1299 of 24 March 2022 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards specifying the content of position management controls by trading venues (Official Journal of the European Union L 197 of 26 July 2022)
+2025-06-21 12:11:16,936 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:16,948 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 00920049-10a1-6185-871c-379f0df3ec55
+2025-06-21 12:11:16,948 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Official Journal of the European Union: COMMISSION DELEGATED REGULATION (EU) 2021/1253
+of 21 April 2021
+amending Delegated Regulation (EU) 2017/565 as regards the integration of sustainability factors,
+risks and preferences into certain organisational requirements and operating conditions for
+investment firms 
+2025-06-21 12:11:17,240 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:17,250 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 00920049-10a1-6185-871c-379f0df3ec55
+2025-06-21 12:11:17,250 - src.agents.product_extraction_agent - INFO - Extracting products from document: Official Journal of the European Union: COMMISSION DELEGATED REGULATION (EU) 2021/1253
+of 21 April 2021
+amending Delegated Regulation (EU) 2017/565 as regards the integration of sustainability factors,
+risks and preferences into certain organisational requirements and operating conditions for
+investment firms 
+2025-06-21 12:11:18,424 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:18,432 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 04a3e172-eede-e588-efa7-1ab0eb530225
+2025-06-21 12:11:18,433 - src.agents.product_extraction_agent - INFO - Extracting products from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:11:19,193 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:19,212 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 00920049-10a1-6185-871c-379f0df3ec55
+2025-06-21 12:11:19,213 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Official Journal of the European Union: COMMISSION DELEGATED REGULATION (EU) 2021/1253
+of 21 April 2021
+amending Delegated Regulation (EU) 2017/565 as regards the integration of sustainability factors,
+risks and preferences into certain organisational requirements and operating conditions for
+investment firms 
+2025-06-21 12:11:19,657 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:19,674 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:11:19,674 - src.agents.product_extraction_agent - INFO - Extracting products from document: EBA/GL/2021/06, ESMA35-36-2319: Joint EBA and ESMA Guidelines on the assessment of the suitability of members of the management body and key function holders
+2025-06-21 12:11:19,905 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:19,919 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 04a3e172-eede-e588-efa7-1ab0eb530225
+2025-06-21 12:11:19,919 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:11:21,443 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:21,450 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 09bb8889-afe9-e63f-7537-1e927c8be799
+2025-06-21 12:11:21,450 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 products from batch
+2025-06-21 12:11:21,451 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:11:21,451 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:11:21,451 - src.agents.product_extraction_agent - INFO - Extracting products from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:11:21,553 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:21,561 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 04a3e172-eede-e588-efa7-1ab0eb530225
+2025-06-21 12:11:21,561 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:11:21,608 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:21,618 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:11:21,618 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: EBA/GL/2021/06, ESMA35-36-2319: Joint EBA and ESMA Guidelines on the assessment of the suitability of members of the management body and key function holders
+2025-06-21 12:11:22,646 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:22,659 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:11:22,659 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:11:23,110 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:23,118 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:11:23,118 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: EBA/GL/2021/06, ESMA35-36-2319: Joint EBA and ESMA Guidelines on the assessment of the suitability of members of the management body and key function holders
+2025-06-21 12:11:23,211 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:23,225 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 09bb8889-afe9-e63f-7537-1e927c8be799
+2025-06-21 12:11:23,226 - src.deep_research_orchestrator - INFO -   ✓ Extracted 1 entities from batch
+2025-06-21 12:11:23,226 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:11:23,226 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:11:23,226 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:11:24,324 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:24,332 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:11:24,332 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:11:24,487 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:24,496 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 09bb8889-afe9-e63f-7537-1e927c8be799
+2025-06-21 12:11:24,496 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:11:24,496 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:11:24,496 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:11:24,497 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:11:24,958 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:24,970 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:11:24,971 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:11:25,790 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:25,797 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:11:25,797 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:11:26,466 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:26,476 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:11:26,476 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:11:26,813 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:26,823 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:11:26,824 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses – Release 36
+2025-06-21 12:11:27,230 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:27,239 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:11:27,239 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:11:27,763 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:27,770 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:11:27,770 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses – Release 36
+2025-06-21 12:11:27,780 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:27,783 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:11:27,783 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:11:28,748 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:28,755 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:11:28,756 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses – Release 36
+2025-06-21 12:11:29,229 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:29,237 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:11:29,237 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:11:29,451 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:29,462 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:11:29,462 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 products from batch
+2025-06-21 12:11:29,462 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 0 products
+2025-06-21 12:11:30,244 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:30,251 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:11:30,251 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:11:30,568 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:30,576 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:11:30,576 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 entities from batch
+2025-06-21 12:11:30,576 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 1 entities
+2025-06-21 12:11:31,376 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:11:31,384 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:11:31,384 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:11:31,384 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 0 activities
+2025-06-21 12:11:31,384 - src.deep_research_orchestrator - INFO - Successfully completed all extractions
+2025-06-21 12:11:31,384 - src.deep_research_orchestrator - INFO - Assessing document relevance...
+2025-06-21 12:11:31,385 - src.deep_research_orchestrator - INFO - Assessed relevance for 10 documents
+2025-06-21 12:11:31,385 - src.deep_research_orchestrator - INFO - Deduplicating taxonomy...
+2025-06-21 12:11:31,385 - src.deep_research_orchestrator - INFO - Merged entities: 1 final entities
+2025-06-21 12:11:31,385 - src.deep_research_orchestrator - INFO - Deep research workflow completed successfully
+2025-06-21 12:11:31,390 - src.unified_interface - INFO - ✅ All RegGenome challenge deliverables generated successfully!
+2025-06-21 12:15:45,290 - src.unified_interface - INFO - Starting RegGenome challenge deliverables generation
+2025-06-21 12:15:45,291 - src.unified_interface - INFO - Query: We are a US PE fund management company with investors from the EU, UK, and Asia. Can we invest the entire fund in crypto if we classify it as a 'derivative'?
+2025-06-21 12:15:45,291 - src.unified_interface - INFO - Output directory: output
+2025-06-21 12:15:45,291 - src.unified_interface - INFO - API Mode: Real
+2025-06-21 12:15:45,291 - src.deep_research_orchestrator - INFO - Found valid JWT authentication
+2025-06-21 12:15:45,291 - src.api_client - INFO - Using JWT authentication for RegGenome API
+2025-06-21 12:15:45,291 - src.api_client - INFO - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 12:15:45,291 - src.unified_interface - INFO - Using real API
+2025-06-21 12:15:45,291 - src.unified_interface - INFO - ✅ JWT Authentication valid for: henryzha@outlook.com
+2025-06-21 12:15:45,291 - src.deep_research_orchestrator - INFO - Starting deep research workflow: We are a US PE fund management company with investors from the EU, UK, and Asia. Can we invest the entire fund in crypto if we classify it as a 'derivative'?
+2025-06-21 12:15:45,291 - src.deep_research_orchestrator - INFO - Fetching documents from RegGenome API...
+2025-06-21 12:15:45,291 - src.deep_research_orchestrator - INFO - Searching for documents matching: We are a US PE fund management company with investors from the EU, UK, and Asia. Can we invest the entire fund in crypto if we classify it as a 'derivative'?
+2025-06-21 12:15:50,962 - src.deep_research_orchestrator - INFO - Title search returned 0 documents
+2025-06-21 12:15:50,963 - src.deep_research_orchestrator - INFO - No documents found with title search, trying initiative-based search...
+2025-06-21 12:15:51,025 - src.deep_research_orchestrator - INFO - Fetching from initiative: Technical Standards Under MiFIR
+2025-06-21 12:15:52,004 - src.deep_research_orchestrator - INFO - ✓ Fetched: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 suppleme...
+2025-06-21 12:15:52,004 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing...
+2025-06-21 12:15:52,004 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Direc...
+2025-06-21 12:15:52,004 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Direc...
+2025-06-21 12:15:52,005 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delega...
+2025-06-21 12:15:52,006 - src.deep_research_orchestrator - INFO - Fetching from initiative: UK - FCA Consumer Duty, 2022
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✓ Fetched: Payments Consumer Duty multi-firm review...
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and ...
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty for the Debt Advice portfolio...
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses – Release 36...
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses: PRIN 2A: The Consumer Duty...
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - Reached document limit (10)
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - ✅ Successfully fetched 10 documents for analysis
+2025-06-21 12:15:53,443 - src.deep_research_orchestrator - INFO - Extracting regulatory information from documents...
+2025-06-21 12:15:53,447 - src.deep_research_orchestrator - INFO - 🔍 Extracting entities from 10 documents...
+2025-06-21 12:15:53,447 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:15:53,447 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:15:53,447 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:15:53,556 - src.deep_research_orchestrator - INFO - ⚡ Extracting activities from 10 documents...
+2025-06-21 12:15:53,556 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:15:53,556 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:15:53,556 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:15:53,557 - src.deep_research_orchestrator - INFO - 📦 Extracting products from 10 documents...
+2025-06-21 12:15:53,557 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:15:53,557 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:15:53,557 - src.agents.product_extraction_agent - INFO - Extracting products from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:15:54,859 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:54,927 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:15:54,927 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:15:55,038 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:55,044 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:15:55,044 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:15:55,145 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:55,152 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:15:55,152 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:15:56,494 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:56,501 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:15:56,501 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:15:56,595 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:56,603 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:15:56,603 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:15:57,801 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:57,833 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:15:57,833 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:15:57,926 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:57,942 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:15:57,942 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:15:59,024 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:59,031 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:15:59,033 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:15:59,040 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:59,046 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:15:59,046 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:15:59,205 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:15:59,214 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:15:59,214 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:16:00,274 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:00,280 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:16:00,281 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:16:00,404 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:00,411 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:16:00,411 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:16:00,631 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:00,640 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:16:00,641 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:16:00,641 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:16:00,641 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:16:00,641 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:16:01,717 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:01,724 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:16:01,724 - src.deep_research_orchestrator - INFO -   ✓ Extracted 1 products from batch
+2025-06-21 12:16:01,725 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:16:01,725 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:16:01,725 - src.agents.product_extraction_agent - INFO - Extracting products from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:16:02,302 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:02,313 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:16:02,314 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:16:03,041 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:03,049 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:16:03,049 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:16:03,235 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:03,250 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:16:03,250 - src.deep_research_orchestrator - INFO -   ✓ Extracted 1 entities from batch
+2025-06-21 12:16:03,250 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:16:03,250 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:16:03,250 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:16:03,432 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:03,437 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:16:03,438 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:16:04,686 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:04,692 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:16:04,692 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:16:05,015 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:05,022 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:16:05,023 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:16:05,740 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:05,749 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:16:05,749 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses – Release 36
+2025-06-21 12:16:06,095 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:06,099 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:16:06,099 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses – Release 36
+2025-06-21 12:16:06,905 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:06,917 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:16:06,917 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:16:06,922 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:06,929 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:16:06,929 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:16:07,161 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:07,166 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:16:07,166 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:16:08,154 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:08,162 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:16:08,162 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:16:08,162 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 0 activities
+2025-06-21 12:16:08,320 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:08,325 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:16:08,325 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses – Release 36
+2025-06-21 12:16:08,515 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:08,523 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:16:08,523 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 products from batch
+2025-06-21 12:16:08,523 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 1 products
+2025-06-21 12:16:09,875 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:09,883 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:16:09,884 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:16:11,241 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:16:11,249 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:16:11,249 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 entities from batch
+2025-06-21 12:16:11,249 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 1 entities
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Successfully completed all extractions
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Assessing document relevance...
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Assessed relevance for 10 documents
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Deduplicating taxonomy...
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Merged entities: 1 final entities
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Merged products: 1 final products
+2025-06-21 12:16:11,250 - src.deep_research_orchestrator - INFO - Deep research workflow completed successfully
+2025-06-21 12:16:11,255 - src.unified_interface - INFO - ✅ All RegGenome challenge deliverables generated successfully!
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - Starting RegGenome challenge deliverables generation
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - Query: We are a security firm established in Delaware. One of our clients lied about their company's net worth. How do we ensure compliance after discovering this, and how should we file a supplementary report with regulators?
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - Output directory: output
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - API Mode: Real
+2025-06-21 12:16:59,552 - src.deep_research_orchestrator - INFO - Found valid JWT authentication
+2025-06-21 12:16:59,552 - src.api_client - INFO - Using JWT authentication for RegGenome API
+2025-06-21 12:16:59,552 - src.api_client - INFO - JWT token expires at: 2025-06-22T10:06:22+00:00
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - Using real API
+2025-06-21 12:16:59,552 - src.unified_interface - INFO - ✅ JWT Authentication valid for: henryzha@outlook.com
+2025-06-21 12:16:59,552 - src.deep_research_orchestrator - INFO - Starting deep research workflow: We are a security firm established in Delaware. One of our clients lied about their company's net worth. How do we ensure compliance after discovering this, and how should we file a supplementary report with regulators?
+2025-06-21 12:16:59,552 - src.deep_research_orchestrator - INFO - Fetching documents from RegGenome API...
+2025-06-21 12:16:59,553 - src.deep_research_orchestrator - INFO - Searching for documents matching: We are a security firm established in Delaware. One of our clients lied about their company's net worth. How do we ensure compliance after discovering this, and how should we file a supplementary report with regulators?
+2025-06-21 12:17:05,294 - src.deep_research_orchestrator - INFO - Title search returned 0 documents
+2025-06-21 12:17:05,294 - src.deep_research_orchestrator - INFO - No documents found with title search, trying initiative-based search...
+2025-06-21 12:17:05,345 - src.deep_research_orchestrator - INFO - Fetching from initiative: Technical Standards Under MiFIR
+2025-06-21 12:17:05,916 - src.deep_research_orchestrator - INFO - ✓ Fetched: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 suppleme...
+2025-06-21 12:17:05,916 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing...
+2025-06-21 12:17:05,916 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Direc...
+2025-06-21 12:17:05,916 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Direc...
+2025-06-21 12:17:05,916 - src.deep_research_orchestrator - INFO - ✓ Fetched: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delega...
+2025-06-21 12:17:05,918 - src.deep_research_orchestrator - INFO - Fetching from initiative: UK - FCA Consumer Duty, 2022
+2025-06-21 12:17:07,577 - src.deep_research_orchestrator - INFO - ✓ Fetched: Payments Consumer Duty multi-firm review...
+2025-06-21 12:17:07,577 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and ...
+2025-06-21 12:17:07,577 - src.deep_research_orchestrator - INFO - ✓ Fetched: Implementing the Consumer Duty for the Debt Advice portfolio...
+2025-06-21 12:17:07,578 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses – Release 36...
+2025-06-21 12:17:07,578 - src.deep_research_orchestrator - INFO - ✓ Fetched: Principles for Businesses: PRIN 2A: The Consumer Duty...
+2025-06-21 12:17:07,578 - src.deep_research_orchestrator - INFO - Reached document limit (10)
+2025-06-21 12:17:07,578 - src.deep_research_orchestrator - INFO - ✅ Successfully fetched 10 documents for analysis
+2025-06-21 12:17:07,578 - src.deep_research_orchestrator - INFO - Extracting regulatory information from documents...
+2025-06-21 12:17:07,582 - src.deep_research_orchestrator - INFO - 🔍 Extracting entities from 10 documents...
+2025-06-21 12:17:07,582 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:17:07,582 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:17:07,582 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:17:07,686 - src.deep_research_orchestrator - INFO - ⚡ Extracting activities from 10 documents...
+2025-06-21 12:17:07,686 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:17:07,686 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:17:07,686 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:17:07,686 - src.deep_research_orchestrator - INFO - 📦 Extracting products from 10 documents...
+2025-06-21 12:17:07,686 - src.deep_research_orchestrator - INFO -   Processing batch 1/2...
+2025-06-21 12:17:07,686 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:17:07,686 - src.agents.product_extraction_agent - INFO - Extracting products from document: L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities
+2025-06-21 12:17:08,895 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:08,956 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:17:08,956 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:17:09,307 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:09,314 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:17:09,314 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:17:10,055 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:10,075 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 04b36286-8ffd-38dd-936f-ec3e7699a748
+2025-06-21 12:17:10,075 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives
+2025-06-21 12:17:10,398 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:10,406 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:17:10,407 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:17:11,699 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:11,703 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:17:11,703 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:17:12,683 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:12,698 - src.agents.product_extraction_agent - INFO - Extracted 1 products from document 0eb9dfa3-14af-3328-1302-73dd36009f0b
+2025-06-21 12:17:12,698 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets
+2025-06-21 12:17:13,400 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:13,404 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:13,410 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:17:13,410 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:17:13,417 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:17:13,417 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:17:14,203 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:14,212 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0f874f3e-c41a-00c6-6f9d-ca0ddc518320
+2025-06-21 12:17:14,213 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures
+2025-06-21 12:17:14,645 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:14,653 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:17:14,654 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:17:15,242 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:15,249 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:17:15,250 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:17:15,929 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:15,938 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 1626a8f9-5b58-f9be-b805-be00e44c6fef
+2025-06-21 12:17:15,938 - src.agents.product_extraction_agent - INFO - Extracting products from document: Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council
+2025-06-21 12:17:16,368 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:16,375 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:17:16,376 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:17:16,376 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:17:16,376 - src.agents.activity_extraction_agent - INFO - Extracting activities from 5 documents
+2025-06-21 12:17:16,376 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:17:17,598 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:17,602 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:17:17,602 - src.deep_research_orchestrator - INFO -   ✓ Extracted 1 products from batch
+2025-06-21 12:17:17,603 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:17:17,603 - src.agents.product_extraction_agent - INFO - Extracting products from 5 documents
+2025-06-21 12:17:17,603 - src.agents.product_extraction_agent - INFO - Extracting products from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:17:17,791 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:17,798 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:17:17,798 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:17:18,457 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:18,473 - src.agents.entity_extraction_agent - INFO - Extracted 1 entities from document 16a7d6d2-07da-354b-9c95-b13e0bdb4f99
+2025-06-21 12:17:18,473 - src.deep_research_orchestrator - INFO -   ✓ Extracted 1 entities from batch
+2025-06-21 12:17:18,473 - src.deep_research_orchestrator - INFO -   Processing batch 2/2...
+2025-06-21 12:17:18,473 - src.agents.entity_extraction_agent - INFO - Extracting entities from 5 documents
+2025-06-21 12:17:18,473 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Payments Consumer Duty multi-firm review
+2025-06-21 12:17:18,826 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:18,832 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:17:18,833 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:17:19,236 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:19,244 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:17:19,244 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:17:19,989 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:19,998 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 03480ab2-c883-11b1-915d-d1d241d66d1d
+2025-06-21 12:17:19,998 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios
+2025-06-21 12:17:20,002 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:20,006 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:17:20,007 - src.agents.product_extraction_agent - INFO - Extracting products from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:17:21,333 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:21,342 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:17:21,342 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses – Release 36
+2025-06-21 12:17:21,960 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:21,971 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0988106f-c979-cabe-b0a6-31eaad119028
+2025-06-21 12:17:21,971 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Implementing the Consumer Duty for the Debt Advice portfolio
+2025-06-21 12:17:21,987 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:22,002 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:17:22,002 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses – Release 36
+2025-06-21 12:17:22,945 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:22,952 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:17:22,952 - src.agents.activity_extraction_agent - INFO - Extracting activities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:17:23,460 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:23,468 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 09ecb21b-3da9-6f77-1c10-99b511cb1c2d
+2025-06-21 12:17:23,468 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses – Release 36
+2025-06-21 12:17:23,660 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:23,668 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:17:23,668 - src.agents.product_extraction_agent - INFO - Extracting products from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:17:24,151 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:24,158 - src.agents.activity_extraction_agent - INFO - Extracted 0 activities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:17:24,158 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 activities from batch
+2025-06-21 12:17:24,159 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 0 activities
+2025-06-21 12:17:25,116 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:25,128 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 0d6ed095-e92f-1de2-ff76-82a37269cceb
+2025-06-21 12:17:25,128 - src.agents.entity_extraction_agent - INFO - Extracting entities from document: Principles for Businesses: PRIN 2A: The Consumer Duty
+2025-06-21 12:17:25,131 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:25,141 - src.agents.product_extraction_agent - INFO - Extracted 0 products from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:17:25,141 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 products from batch
+2025-06-21 12:17:25,141 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 1 products
+2025-06-21 12:17:26,999 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-21 12:17:27,011 - src.agents.entity_extraction_agent - INFO - Extracted 0 entities from document 1430907a-3aaf-2a13-15eb-d45db649568e
+2025-06-21 12:17:27,011 - src.deep_research_orchestrator - INFO -   ✓ Extracted 0 entities from batch
+2025-06-21 12:17:27,011 - src.deep_research_orchestrator - INFO - ✅ Extracted total of 1 entities
+2025-06-21 12:17:27,011 - src.deep_research_orchestrator - INFO - Successfully completed all extractions
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Assessing document relevance...
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Assessed relevance for 10 documents
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Deduplicating taxonomy...
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Merged entities: 1 final entities
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Merged products: 1 final products
+2025-06-21 12:17:27,012 - src.deep_research_orchestrator - INFO - Deep research workflow completed successfully
+2025-06-21 12:17:27,018 - src.unified_interface - INFO - ✅ All RegGenome challenge deliverables generated successfully!

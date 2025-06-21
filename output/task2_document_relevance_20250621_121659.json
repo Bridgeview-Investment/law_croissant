@@ -1,0 +1,323 @@
+{
+  "document_relevance_analysis": [
+    {
+      "document_id": "0eb9dfa3-14af-3328-1302-73dd36009f0b",
+      "title": "Commission Delegated Regulation (EU) 2017/2417 of 17 November 2017 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on the trading obligation for certain derivatives",
+      "publisher": "European Commission",
+      "jurisdiction": "EU",
+      "legislative_initiative": "Technical Standards Under MiFIR",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {
+        "": {
+          "confidence_score": 0.5,
+          "product_type": "other",
+          "regulatory_classification": [
+            "Subject to Technical Standards Under MiFIR"
+          ]
+        }
+      },
+      "overall_relevance_score": 0.5,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Medium"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Medium"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Medium"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Medium"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Medium"
+        }
+      ]
+    },
+    {
+      "document_id": "16a7d6d2-07da-354b-9c95-b13e0bdb4f99",
+      "title": "Commission Delegated Regulation (EU) 2019/462 of 30 January 2019 amending Delegated Regulation (EU) 2017/1799 as regards the exemption of the Bank of England from the pre- and post-trade transparency requirements in Regulation (EU) No 600/2014 of the European Parliament and of the Council",
+      "publisher": "European Commission",
+      "jurisdiction": "EU",
+      "legislative_initiative": "Technical Standards Under MiFIR",
+      "entity_relevance": {
+        "": {
+          "confidence_score": 0.5,
+          "entity_type": "other",
+          "regulatory_framework": [
+            "Technical Standards Under MiFIR"
+          ]
+        }
+      },
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.5,
+      "key_sections": []
+    },
+    {
+      "document_id": "04b36286-8ffd-38dd-936f-ec3e7699a748",
+      "title": "L 87/449: COMMISSION DELEGATED REGULATION (EU) 2017/590 of 28 July 2016 supplementing Regulation (EU) No 600/2014 of the European Parliament and of the Council with regard to regulatory technical standards for the reporting of transactions to competent authorities",
+      "publisher": "Financial Services and Markets Authority",
+      "jurisdiction": "BE",
+      "legislative_initiative": "Technical Standards Under MiFIR",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "0f874f3e-c41a-00c6-6f9d-ca0ddc518320",
+      "title": "Commission Delegated Regulation (EU) 2017/568 of 24 May 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council with regard to regulatory technical standards for the admission of financial instruments to trading on regulated markets",
+      "publisher": "Financial Services and Markets Authority",
+      "jurisdiction": "BE",
+      "legislative_initiative": "EU - Markets in Financial Instruments Directive (MiFID II), 2014",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "1626a8f9-5b58-f9be-b805-be00e44c6fef",
+      "title": "Commission Delegated Regulation (EU) 2017/573 of 6 June 2016 supplementing Directive 2014/65/EU of the European Parliament and of the Council on markets in financial instruments with regard to regulatory technical standards on requirements to ensure fair and non-discriminatory co-location services and fee structures",
+      "publisher": "Financial Services and Markets Authority",
+      "jurisdiction": "BE",
+      "legislative_initiative": "EU - Markets in Financial Instruments Directive (MiFID II), 2014",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": []
+    },
+    {
+      "document_id": "03480ab2-c883-11b1-915d-d1d241d66d1d",
+      "title": "Payments Consumer Duty multi-firm review",
+      "publisher": "Financial Conduct Authority",
+      "jurisdiction": "GB",
+      "legislative_initiative": "UK - FCA Consumer Duty, 2022",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "0988106f-c979-cabe-b0a6-31eaad119028",
+      "title": "Implementing the Consumer Duty in Asset Management, Custody & Fund Services and Alternatives portfolios",
+      "publisher": "Financial Conduct Authority",
+      "jurisdiction": "GB",
+      "legislative_initiative": "UK - FCA Consumer Duty, 2022",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "09ecb21b-3da9-6f77-1c10-99b511cb1c2d",
+      "title": "Implementing the Consumer Duty for the Debt Advice portfolio",
+      "publisher": "Financial Conduct Authority",
+      "jurisdiction": "GB",
+      "legislative_initiative": "UK - FCA Consumer Duty, 2022",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "0d6ed095-e92f-1de2-ff76-82a37269cceb",
+      "title": "Principles for Businesses \u2013 Release 36",
+      "publisher": "Financial Conduct Authority",
+      "jurisdiction": "GB",
+      "legislative_initiative": "UK - FCA Consumer Duty, 2022",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    },
+    {
+      "document_id": "1430907a-3aaf-2a13-15eb-d45db649568e",
+      "title": "Principles for Businesses: PRIN 2A: The Consumer Duty",
+      "publisher": "Financial Conduct Authority Handbook",
+      "jurisdiction": "GB",
+      "legislative_initiative": "UK - FCA Consumer Duty, 2022",
+      "entity_relevance": {},
+      "activity_relevance": {},
+      "product_relevance": {},
+      "overall_relevance_score": 0.0,
+      "key_sections": [
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        },
+        {
+          "section_id": "unknown",
+          "title": "Unknown Section",
+          "relevance": "Low"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "analysis_timestamp": "2025-06-21T11:17:27.014680",
+    "total_documents": 10,
+    "analysis_method": "AI-powered regulatory extraction and relevance scoring"
+  }
+}
