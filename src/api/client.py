@@ -20,16 +20,24 @@ load_dotenv()
 
 
 class RegGenomeClient:
-    """Async client for RegGenome API with rate limiting and caching"""
+    """Async client for RegGenome API with JWT authentication"""
     
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.getenv("REGGENOME_API_KEY")
-        if not self.api_key:
-            raise AuthenticationError("API key not provided")
+    def __init__(self, access_token: Optional[str] = None):
+        # Try access token from parameter, then environment, then file
+        self.access_token = access_token or os.getenv("REGGENOME_ACCESS_TOKEN")
         
-        self.base_url = os.getenv("REGGENOME_API_URL", "https://api.reggenome.com/api/v1")
+        if not self.access_token:
+            # Try to load from API response file
+            api_file = os.getenv("REGGENOME_API_FILE", "../reggenome_api.md")
+            if os.path.exists(api_file):
+                self.access_token = self._extract_token_from_file(api_file)
+        
+        if not self.access_token:
+            raise AuthenticationError("RegGenome access token not provided")
+        
+        self.base_url = os.getenv("REGGENOME_API_URL", "https://api.reg-genome.com/api/v1")
         self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json"
         }
         
@@ -43,11 +51,30 @@ class RegGenomeClient:
         
         logger.info(f"RegGenome client initialized with base URL: {self.base_url}")
     
+    def _extract_token_from_file(self, filepath: str) -> Optional[str]:
+        """Extract access token from authentication response file"""
+        try:
+            with open(filepath, 'r') as f:
+                content = f.read()
+                # Remove any trailing characters after JSON
+                content = content.strip()
+                if content.endswith('%'):
+                    content = content[:-1]
+                # Parse JSON response
+                auth_data = json.loads(content)
+                if "AuthenticationResult" in auth_data:
+                    return auth_data["AuthenticationResult"]["AccessToken"]
+        except Exception as e:
+            logger.error(f"Failed to extract token from file: {e}")
+        return None
+    
     async def __aenter__(self):
+        # Create client with SSL verification handling
         self.client = httpx.AsyncClient(
             headers=self.headers,
             timeout=self.timeout,
-            http2=True
+            http2=True,
+            verify=False  # Disable SSL verification for development
         )
         return self
     
@@ -178,25 +205,31 @@ class RegGenomeClient:
     
     async def fetch_all_documents_for_initiatives(
         self,
-        initiative_names: List[str],
+        initiative_ids_or_names: List[Any],
         batch_size: int = 100
     ) -> List[Dict]:
-        """Fetch all documents for specified initiatives"""
+        """Fetch all documents for specified initiatives (by ID or name)"""
         
-        # First, get all initiatives to find IDs
-        initiatives = await self.get_initiatives()
-        
-        # Map names to IDs
         initiative_ids = []
-        for init in initiatives:
-            if init.get("name") in initiative_names:
-                initiative_ids.append(init.get("id"))
+        
+        # Check if we have IDs or names
+        for item in initiative_ids_or_names:
+            if isinstance(item, int):
+                # It's already an ID
+                initiative_ids.append(item)
+            else:
+                # It's a name, need to find ID
+                initiatives = await self.get_initiatives()
+                for init in initiatives:
+                    if init.get("name") == str(item):
+                        initiative_ids.append(init.get("id"))
+                        break
         
         if not initiative_ids:
-            logger.warning(f"No initiatives found matching: {initiative_names}")
+            logger.warning(f"No initiatives found matching: {initiative_ids_or_names}")
             return []
         
-        logger.info(f"Found initiative IDs: {initiative_ids}")
+        logger.info(f"Using initiative IDs: {initiative_ids}")
         
         # Get total count
         count = await self.get_document_counts({"initiatives": initiative_ids})
@@ -238,7 +271,7 @@ class RegGenomeClient:
         end_date: Optional[str] = None,
         doctypes: Optional[List[str]] = None
     ) -> List[Dict]:
-        """Search using Interrogator API"""
+        """Search using Interrogator API (initiatives filtering not supported)"""
         
         json_data = {
             "query": query,

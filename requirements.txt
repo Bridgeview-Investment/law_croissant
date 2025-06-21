@@ -1,49 +1,51 @@
 # Core dependencies
-python-dotenv==1.0.0
-requests==2.31.0
-pydantic==2.7.0
-pandas==2.2.0
-numpy==1.26.0
+python-dotenv
+requests
+pydantic
+pandas
+numpy
 
 # NLP and ML
-spacy==3.7.0
-transformers==4.40.0
-torch==2.2.0
-scikit-learn==1.4.0
-sentence-transformers==2.6.0
+spacy
+transformers
+torch
+scikit-learn
+sentence-transformers
 
 # Graph and hierarchy
-networkx==3.2.0
-graphviz==0.20.0
+networkx
+graphviz
 
 # API and async
-aiohttp==3.9.0
-tenacity==8.2.0
-httpx==0.27.0
+aiohttp
+tenacity
+httpx
+# Using httpx for Mistral API calls
 
 # Data processing
-tqdm==4.66.0
-jsonlines==4.0.0
-pyarrow==15.0.0
+tqdm
+jsonlines
+pyarrow
 
 # Visualization
-plotly==5.20.0
-streamlit==1.32.0
-matplotlib==3.8.0
-seaborn==0.13.0
+plotly
+streamlit
+matplotlib
+seaborn
+plotly-express
 
 # Testing
-pytest==8.1.0
-pytest-asyncio==0.23.0
-pytest-cov==5.0.0
+pytest
+pytest-asyncio
+pytest-cov
 
 # Development
-black==24.3.0
-flake8==7.0.0
-mypy==1.9.0
-ipykernel==6.29.0
-jupyter==1.0.0
+black
+flake8
+mypy
+ipykernel
+jupyter
 
 # Logging and monitoring
-loguru==0.7.0
-rich==13.7.0
+loguru
+rich
