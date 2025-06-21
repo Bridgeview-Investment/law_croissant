@@ -1,0 +1,93 @@
+{
+  "unified_customer_form": {
+    "form_structure": {
+      "personal_information": [
+        "Full legal name",
+        "Date of birth",
+        "Address",
+        "Phone number",
+        "Email address"
+      ],
+      "identification": [
+        "Government ID number",
+        "ID document type",
+        "ID expiry date"
+      ],
+      "financial_information": [
+        "Occupation",
+        "Annual income",
+        "Net worth",
+        "Source of funds",
+        "Source of wealth"
+      ],
+      "investment_profile": [
+        "Investment objectives",
+        "Time horizon",
+        "Risk tolerance",
+        "Investment experience"
+      ],
+      "compliance_screening": [
+        "PEP status",
+        "Sanctions screening",
+        "Beneficial ownership information"
+      ],
+      "jurisdiction_specific": {
+        "US": [],
+        "EU": [],
+        "UK": []
+      }
+    },
+    "data_collection_approach": "Single comprehensive form with jurisdiction-specific sections",
+    "validation_rules": [
+      "All personal information fields are mandatory",
+      "Government ID must be valid and not expired",
+      "Financial information must be consistent and verifiable",
+      "Investment profile must be complete for suitability assessment",
+      "Compliance screening must clear all jurisdictional requirements",
+      "Jurisdiction-specific fields mandatory based on account types requested"
+    ]
+  },
+  "data_mapping_strategy": {
+    "approach": "Collect once, map to multiple jurisdictions",
+    "data_storage": {
+      "master_record": "Single customer master record with all data",
+      "jurisdiction_views": "Filtered views for each jurisdiction's compliance team",
+      "audit_trail": "Complete audit trail for all data access and modifications"
+    },
+    "field_mapping": {
+      "US_specific": [],
+      "EU_specific": [],
+      "UK_specific": []
+    },
+    "data_governance": [
+      "Data privacy compliance (GDPR for EU clients)",
+      "Data retention policies per jurisdiction",
+      "Cross-border data transfer protocols",
+      "Regular data quality audits"
+    ]
+  },
+  "implementation_approach": [
+    "Phase 1: Design unified customer data model",
+    "Phase 2: Implement single data collection interface",
+    "Phase 3: Create jurisdiction-specific data views and workflows",
+    "Phase 4: Integrate with existing compliance systems",
+    "Phase 5: Test with pilot customers across all jurisdictions",
+    "Phase 6: Full rollout with comprehensive staff training"
+  ],
+  "compliance_checklist": [
+    {
+      "requirement": "disclosure",
+      "checks": [
+        "Verify compliance with US disclosure requirements",
+        "Verify compliance with EU disclosure requirements",
+        "Verify compliance with UK disclosure requirements"
+      ],
+      "documentation_needed": [
+        "US compliance documentation",
+        "EU compliance documentation",
+        "UK compliance documentation"
+      ],
+      "review_frequency": "Annual"
+    }
+  ]
+}

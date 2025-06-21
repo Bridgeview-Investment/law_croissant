@@ -1,0 +1,2905 @@
+{
+  "analysis_type": "complete_reggenome_system",
+  "query": "How does a UK fund conduct CDD & KYC with both the EU and UK regulators when verifying foreign investors post-Brexit?",
+  "timestamp": "2025-06-21T14:59:57.790762",
+  "standard_reggenome_analysis": {
+    "query": "How does a UK fund conduct CDD & KYC with both the EU and UK regulators when verifying foreign investors post-Brexit?",
+    "execution_timestamp": "2025-06-21T14:58:17.337293",
+    "task1_hierarchical_table": {
+      "regulated_entities": [
+        {
+          "type": "depositary",
+          "count": 1,
+          "items": [
+            {
+              "name": "trustees",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "US-KY",
+              "regulatory_framework": null,
+              "confidence": 0.55,
+              "sources": [
+                "000f9c93-280b-4f85-9f87-535138548209"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "firm",
+          "count": 2,
+          "items": [
+            {
+              "name": "firm",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "CA, ES, GB, US",
+              "regulatory_framework": null,
+              "confidence": 0.95,
+              "sources": [
+                "001a9041-4a5f-a68f-eaf8-c4040d5bfd55",
+                "000360e2-6abd-51f6-5027-fe3ce709d5f4",
+                "000756fb-e41f-a7d7-2268-6bcd16be0d4c",
+                "0004c454-4c04-ce9a-34e1-97f8b5597312",
+                "00115b1a-e1b5-b2d6-3be8-0a077727f3fc",
+                "001373e2-7bde-0316-a67d-cf26890cfdb8"
+              ]
+            },
+            {
+              "name": "Financial Institutions",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "US-LA, US-ND",
+              "regulatory_framework": null,
+              "confidence": 0.55,
+              "sources": [
+                "000175cb-205d-1a14-a9a0-dff58b7e6235",
+                "000ad4c6-5803-14de-d555-48a3faa4b939"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "fund",
+          "count": 2,
+          "items": [
+            {
+              "name": "fund",
+              "description": "Pooled investment vehicle",
+              "jurisdiction": "AU, CA, CA-QC, ES, EU, IE, NZ, PT, SG, US, US-ID, US-KY, US-WA",
+              "regulatory_framework": null,
+              "confidence": 1.0,
+              "sources": [
+                "0007dc71-56e1-bfbc-0ccc-6c3668663898",
+                "0007ac07-0e51-0f68-f0b7-fc47a11da3b9",
+                "001eb8af-f8bc-cc28-38b6-2e8822c57521",
+                "0008c108-cc9d-5258-0244-698e692b769a",
+                "001d45c2-99c0-26b0-cde8-70bc8683a003",
+                "000b96c1-af49-4fbc-6df1-63422c510fd6",
+                "001c3e30-2538-4bb0-2beb-915a2456f466",
+                "000f4706-c863-7e8d-2971-e2c3e88c5aa2",
+                "000a9896-4848-6e0b-d20f-859c7899d4b1",
+                "001e4150-549c-5462-3959-42f02d320b6f",
+                "0019259c-9cec-aa9b-b436-f5f8a5ce2654",
+                "001abea4-0606-dd45-f75b-7a137f7c188f",
+                "0018f85d-5bef-25a1-085f-3b702b293e8b",
+                "000e521c-9531-5b39-8de2-2f2c7fddb7c1",
+                "00192453-2ba1-a77e-cc80-7aa9a0793b5a",
+                "000f9d1b-12e6-8b1a-7ca1-6637465944aa",
+                "0015016f-efbd-6182-629f-127aa3f71342",
+                "0007119d-819f-ad98-7d0d-743146b40255",
+                "0013e57a-cdd4-fd28-fb13-a32a90f02221",
+                "000462a3-1865-0675-1943-89ddfd7494b1",
+                "0007bee2-d516-7c84-183b-79233e0ff880",
+                "00045eef-5375-dc92-58da-7dcbf09e02e2",
+                "001a7366-bbd6-3cc4-4849-1a858680c34d"
+              ]
+            },
+            {
+              "name": "investment funds",
+              "description": "Pooled investment vehicle",
+              "jurisdiction": "IE, US-WA",
+              "regulatory_framework": null,
+              "confidence": 0.65,
+              "sources": [
+                "0015016f-efbd-6182-629f-127aa3f71342",
+                "0007bee2-d516-7c84-183b-79233e0ff880"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "investment_adviser",
+          "count": 3,
+          "items": [
+            {
+              "name": "ADVISER",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "EU, GB, SG, US, US-ID, US-WI",
+              "regulatory_framework": "Investment Advisers Act (1940)",
+              "confidence": 1.0,
+              "sources": [
+                "00159bb2-7f19-8f67-fd77-b73f4b0ece9b",
+                "000250d0-c272-4f41-a0ef-128bc2debc7b",
+                "0016f2c4-ffae-8463-4f86-6fba0d20a43c",
+                "00146ba4-8f0a-59d1-a81f-6c2d90e7786e",
+                "000462a3-1865-0675-1943-89ddfd7494b1",
+                "001f5919-89bf-5da2-8ca5-c223af1f0a82",
+                "001172c0-d786-e94f-f78c-adaad87b6604",
+                "0019c050-cb50-2c4a-59c1-de2d2e0acba3",
+                "001006cb-081d-1fca-0542-3542535ba6f5",
+                "000465aa-3852-feab-b01c-840d2d9d9323",
+                "00060e5e-15ab-1ac6-3a52-9d02319c741d",
+                "001adcdb-5e5d-4d29-debe-4c9960a7191e",
+                "000a4cfc-d828-12f4-36ae-be1c2e46dec5",
+                "0001d0be-e087-d238-a5b2-3e379e77d7d2"
+              ]
+            },
+            {
+              "name": "RIA",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "AR, AU, BS, CA, CA-BC, ES, EU, GB, GD, IE, IT, PT, SE, SG, US, US-AR, US-KY",
+              "regulatory_framework": "Investment Advisers Act (1940)",
+              "confidence": 1.0,
+              "sources": [
+                "0019f2e1-1c38-3363-7722-025923a6fed6",
+                "00189eab-8f85-53bf-8574-10539d2f660d",
+                "000d58e4-2ec0-0b92-c07d-dd656e9b1a1f",
+                "000f6615-d96c-4358-a131-cf014a00d15d",
+                "0007ac07-0e51-0f68-f0b7-fc47a11da3b9",
+                "000b38e5-523d-159c-aca4-76ab24aac66e",
+                "00146ba4-8f0a-59d1-a81f-6c2d90e7786e",
+                "000a328b-5063-00d8-7613-80025e1064f1",
+                "0015a317-5ccc-24a6-900a-6110bb170348",
+                "001554c7-6df9-b084-3093-bcde0bcc4b06",
+                "000a4cfc-d828-12f4-36ae-be1c2e46dec5",
+                "001d0d63-1cb6-98d5-7b09-ccd610b81fdf",
+                "0002709d-bd09-2486-4504-2d9658b35d37",
+                "0008b878-3096-a133-798c-5e7925bbe975",
+                "000c6ed0-781c-84da-0e32-6a864619f8dd",
+                "0004cac9-ff38-4356-2e36-e10daf348e29",
+                "0006853e-7cf0-0296-bffe-ad149b7b653a",
+                "000ff500-d7c6-2294-551f-3afeb27e09c4",
+                "001bd3e8-928f-05de-43b7-6e91c42ff04f",
+                "0013e979-9b4d-8081-b1aa-902df5f03819",
+                "001ac9b4-c71f-86fd-f77a-9ac8d47c16d5",
+                "001a58c2-702f-4719-b911-e292012bda62",
+                "001bd16b-d48f-0218-4f8b-d5cef152fba5",
+                "0010a15f-25e6-2876-672e-acb376212286",
+                "001e08ae-bdb8-466d-972f-42dec81b4edf",
+                "0020f40c-ec93-52e1-90e7-98fd2bcce91c",
+                "0007f65f-1616-d1d3-10a2-212877f6b28a",
+                "0014bbb2-1529-5608-7cc8-dd5f906ec580",
+                "0018b3d9-247c-4348-7f50-0933ff7c5a61",
+                "000f9108-06fb-6acd-c737-0e430f99ac4e",
+                "000812e8-590f-2cb3-4949-e0856a45ca9e",
+                "0004e1f6-2de9-4d40-349a-9bacfba73194",
+                "000ef5cc-faf1-45a6-d583-41fbb136ed35",
+                "00003a38-f582-a33c-8187-ffda80382bb8",
+                "00133f49-8390-cd71-68cf-577435f88494",
+                "001240de-b38f-5447-75bb-1ade1031e0ca",
+                "000fa2e4-af4c-eea8-36a4-71aa306b3b04",
+                "00094b07-f313-7880-5f3e-d0a55df298cb",
+                "0020e6b9-ac97-a5a6-c626-8c0b1504571d",
+                "00076c25-b941-ab7c-d30b-f5f20cf1ed05",
+                "0004ae99-12fb-f5de-723f-6b9a9c713cd0",
+                "000e1835-f728-f536-64ae-d38526c5cf45",
+                "000f9d1b-12e6-8b1a-7ca1-6637465944aa",
+                "001138ed-292a-ded3-c9e6-8e44e38f98e6",
+                "00076991-54c6-9056-5bc6-f9cded6cef0a",
+                "000e2208-75d0-8838-062a-d328d87749f1",
+                "0015ea70-a27b-3ab7-76dc-518c599e92bf",
+                "0015d0cf-c7e4-e0ae-3f8c-4c0b811816c4",
+                "0006a7fd-505f-0a4d-de76-7d29e60e2b7e",
+                "00206f38-4c49-8e32-7230-e6305d2d58cc",
+                "0015c0e5-3bd8-89d4-f531-e403c7d49bea",
+                "001646ac-0b64-d12e-76fd-352fd0dbf860",
+                "0005b501-aa94-bb23-6c61-bef70c69b50f",
+                "001d79cd-0e9b-8d7e-14e1-9bff14d2e73f",
+                "001802e1-e159-f4c2-c577-6b8f6d91013d",
+                "0011186d-640f-3ca9-e3b0-e05f2b7a677c",
+                "000b5391-3476-b623-c6e2-3f26eca3c878",
+                "001192da-3801-59fc-c306-5f4f360d8996",
+                "000118bb-d19f-fedf-1bb4-f4b3765f5c94"
+              ]
+            },
+            {
+              "name": "Investment Adviser",
+              "description": "Entity providing investment advice to clients",
+              "jurisdiction": "US, US-ID, US-WI",
+              "regulatory_framework": "Investment Advisers Act (1940)",
+              "confidence": 0.75,
+              "sources": [
+                "00159bb2-7f19-8f67-fd77-b73f4b0ece9b",
+                "00146ba4-8f0a-59d1-a81f-6c2d90e7786e",
+                "000462a3-1865-0675-1943-89ddfd7494b1",
+                "001172c0-d786-e94f-f78c-adaad87b6604",
+                "00060e5e-15ab-1ac6-3a52-9d02319c741d",
+                "001adcdb-5e5d-4d29-debe-4c9960a7191e"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "management_company",
+          "count": 2,
+          "items": [
+            {
+              "name": "Fund Managers",
+              "description": "Pooled investment vehicle",
+              "jurisdiction": "IE",
+              "regulatory_framework": null,
+              "confidence": 0.5,
+              "sources": [
+                "0015016f-efbd-6182-629f-127aa3f71342"
+              ]
+            },
+            {
+              "name": "Management Companies",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "IE",
+              "regulatory_framework": "EU UCITS Directives",
+              "confidence": 0.5,
+              "sources": [
+                "00181e2f-fb94-ba70-b4e3-473c42f43c83"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ucits",
+          "count": 2,
+          "items": [
+            {
+              "name": "UCITS",
+              "description": "Undertaking for Collective Investment in Transferable Securities",
+              "jurisdiction": "ES, EU, FI, IE",
+              "regulatory_framework": "EU UCITS Directives",
+              "confidence": 0.85,
+              "sources": [
+                "00181e2f-fb94-ba70-b4e3-473c42f43c83",
+                "0011a6d6-19f6-2237-3929-0b3bae1a1c2c",
+                "000064d4-4aa5-8f8e-7658-4a6e3aa7c404",
+                "001c92b7-3f12-b0e8-72fd-b16b97935484"
+              ]
+            },
+            {
+              "name": "Undertakings for Collective Investment",
+              "description": "Regulated financial services entity",
+              "jurisdiction": "IE",
+              "regulatory_framework": "EU UCITS Directives",
+              "confidence": 0.5,
+              "sources": [
+                "00181e2f-fb94-ba70-b4e3-473c42f43c83"
+              ]
+            }
+          ]
+        }
+      ],
+      "regulated_activities": [
+        {
+          "type": "asset_management",
+          "count": 1,
+          "items": [
+            {
+              "name": "Asset Management",
+              "description": "Professional management of client assets and investments",
+              "applicable_entities": [],
+              "requirements": [],
+              "confidence": 0.6,
+              "sources": [
+                "0001fa9c-43f6-f9a1-ea7e-251667909a7a"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "custody",
+          "count": 1,
+          "items": [
+            {
+              "name": "Custodial Services",
+              "description": "Regulated activity involving custodial services",
+              "applicable_entities": [
+                "fund"
+              ],
+              "requirements": [],
+              "confidence": 0.7,
+              "sources": [
+                "001d45c2-99c0-26b0-cde8-70bc8683a003"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "reporting",
+          "count": 2,
+          "items": [
+            {
+              "name": "Regulatory Reporting",
+              "description": "Preparing and submitting regulatory reports and disclosures",
+              "applicable_entities": [],
+              "requirements": [],
+              "confidence": 0.6,
+              "sources": [
+                "0012071c-efac-a3d2-97be-a95e969ad2b3"
+              ]
+            },
+            {
+              "name": "Disclosure Requirements",
+              "description": "Regulated activity involving Disclosure Requirements",
+              "applicable_entities": [],
+              "requirements": [],
+              "confidence": 0.6,
+              "sources": [
+                "001ba332-f30d-ab1f-859d-73827324b675"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "risk_management",
+          "count": 2,
+          "items": [
+            {
+              "name": "Risk Management",
+              "description": "Identifying, assessing and mitigating investment risks",
+              "applicable_entities": [],
+              "requirements": [],
+              "confidence": 0.6,
+              "sources": [
+                "00085565-969c-eacf-cdce-f3d91132da7d"
+              ]
+            },
+            {
+              "name": "Risk Assessment",
+              "description": "Regulated activity involving Risk Assessment",
+              "applicable_entities": [],
+              "requirements": [],
+              "confidence": 0.6,
+              "sources": [
+                "00104b3e-6f42-74db-e6a7-552404806fbf"
+              ]
+            }
+          ]
+        }
+      ],
+      "regulated_products": [
+        {
+          "type": "collective_investment_scheme",
+          "count": 1,
+          "items": [
+            {
+              "name": "Collective Investment Scheme",
+              "description": "Regulated investment product: cis",
+              "asset_classes": [
+                "derivatives"
+              ],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 1.0,
+              "sources": [
+                "00207d03-0abf-b044-612f-48ee601eb684",
+                "000b38e5-523d-159c-aca4-76ab24aac66e",
+                "0010d7ec-135c-5a03-f17e-5462ba10b270",
+                "000427e9-cec5-d7fb-2719-c08e86a0d39b",
+                "00194da4-11be-90bb-b9b7-7c217366762e",
+                "0006193f-082e-c61b-c5d8-9570cfd60c76",
+                "001dfaad-389c-abe8-f50f-ffe80ba42bfb",
+                "002081c5-4f56-4daa-b6d6-601a3c03aff3",
+                "000936a4-b38b-d83b-730a-9b0dd67d13f9",
+                "0010f7b9-da02-5cf1-c3f4-528758f58b63",
+                "000f3405-bd3a-fefc-b9b6-46636fc76c8d",
+                "000513b0-e703-999a-07de-f022d66e50e4",
+                "00089743-5895-6b4d-5d76-67e1ca066c7b",
+                "000e2208-75d0-8838-062a-d328d87749f1",
+                "00076947-26fd-1db5-777f-31e3e0b1457f",
+                "00215641-d18c-b360-0b3f-1e6dd277b115",
+                "000aca0c-e93b-09cf-34c6-ced337d8313d",
+                "001f78d8-45f7-b9d0-8bf9-90f462cd2b0d",
+                "00209130-add4-31c4-23fa-0efdd279961a",
+                "0004bcf0-106f-f823-3b57-425ee12b89e7",
+                "0005f210-a325-79c6-24fa-e0c74eea9d3b",
+                "001c24d3-1a2b-6784-f465-bc92b2db97aa",
+                "0000d1fc-329b-99ee-4adb-ba4b6ce3af75",
+                "00156922-0b07-ffed-9970-1a5d8e6e0a74",
+                "0004f35c-b4ab-a62b-a12d-53e5b68b1453",
+                "00121bd7-6b02-fb11-5abf-80b3bb4004eb",
+                "001311b4-0e1b-62da-666f-c0ae67753578"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "etf",
+          "count": 1,
+          "items": [
+            {
+              "name": "Exchange-Traded Fund",
+              "description": "Investment fund traded on stock exchanges that tracks an index, commodity, or basket of assets",
+              "asset_classes": [
+                "derivatives",
+                "transferable securities"
+              ],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 0.95,
+              "sources": [
+                "001867b8-95f6-c768-534c-f7a9885ae4eb",
+                "0001fa9c-43f6-f9a1-ea7e-251667909a7a",
+                "000064d4-4aa5-8f8e-7658-4a6e3aa7c404",
+                "001cbb64-c632-12ba-1691-1bb973ca3e42",
+                "001efa93-1e00-a0da-76c7-dac0e420e16a",
+                "00192453-2ba1-a77e-cc80-7aa9a0793b5a",
+                "00075cba-c5ba-c366-1e34-912eb6de3988",
+                "000806e4-b561-93da-381b-407a03784708"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "hedge_fund",
+          "count": 2,
+          "items": [
+            {
+              "name": "Private Fund",
+              "description": "Regulated investment product: Private Fund",
+              "asset_classes": [],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 0.75,
+              "sources": [
+                "0008c108-cc9d-5258-0244-698e692b769a"
+              ]
+            },
+            {
+              "name": "Alternative Investment Fund",
+              "description": "Regulated investment product: AIFs",
+              "asset_classes": [],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 0.7,
+              "sources": [
+                "0011a6d6-19f6-2237-3929-0b3bae1a1c2c",
+                "0015016f-efbd-6182-629f-127aa3f71342",
+                "001c92b7-3f12-b0e8-72fd-b16b97935484"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "money_market_fund",
+          "count": 1,
+          "items": [
+            {
+              "name": "Money Market Funds",
+              "description": "Investment fund investing in short-term, high-quality debt securities",
+              "asset_classes": [],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 0.6,
+              "sources": [
+                "00045eef-5375-dc92-58da-7dcbf09e02e2"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ucits_fund",
+          "count": 1,
+          "items": [
+            {
+              "name": "UCITS Fund",
+              "description": "Undertaking for Collective Investment in Transferable Securities",
+              "asset_classes": [],
+              "issuer_requirements": [],
+              "investor_restrictions": [],
+              "confidence": 1.0,
+              "sources": [
+                "00181e2f-fb94-ba70-b4e3-473c42f43c83",
+                "0011a6d6-19f6-2237-3929-0b3bae1a1c2c",
+                "000064d4-4aa5-8f8e-7658-4a6e3aa7c404",
+                "001c92b7-3f12-b0e8-72fd-b16b97935484"
+              ]
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "total_unique_items": 24,
+        "documents_processed": 1072,
+        "extraction_date": "2025-06-21T14:58:00.302125"
+      }
+    },
+    "task2_document_relevance": {
+      "document_relevance": [
+        {
+          "document_id": "00181e2f-fb94-ba70-b4e3-473c42f43c83",
+          "title": "Undertakings for Collective Investment in Transferable Securities (UCITS) \u2013 Organisation of Management Companies",
+          "publishers": [
+            "Central Bank of Ireland"
+          ],
+          "published_date": "2015-10-01",
+          "relevant_entities": {
+            "ucits": 1.6799999999999997,
+            "management_company": 0.42000000000000004
+          },
+          "relevant_activities": {},
+          "relevant_products": {
+            "ucits_fund": 0.525,
+            "collective_investment_scheme": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 3.1499999999999995,
+          "primary_focus": "entity:ucits"
+        },
+        {
+          "document_id": "00192453-2ba1-a77e-cc80-7aa9a0793b5a",
+          "title": "FR Doc. 2013-27203: Self-Regulatory Organizations; The NASDAQ Stock Market LLC; Order Granting Approval of Proposed Rule Change To List and Trade Shares of the First Trust Low Beta Income Fund of First Trust Exchange-Traded Fund VI",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2013-11-14",
+          "relevant_entities": {
+            "fund": 2.1
+          },
+          "relevant_activities": {},
+          "relevant_products": {
+            "etf": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 2.625,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "0015016f-efbd-6182-629f-127aa3f71342",
+          "title": "S.I. No. 257 of 2013: European Union (Alternative Investment Fund Managers) Regulations 2013",
+          "publishers": [
+            "Irish Government"
+          ],
+          "published_date": "2013-07-16",
+          "relevant_entities": {
+            "fund": 1.05,
+            "management_company": 0.42000000000000004
+          },
+          "relevant_activities": {},
+          "relevant_products": {
+            "hedge_fund": 0.8399999999999999
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 2.31,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "001a7366-bbd6-3cc4-4849-1a858680c34d",
+          "title": "Release No.34-65935: In the Matter of PA FUND MANAGEMENT, LLC, PEA CAPITAL LLC, and PA DISTRIBUTORS LLC - ORDER DIRECTING DISBURSEMENT OF FAIR FUND",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2011-12-09",
+          "relevant_entities": {
+            "fund": 2.1
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 2.1,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "0007bee2-d516-7c84-183b-79233e0ff880",
+          "title": "WAC 208-536-040: Collective investment funds\u2014Funds authorized",
+          "publishers": [
+            "Washington Department of Financial Institutions"
+          ],
+          "published_date": "2023-02-20",
+          "relevant_entities": {
+            "ucits": 0.42000000000000004,
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {
+            "collective_investment_scheme": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.995,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "000462a3-1865-0675-1943-89ddfd7494b1",
+          "title": "Response to No-Action Request: Venture Capital Fund Investment Adviser Registration Exemption",
+          "publishers": [
+            "Idaho Department of Finance"
+          ],
+          "published_date": "2020-09-08",
+          "relevant_entities": {
+            "investment_adviser": 0.5999999999999999,
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.65,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "0008c108-cc9d-5258-0244-698e692b769a",
+          "title": "FR Doc. 2016\u201312539: Proposed Information Collection; Comment Request; Direct Investment Surveys: BE\u2013577, Quarterly Survey of U.S. Direct Investment Abroad\u2014Transactions of U.S. Reporter With Foreign Affiliate, and Changes to Private Fund Reporting on Direct Investment Surveys",
+          "publishers": [
+            "US Department of Commerce"
+          ],
+          "published_date": "2016-05-27",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {
+            "hedge_fund": 0.42000000000000004
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.4700000000000002,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "000ad4c6-5803-14de-d555-48a3faa4b939",
+          "title": "CHAPTER 13-02-21: DISCLOSURE OF CUSTOMER INFORMATION BY FINANCIAL INSTITUTIONS",
+          "publishers": [
+            "North Dakota Department of Financial Institutions"
+          ],
+          "published_date": "2004-06-01",
+          "relevant_entities": {
+            "firm": 1.05
+          },
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.4700000000000002,
+          "primary_focus": "entity:firm"
+        },
+        {
+          "document_id": "0019259c-9cec-aa9b-b436-f5f8a5ce2654",
+          "title": "Release No. 34-53736: Self-Regulatory Organizations; Pacific Exchange, Inc. (n/k/a NYSE Arca, Inc.); Notice of Filing and Order Granting Accelerated Approval of a Proposed Rule Change Relating to the Trading of the DB Commodity Index Tracking Fund Pursuant to Unlisted Trading Privileges",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2006-04-27",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.4700000000000002,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "000175cb-205d-1a14-a9a0-dff58b7e6235",
+          "title": "Louisiana Office of Financial Institutions Quarterly Report March 31, 2023",
+          "publishers": [
+            "Louisiana Office of Financial Institutions"
+          ],
+          "published_date": "2023-03-31",
+          "relevant_entities": {
+            "firm": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:firm"
+        },
+        {
+          "document_id": "000b96c1-af49-4fbc-6df1-63422c510fd6",
+          "title": "SOR/2022-43: Royal Canadian Mounted Police (Dependants) Pension Fund Increase in Benefits Order",
+          "publishers": [
+            "Government of Canada "
+          ],
+          "published_date": "2025-03-17",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "000ebd35-907f-2742-87ff-deccef34830c",
+          "title": "NOTICE AND REQUEST FOR COMMENTS: PROPOSED AMENDMENTS TO NATIONAL INSTRUMENT 24-101 INSTITUTIONAL TRADE MATCHING AND SETTLEMENT AND COMPANION POLICY 24-101CP INSTITUTIONAL TRADE MATCHING AND SETTLEMENT",
+          "publishers": [
+            "Canadian Securities Administrators"
+          ],
+          "published_date": "2009-10-30",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 1.05
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "00115b1a-e1b5-b2d6-3be8-0a077727f3fc",
+          "title": "CNMV ISSUES WARNING TO THE PUBLIC ON UNREGISTERED FIRM \u2013\u00a0FINANCENTER BROKERING SERVICES",
+          "publishers": [
+            "Comision Nacional del Mercado de Valores"
+          ],
+          "published_date": "2020-10-05",
+          "relevant_entities": {
+            "firm": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:firm"
+        },
+        {
+          "document_id": "000f9d1b-12e6-8b1a-7ca1-6637465944aa",
+          "title": "CHAPTER 48 BUDGET -.720 Lapse of appropriated general or road fund debt service for canceled projects and excess amounts",
+          "publishers": [
+            "Kentucky Legislature"
+          ],
+          "published_date": "1994-01-01",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "0013e57a-cdd4-fd28-fb13-a32a90f02221",
+          "title": "S.I. No. 218/1943: Electricity Supply Board (General Employees Superannuation Fund) Regulations, 1943",
+          "publishers": [
+            "Irish Government"
+          ],
+          "published_date": "1943-05-31",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "001abea4-0606-dd45-f75b-7a137f7c188f",
+          "title": "Release No.34-90487: In the Matter of Computer Sciences Corporation, Michael Laphen, Michael Mancuso, Wayne Banks, Claus Zilmer, and Paul Wakefield \u2013 ORDER APPROVING APPLICATION OF FUND ADMINISTRATOR FOR PAYMENT OF FEES AND EXPENSES AND APPROVAL OF FUTURE FEES AND EXPENSES",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2020-11-23",
+          "relevant_entities": {
+            "fund": 1.05
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.05,
+          "primary_focus": "entity:fund"
+        },
+        {
+          "document_id": "000f9c93-280b-4f85-9f87-535138548209",
+          "title": "CHAPTER 61 GENERAL PROVISIONS AS TO OFFICES AND OFFICERS \u2013 SOCIAL SECURITY FOR PUBLIC EMPLOYEES \u2013 EMPLOYEES RETIREMENT SYSTEM -.645 Board of trustees \u2013 Powers \u2013 Members \u2013 Chief executive officer, general counsel, and other employees \u2013 Appeals \u2013 Other duties \u2013 Limitation on Governor's authority \u2013 Annual Comprehensive Financial Report \u2013 Trustee education program \u2013 Information made available to public",
+          "publishers": [
+            "Kentucky Legislature"
+          ],
+          "published_date": "2017-03-10",
+          "relevant_entities": {
+            "depositary": 1.0499999999999998
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 1.0499999999999998,
+          "primary_focus": "entity:depositary"
+        },
+        {
+          "document_id": "001cb215-bef5-5d7d-e6bc-ca46116a482f",
+          "title": "Release No. 34-99234; File No. SR-DTC-2023-013: Self-Regulatory Organizations; The Depository Trust Company; Notice of Filing of Proposed Rule Change to Modify the DTC Settlement Service Guide",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2023-12-22",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004,
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.9450000000000001,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "000389aa-a1dd-1e9c-b757-ac7bff21912d",
+          "title": "Disclosure of use of Table of CRR Pillar 3 public disclosure data items: standardised approach and internal model for market risk \u2014 Annex XXIX",
+          "publishers": [
+            "Bank of England"
+          ],
+          "published_date": "2024-03-22",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.8400000000000001
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.8400000000000001,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001ba332-f30d-ab1f-859d-73827324b675",
+          "title": "CSA Notice 51-340: Update on proposed National Instrument 51-103 Ongoing Governance and Disclosure Requirements for Venture Issuers",
+          "publishers": [
+            "Canadian Securities Administrators"
+          ],
+          "published_date": "2013-07-25",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.8399999999999999
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.8399999999999999,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000a4cfc-d828-12f4-36ae-be1c2e46dec5",
+          "title": "FAA-G01: DRAFT AMENDMENTS TO THE GUIDELINES ON CRITERIA FOR THE GRANT OF A FINANCIAL ADVISER\u2019S LICENCE, RENAMED AS THE GUIDELINES ON CRITERIA FOR GRANT OF A FINANCIAL ADVISER\u2019S LICENCE AND MINIMUM STANDARDS FOR LICENSED FINANCIAL ADVISERS",
+          "publishers": [
+            "Monetary Authority of Singapore"
+          ],
+          "published_date": "2014-10-03",
+          "relevant_entities": {
+            "investment_adviser": 0.6
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.6,
+          "primary_focus": "entity:investment_adviser"
+        },
+        {
+          "document_id": "001adcdb-5e5d-4d29-debe-4c9960a7191e",
+          "title": "Chapter DFI-Sec 11: Investment Adviser Representative Continuing Education",
+          "publishers": [
+            "Wisconsin Department of Financial Institutions, Division of Securities"
+          ],
+          "published_date": "2022-12-01",
+          "relevant_entities": {
+            "investment_adviser": 0.5999999999999999
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.5999999999999999,
+          "primary_focus": "entity:investment_adviser"
+        },
+        {
+          "document_id": "0001fa9c-43f6-f9a1-ea7e-251667909a7a",
+          "title": "BBVA ASSET MANAGEMENT, S.A., S.G.I.I.C. comunicaci\u00f3n como HECHO RELEVANTE en relaci\u00f3n con el fondo de inversi\u00f3n ACCION EUROSTOXX 50 ETF, FI COTIZADO ARMONIZADO",
+          "publishers": [
+            "Comision Nacional del Mercado de Valores"
+          ],
+          "published_date": "2021-08-12",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "asset_management": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:asset_management"
+        },
+        {
+          "document_id": "00045eef-5375-dc92-58da-7dcbf09e02e2",
+          "title": "CESR/10-545: CESR\u2019s Guidelines on a common definition of European money market funds",
+          "publishers": [
+            "European Securities and Markets Authority"
+          ],
+          "published_date": "2010-05-19",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "money_market_fund": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "product:money_market_fund"
+        },
+        {
+          "document_id": "0009605e-c3c5-8279-84e2-8c21a8b9e8a6",
+          "title": "Notice of proposed change pursuant to the Payment, Clearing, and Settlement Act of 2010 Section 806(e)(1) Section 806(e)(2) Security-Based Swap Submission pursuant to the Securities Exchange Act of 1934 Section 3C(b)(2) Exhibit 2 Sent As Paper Document Exhibit 3 Sent As Paper Document: Proposed Rule Change Relating to the Composition of Hearing Panels and Extended Hearing Panels in Disciplinary Proceedings",
+          "publishers": [
+            "Financial Industry Regulatory Authority"
+          ],
+          "published_date": "2014-08-07",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "000a9d36-51eb-3ecd-19d8-a5ddecce405b",
+          "title": "AGENCY CASE NO. 2007-AH-901: IN THE MATTER OF BAYROCK MORTGAGE CORPORATION \u2013 SETTLEMENT AGREEMENT",
+          "publishers": [
+            "Kentucky Department of Financial Institutions"
+          ],
+          "published_date": "2007-11-05",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "000e50ae-bc00-7861-a4bd-b7f27019bb04",
+          "title": "R-15.1, r. 3: Regulation to provide a framework for settlement of the benefits of members and beneficiaries of plans covered by subdivision 4.0.1 of Division II of Chapter XIII of the Supplemental Pension Plans Act and for administration by Retraite Qu\u00e9bec of certain pensions paid out of the assets of the plans",
+          "publishers": [
+            "Government of Quebec"
+          ],
+          "published_date": "2024-12-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "000fbfe4-7e6f-7ae4-8386-77b4bb2595e7",
+          "title": "SOR/2005-232: Order Authorizing Negotiations for the Settlement of the Dispute Causing the Extraordinary Disruption of the National Transportation System in Relation to Container Movements into and out of Certain Ports in British Columbia",
+          "publishers": [
+            "Government of Canada "
+          ],
+          "published_date": "2024-12-23",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "00153bc6-b87a-d118-fc1a-28865a017048",
+          "title": "Pooled Registered Pension Plans - Guide for Ontario members",
+          "publishers": [
+            "Office of the Superintendent of Financial Institutions"
+          ],
+          "published_date": "2018-01-01",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "collective_investment_scheme": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "product:collective_investment_scheme"
+        },
+        {
+          "document_id": "00182036-9334-6b1d-05ee-9f3764c3b9ad",
+          "title": "Residential Property (Short-Term Holding) Profit Tax Act",
+          "publishers": [
+            "British Columbia Legislative Assembly"
+          ],
+          "published_date": "2025-06-03",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "money_market_fund": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "product:money_market_fund"
+        },
+        {
+          "document_id": "001abf25-c115-48a7-839c-ae56e9267692",
+          "title": "Notice of proposed change pursuant to the Payment, Clearing, and Settlement Act of 2010 Section 806(e)(1) Section 806(e)(2) Security-Based Swap Submission pursuant to the Securities Exchange Act of 1934 Section 3C(b)(2) Exhibit 2 Sent As Paper Document Exhibit 3 Sent As Paper Document",
+          "publishers": [
+            "Financial Industry Regulatory Authority"
+          ],
+          "published_date": "2017-02-17",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "001d65d9-af31-0a34-3e6d-38c4ac15ee40",
+          "title": "Guidelines on the Internal Capital Adequacy Assessment Process (ICAAP) and the Internal Liquidity Adequacy Assessment Process (ILAAP) at credit institutions (22 December 2017)",
+          "publishers": [
+            "Bank of Spain"
+          ],
+          "published_date": "2024-02-02",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "money_market_fund": 0.525
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "product:money_market_fund"
+        },
+        {
+          "document_id": "001d45c2-99c0-26b0-cde8-70bc8683a003",
+          "title": "RG 133: Funds management and custodial services \u2013 Holding assets",
+          "publishers": [
+            "Australian Securities and Investments Commission"
+          ],
+          "published_date": "2024-12-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "custody": 0.525
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.525,
+          "primary_focus": "activity:custody"
+        },
+        {
+          "document_id": "00012f70-5ca5-83d3-0368-0485c430724f",
+          "title": "34-90542 - Exhibit 5: Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Exempt Proxy Portfolio Shares from Certain Governance Requirements and Include Proxy Portfolio Shares to the List of Products Covered Under Nasdaq Rule 4120 (Limit Up-Limit Down Plan and Trading Halts)",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2020-12-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0002721c-3bac-90c6-35a7-27a4e79c8e0f",
+          "title": "National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011",
+          "publishers": [
+            "British Columbia Legislative Assembly"
+          ],
+          "published_date": "2025-04-15",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000064d4-4aa5-8f8e-7658-4a6e3aa7c404",
+          "title": "Comunicaci\u00f3n de la CNMV referente a las Directrices de ESMA sobre ETF y otros aspectos relacionados con las UCITS",
+          "publishers": [
+            "Comision Nacional del Mercado de Valores"
+          ],
+          "published_date": "2013-02-14",
+          "relevant_entities": {
+            "ucits": 0.42000000000000004
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "entity:ucits"
+        },
+        {
+          "document_id": "00003a38-f582-a33c-8187-ffda80382bb8",
+          "title": "E8-16400: Self-Regulatory Organizations; National Securities Clearing Corporation; Notice of Filing of Proposed Rule Change To Amend Membership Disqualification Criteria Rules",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2008-07-18",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00008f86-6747-d4db-b316-4a6553b375aa",
+          "title": "2015-06714: Self-Regulatory Organizations; The Options Clearing Corporation; Notice of Filing of Proposed Rule Change To Enhance the Measurement Used To Establish Minimum Capital Requirements for Banks Approved To Issue Letters of Credit",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2015-03-25",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0005f99a-bf7f-f367-162c-2a669c732c7d",
+          "title": "2010-30944: Self-Regulatory Organizations; EDGX Exchange, Inc.; Notice of Filing and Immediate Effectiveness of Proposed Rule Change To Amend EDGX Rule 11.9 To Offer Anti-Internalization Qualifier (\u201cAIQ\u201d) Functionality to Exchange Users",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2010-12-09",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0004c454-4c04-ce9a-34e1-97f8b5597312",
+          "title": "2012-28390: Self-Regulatory Organizations; The NASDAQ Stock Market LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change To Offer the Equity Trade Journal for Clearing Firms Service and Assess a Related Fee",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2012-11-23",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0003e434-ef06-45ac-4230-0f10be3ffd4d",
+          "title": "Release No. 34-73762; File No. SR-FINRA-2014-050: Self-Regulatory Organizations; Financial Industry Regulatory Authority, Inc.; Notice of Filing of a Proposed Rule Change to Amend TRACE Rules to Require Members to Identify Transactions with Non-Member Affiliates and to Change How FINRA Disseminates a Subset of Such Transactions",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2014-12-05",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0005be04-40f8-8721-2a5e-0d6d12ed3cfa",
+          "title": "FR Doc. 2017-26858: 12 CFR Part 252 \u2013 Policy Statement on the Scenario Design Framework for Stress Testing",
+          "publishers": [
+            "Board of Governors of the Federal Reserve System"
+          ],
+          "published_date": "2017-12-15",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "risk_management": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:risk_management"
+        },
+        {
+          "document_id": "000398eb-4e1f-8eb5-7de9-ec5c7564234a",
+          "title": "2017-15629: Self-Regulatory Organizations; Nasdaq GEMX, LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change Regarding Market Maker Quotations",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2017-07-26",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00085565-969c-eacf-cdce-f3d91132da7d",
+          "title": "SWD(2019) 37 final: COMMISSION STAFF WORKING DOCUMENT Second River Basin Management Plans - Member State: Belgium Accompanying the document REPORT FROM THE COMMISSION TO THE EUROPEAN PARLIAMENT AND THE COUNCIL on the implementation of the Water Framework Directive (2000/60/EC) and the Floods Directive (2007/60/EC) Second River Basin Management Plans First Flood Risk Management Plans",
+          "publishers": [
+            "European Commission"
+          ],
+          "published_date": "2019-02-26",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "risk_management": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:risk_management"
+        },
+        {
+          "document_id": "00075cba-c5ba-c366-1e34-912eb6de3988",
+          "title": "FR Doc. 2017-11402: Self-Regulatory Organizations; The NASDAQ Stock Market LLC; Notice of Filing of Proposed Rule Change Relating to the First Trust Municipal High Income ETF",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2017-06-02",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000768c1-0067-fe22-7344-32fb653545d1",
+          "title": "FR Doc. 2012-22632: Public Company Accounting Oversight Board; Notice of Filing of Proposed Rules on Auditing Standard No. 16, Communications With Audit Committees and Related and Transitional Amendments to PCAOB Standards",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2012-09-17",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000877b0-fed4-0379-f500-9ad1a36c0c55",
+          "title": "Release No. 34-65181; File No. SR-NYSEAmex-2011-64: Self-Regulatory Organizations; NYSE Amex LLC; Notice of Filing of Proposed Rule Change Amending NYSE Amex Options Rule 993NY(b)(2) to Make Permanent the Pilot Program that Permits the Exchange to Accept Inbound Orders Routed by Archipelago Securities LLC in Its Capacity as a Facility of Affiliated exchanges and to Clarify the Text of NYSE Amex Options Rule 993NY(b)(1)(B) to More Accurately Reflect the Regulatory Services Agreement between the Exchange and the Financial Industry Regulatory Authority",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2011-08-22",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0009293a-8539-0da6-ed83-c73928a68710",
+          "title": "Release No. 34-82852; File No. SR-NYSEAMER-2018-09: Self-Regulatory Organizations; NYSE American LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Amend Rule 915",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2018-03-09",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0009c970-41f7-7975-4edb-bbf2e64efa07",
+          "title": "T-11.011, r. 1: Lobbying Transparency and Ethics Act Exclusions Regulation",
+          "publishers": [
+            "Government of Quebec"
+          ],
+          "published_date": "2025-01-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00097d64-2e2c-4078-fb1b-5af0b13d466d",
+          "title": "Release No. 34-56311; File No. SR-CBOE-2006-99: Self-Regulatory Organizations; Chicago Board Options Exchange, Incorporated; Notice of Filing of a Proposed Rule Change and Amendment No. 1 Thereto Related to FLEX Options Trading",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2007-08-23",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000ab36b-2ed1-4c8d-0d98-606278589a96",
+          "title": "Rule 71-801 Implementing the Multijurisdictional Disclosure System Under National Instrument 71-101 - 344/98",
+          "publishers": [
+            "British Columbia Legislative Assembly"
+          ],
+          "published_date": "2025-04-29",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000e2a79-a611-310a-b77a-1e9917557807",
+          "title": "NATIONAL INSTRUMENT 52-112 NON-GAAP AND OTHER FINANCIAL MEASURES DISCLOSURE",
+          "publishers": [
+            "Canadian Securities Administrators"
+          ],
+          "published_date": "2021-08-25",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000e759f-690d-d692-8b3f-267e013a5365",
+          "title": "E9-24354: Self-Regulatory Organizations; Municipal Securities Rulemaking Board; Notice of Filing and Immediate Effectiveness of Amendments to Rule A-13, on Underwriting Assessments and Rule G-32, on Disclosures in Connection With Primary Offerings",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2009-10-09",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000e6abd-057c-bd0f-d6a2-f1340aeac19b",
+          "title": "Release No. 34-87344; File No. SR-FINRA-2019-025: Self-Regulatory Organizations; Financial Industry Regulatory Authority, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change to Extend the Pilot Program Related to FINRA Rule 11892 (Clearly Erroneous Transactions in Exchange-Listed Securities)",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2019-10-18",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000e2208-75d0-8838-062a-d328d87749f1",
+          "title": "Release No. 34-83421; File No. SR-NASDAQ-2018-044: Self-Regulatory Organizations; The Nasdaq Stock Market LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Amend The Nasdaq Options Market LLC (\u201cNOM\u201d) Rules at Supplementary Material to Chapter III, Section 7, Entitled \u201cPosition Limits,\u201d and Section 9, Entitled \u201cExercise Limits\u201d",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2018-06-13",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0010f7b3-8bc0-a9b4-084b-725f2e632803",
+          "title": "Release No. 34-88740; File No. SR-NYSEAMER-2020-29: Self-Regulatory Organizations; NYSE American LLC; Notice of Filing of Proposed Rule Change, as Modified by Amendment No. 2, to Modify Rule 967NY Regarding the Treatment of Orders Subject to Trade Collar Protection",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2020-04-24",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000f3fab-975c-06b5-f1e4-27095715130b",
+          "title": "An alternative perspective on \u2018two baskets\u2019: Accounting for \u2018Biological\u2019 and \u2018Fossil\u2019 emissions \u2013 Submission to Draft Productivity Commission Report on a low-emissions economy",
+          "publishers": [
+            "New Zealand Treasury"
+          ],
+          "published_date": "2024-05-01",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "hedge_fund": 0.42000000000000004
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "product:hedge_fund"
+        },
+        {
+          "document_id": "0011d1bc-23ca-d16e-4dc9-3597eaad247a",
+          "title": "FR Doc. 2024-23801: Self-Regulatory Organizations; The Nasdaq Stock Market LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change To Amend the Exchange's Schedule of Credits at Equity 7, Section 118(a)",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2024-10-16",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00104b3e-6f42-74db-e6a7-552404806fbf",
+          "title": "National Risk Assessment-Follow-up Report\u3010 Digest Version \u3011",
+          "publishers": [
+            "Japan Financial Intelligence Center"
+          ],
+          "published_date": "2023-12-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "risk_management": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:risk_management"
+        },
+        {
+          "document_id": "0011a6d6-19f6-2237-3929-0b3bae1a1c2c",
+          "title": "Corrigendum to Commission Implementing Regulation (EU) 2021/955 of 27 May 2021 laying down implementing technical standards for the application of Regulation (EU) 2019/1156 of the European Parliament and of the Council with regard to the forms, templates, procedures and technical arrangements for the publications and notifications of marketing rules, fees and charges, and specifying the information to be communicated for the creation and maintenance of the central database on cross-border marketing of AIFs and UCITS, as well as the forms, templates and procedures for the communication of such information (Official Journal of the European Union L 211 of 15 June 2021)",
+          "publishers": [
+            "European Commission"
+          ],
+          "published_date": "2021-11-11",
+          "relevant_entities": {
+            "ucits": 0.42000000000000004
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "entity:ucits"
+        },
+        {
+          "document_id": "0011dac4-d5cc-ea38-53cd-4dfc6c9e6d83",
+          "title": "2016-27895: Self-Regulatory Organizations; C2 Options Exchange, Incorporated; Notice of Filing of a Proposed Rule Change Relating to Opening of Series for Trading on the Exchange",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2016-11-21",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0012071c-efac-a3d2-97be-a95e969ad2b3",
+          "title": "Supervisory statement 25/15: Solvency II: Regulatory reporting, internal model outputs",
+          "publishers": [
+            "Bank of England"
+          ],
+          "published_date": "2024-12-01",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000f5f5b-3c03-59d1-b3fe-7387f4f9e12b",
+          "title": "2014-19330: Self-Regulatory Organizations; The Options Clearing Corporation; Notice of Filing of an Advance Notice To Better Manage Risks Concentration and Other Risks Associated With Accepting Deposits of Common Stocks for Margin Purposes",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2014-08-15",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001104d2-3bc5-1a99-7323-80ffde044032",
+          "title": "FR Doc. 2024-16806: Self-Regulatory Organizations; NYSE American LLC; Notice of Filing and Immediate Effectiveness of Proposed Change To Establish Fees for the NYSE American Aggregated Lite Data Feed",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2024-07-31",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "000f63d1-4a5d-9bbb-eac2-f59319355189",
+          "title": "Release No. 34-53168: Self-Regulatory Organizations; Chicago Board Options Exchange, Incorporated; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change Relating to its Marketing Fee Program",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2006-01-23",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00143407-0619-3499-5829-3084dd17f4bc",
+          "title": "FR Doc. 2024-24940: Self-Regulatory Organizations; Cboe BZX Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change To Amend Company Listing Fees in BZX Rule 14.13",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2024-10-28",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0012bd79-2dbb-2308-720a-a3583d668b1a",
+          "title": "34-81502 - Exhibit 5: Notice of Filing and Immediate Effectiveness of Proposed Rule Change Related to Fees Pursuant to Rule 15.110",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2017-08-30",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00175339-0b7f-cb63-6bbb-3ec9a5424d55",
+          "title": "Release No. 34-65484 File No. SR-OCC-2011-14: Self-Regulatory Organizations; Options Clearing Corporation; Notice of Filing of Proposed Rule Relating to Clearing Options on the CBOE Silver Volatility Index",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2011-10-04",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001634ec-95bd-2f30-daca-60a6002ba60b",
+          "title": "Release No. 34-67521; File No. SR-BYX-2012-016: Self-Regulatory Organizations; BATS Y-Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change to Extend the Pilot Program Related to Clearly Erroneous Execution Reviews",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2012-07-27",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00169397-9bf0-b465-49da-e2dcb3873be4",
+          "title": "Release No. 34-98171; File No. SR-NYSENAT-2023-18: Self-Regulatory Organizations; NYSE National, Inc.; Notice of Filing of Proposed Change to Amend the Connectivity Fee Schedule Regarding Power Allocation",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2023-08-21",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00159bb2-7f19-8f67-fd77-b73f4b0ece9b",
+          "title": "Release No.33-9893, 34-75710, IA-4174, 33-9894: In the Matter of Citigroup Alternative Investments LLC and Citigroup Global Markets Inc. \u2013 ORDER INSTITUTING ADMINISTRATIVE AND CEASE-AND-DESIST PROCEEDINGS PURSUANT TO SECTION 8A OF THE SECURITIES ACT OF 1933, SECTION 15(b)(4) OF THE SECURITIES EXCHANGE ACT OF 1934, AND SECTIONS 203(e) and 203(k) OF THE INVESTMENT ADVISERS ACT OF 1940, MAKING FINDINGS, AND IMPOSING REMEDIAL SANCTIONS AND A CEASE-AND-DESIST ORDER",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2015-08-17",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {
+            "hedge_fund": 0.42000000000000004
+          },
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "product:hedge_fund"
+        },
+        {
+          "document_id": "0015ba17-2bb3-a147-2f7f-2ef93d866eb7",
+          "title": "FR Doc. 2016-22028: Self-Regulatory Organizations; Bats BZX Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change Related to Fees for Use of Bats BZX Exchange, Inc.",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2016-09-14",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0019194c-2021-1c45-aad5-a2b026b72224",
+          "title": "Release No. 34-97241; File No. SR-NYSEARCA-2023-26: Self-Regulatory Organizations; NYSE Arca, Inc.; Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Modify the NYSE Arca Options Fee Schedule to Delete Text that is No Longer in Effect",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2023-04-03",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001b1b40-c4e7-0408-c40c-3364ee37c7f9",
+          "title": "2015-31276: Self-Regulatory Organizations; NYSE Arca, Inc.; Notice of Filing and Immediate Effectiveness of Proposed Rule Change Amending NYSE Arca Rule 2.23 To Establish the Securities Trader and Securities Trader Principal Registration Categories",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2015-12-11",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001a8d90-94b9-c8c3-5616-4052d403c4b2",
+          "title": "Release No. 34-88669; File No. SR-MRX-2020-10: Self-Regulatory Organizations; Nasdaq MRX, LLC; Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Adopt a New Rule Titled Transfer of Positions within Options 6, Section 5",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2020-04-16",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001b7d3a-43cc-3c49-f780-7b504ed30424",
+          "title": "E9-20240: Self-Regulatory Organizations; Notice of Filing and Immediate Effectiveness of Proposed Rule Change by NYSE Arca, Inc. Amending NYSE Arca Options Rule 6.76A",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2009-08-24",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001ac0b3-0060-203f-4942-a6caf385ded7",
+          "title": "FR Doc. 2022-13150: Self-Regulatory Organizations; Cboe Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change to Amend Rule 5.4",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2022-06-21",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "00190278-e705-e5ae-1ac5-63f51c43b2ec",
+          "title": "34-87976 - Exhibit 5: Notice of Filing and Immediate Effectiveness of a Proposed Rule Change Relating to Amend its Rules Governing the Give Up of a Clearing Member by a User on Exchange Transactions",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2020-01-15",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0018f28b-d3c7-bc8d-a28c-7780e2392e8d",
+          "title": "Value-at-Risk (VaR) Models Validation and Approval of Model Modifications Capital Adequacy Requirements, Guideline A, Part II",
+          "publishers": [
+            "Office of the Superintendent of Financial Institutions"
+          ],
+          "published_date": "2001-04-30",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "risk_management": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:risk_management"
+        },
+        {
+          "document_id": "001cbb64-c632-12ba-1691-1bb973ca3e42",
+          "title": "FR Doc. 2014-08129: Self-Regulatory Organizations; NYSE Arca, Inc.; Notice of Filing of Proposed Rule Change Relating to Listing and Trading Shares of Hull Tactical US ETF Under NYSE Arca Equities Rule 8.600",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2014-04-11",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001c92b7-3f12-b0e8-72fd-b16b97935484",
+          "title": "ESMA34-39-992: Ohjeet tulosperusteisista palkkioista UCITS-rahastoissa ja tietyntyyppisiss\u00e4 vaihtoehtoisissa sijoitusrahastoissa (AIF)",
+          "publishers": [
+            "Finnish Financial Supervisory Authority"
+          ],
+          "published_date": "2020-11-05",
+          "relevant_entities": {
+            "ucits": 0.42000000000000004
+          },
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "entity:ucits"
+        },
+        {
+          "document_id": "0021e5c9-0c9f-f9ec-4248-71f8fc7d60ca",
+          "title": "2017-02990: Self-Regulatory Organizations; NYSE MKT LLC; Notice of Filing of Proposed Rule Change To Adopt New Equities Trading Rules To Transition Trading on the Exchange From a Floor Based Market With a Parity Allocation Model to Fully Automated Price-Time Priority Model on the Exchange's New Trading Technology Platform, Pillar",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2017-02-15",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001e7d94-c4e1-6fe9-d2e9-d939759fd42c",
+          "title": "FR Doc. 2022-07947: Self-Regulatory Organizations; Cboe EDGX Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change To Amend the Fees Applicable to Various Market Data Products",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2022-04-14",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "001efa93-1e00-a0da-76c7-dac0e420e16a",
+          "title": "2018-18573: Self-Regulatory Organizations; Cboe BZX Exchange, Inc.; Notice of Filing and Immediate Effectiveness of a Proposed Rule Change To Amend Certain Representations Relating to the Listing and Trading of Shares of the Innovator S&P 500 Buffer ETFs",
+          "publishers": [
+            "US Securities and Exchange Commission"
+          ],
+          "published_date": "2018-08-28",
+          "relevant_entities": {},
+          "relevant_activities": {
+            "reporting": 0.42000000000000004
+          },
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.42000000000000004,
+          "primary_focus": "activity:reporting"
+        },
+        {
+          "document_id": "0001d0be-e087-d238-a5b2-3e379e77d7d2",
+          "title": "FR Doc. 2019-16981: U.S. Advisory Commission on Public Diplomacy; Notice of Meeting",
+          "publishers": [
+            "US Department of State"
+          ],
+          "published_date": "2019-08-08",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        },
+        {
+          "document_id": "000250d0-c272-4f41-a0ef-128bc2debc7b",
+          "title": "FR Doc. 2019-06616: Request for Applications for Appointment to the Citizens Coinage Advisory Committee",
+          "publishers": [
+            "US Treasury"
+          ],
+          "published_date": "2019-04-05",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        },
+        {
+          "document_id": "000465aa-3852-feab-b01c-840d2d9d9323",
+          "title": "FR Doc. 2016-05178: Notification of Citizens Coinage Advisory Committee March 15, 2016, Public Meeting",
+          "publishers": [
+            "US Treasury"
+          ],
+          "published_date": "2016-03-09",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        },
+        {
+          "document_id": "001006cb-081d-1fca-0542-3542535ba6f5",
+          "title": "Review of the Financial Reporting Advisory Board",
+          "publishers": [
+            "UK Government"
+          ],
+          "published_date": "2010-10-01",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        },
+        {
+          "document_id": "0016f2c4-ffae-8463-4f86-6fba0d20a43c",
+          "title": "FR Doc. 2016\u201321078: Solicitation for Members of the NOAA Science Advisory Board",
+          "publishers": [
+            "US Department of Commerce"
+          ],
+          "published_date": "2016-09-02",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        },
+        {
+          "document_id": "0019c050-cb50-2c4a-59c1-de2d2e0acba3",
+          "title": "PC-TC (2009) 33: Technical Paper: Expert Opinion on Regulation of Lobbying in the Republic of Azerbaijan Prepared by Quentin REED, United Kingdom Long-term Advisor, AZPAC Project",
+          "publishers": [
+            "Council of the European Union"
+          ],
+          "published_date": "2009-01-01",
+          "relevant_entities": {},
+          "relevant_activities": {},
+          "relevant_products": {},
+          "subdocument_relevance": [],
+          "total_relevance_score": 0.3,
+          "primary_focus": "general"
+        }
+      ],
+      "summary": {
+        "total_documents_analyzed": 1072,
+        "relevant_documents": 90,
+        "relevance_percentage": 8.4,
+        "primary_focus_distribution": {
+          "entity:ucits": 4,
+          "entity:fund": 11,
+          "entity:firm": 3,
+          "activity:custody": 8,
+          "entity:depositary": 1,
+          "activity:reporting": 44,
+          "entity:investment_adviser": 2,
+          "activity:asset_management": 1,
+          "product:money_market_fund": 3,
+          "product:collective_investment_scheme": 1,
+          "activity:risk_management": 4,
+          "product:hedge_fund": 2,
+          "general": 6
+        },
+        "top_relevant_entities": [
+          [
+            "fund",
+            11
+          ],
+          [
+            "ucits",
+            5
+          ],
+          [
+            "investment_adviser",
+            3
+          ],
+          [
+            "firm",
+            3
+          ],
+          [
+            "management_company",
+            2
+          ]
+        ],
+        "top_relevant_activities": [
+          [
+            "reporting",
+            47
+          ],
+          [
+            "custody",
+            8
+          ],
+          [
+            "risk_management",
+            4
+          ],
+          [
+            "asset_management",
+            1
+          ]
+        ],
+        "top_relevant_products": [
+          [
+            "hedge_fund",
+            4
+          ],
+          [
+            "collective_investment_scheme",
+            3
+          ],
+          [
+            "money_market_fund",
+            3
+          ],
+          [
+            "ucits_fund",
+            1
+          ],
+          [
+            "etf",
+            1
+          ]
+        ]
+      }
+    },
+    "task3_definitions": {
+      "entity_definitions": [],
+      "activity_definitions": [],
+      "product_definitions": [],
+      "summary": {
+        "total_items": 24,
+        "items_with_definitions": 0,
+        "coverage_percentage": 0.0,
+        "total_definitions_found": 0,
+        "documents_with_definitions": 0,
+        "coverage_by_type": {
+          "entity": {
+            "total": 12,
+            "with_definitions": 0
+          },
+          "activity": {
+            "total": 6,
+            "with_definitions": 0
+          },
+          "product": {
+            "total": 6,
+            "with_definitions": 0
+          }
+        },
+        "average_confidence": 0
+      }
+    },
+    "overall_summary": {
+      "total_items_extracted": 24,
+      "documents_processed": 1072,
+      "relevant_documents_identified": 90,
+      "definitions_found": 0,
+      "overall_coverage": {
+        "items_with_definitions": 0,
+        "definition_coverage_percentage": 0.0,
+        "document_relevance_percentage": 8.4
+      }
+    }
+  },
+  "cross_jurisdictional_analysis": {
+    "query": "How does a UK fund conduct CDD & KYC with both the EU and UK regulators when verifying foreign investors post-Brexit?",
+    "execution_timestamp": "2025-06-21T14:59:57.787110",
+    "analysis_type": "cross_jurisdictional",
+    "jurisdictions_analyzed": [
+      "US",
+      "EU",
+      "UK"
+    ],
+    "jurisdiction_results": {
+      "US": {
+        "jurisdiction": "US",
+        "entities_count": 12,
+        "activities_count": 6,
+        "products_count": 6,
+        "documents_processed": 1072,
+        "top_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ],
+        "top_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ],
+        "top_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ],
+        "specific_requirements_count": 1,
+        "definitions_count": 0
+      },
+      "EU": {
+        "jurisdiction": "EU",
+        "entities_count": 12,
+        "activities_count": 6,
+        "products_count": 6,
+        "documents_processed": 1072,
+        "top_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ],
+        "top_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ],
+        "top_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ],
+        "specific_requirements_count": 1,
+        "definitions_count": 0
+      },
+      "UK": {
+        "jurisdiction": "UK",
+        "entities_count": 12,
+        "activities_count": 6,
+        "products_count": 6,
+        "documents_processed": 1072,
+        "top_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ],
+        "top_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ],
+        "top_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ],
+        "specific_requirements_count": 1,
+        "definitions_count": 0
+      }
+    },
+    "cross_matched_requirements": [
+      "CrossJurisdictionalRequirement(requirement_type='disclosure', description='Cross-jurisdictional requirements for disclosure', jurisdictions={'US': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}, 'EU': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}, 'UK': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}}, differences=['US focuses on SEC compliance while EU emphasizes MiFID II requirements', 'UK has post-Brexit specific requirements that may differ from EU'], commonalities=[], unified_approach='Implement comprehensive disclosure framework that captures the most stringent requirements from all jurisdictions, ensuring compliance across US, EU, and UK markets.')"
+    ],
+    "comparison_analysis": {
+      "entity_differences": {
+        "US": {
+          "total_entities": 12,
+          "entity_types": {
+            "ucits": 2,
+            "investment_adviser": 3,
+            "firm": 2,
+            "fund": 2,
+            "depositary": 1,
+            "management_company": 2
+          },
+          "key_entities": [
+            "UCITS",
+            "ADVISER",
+            "Financial Institutions",
+            "RIA",
+            "Investment Adviser"
+          ]
+        },
+        "EU": {
+          "total_entities": 12,
+          "entity_types": {
+            "ucits": 2,
+            "investment_adviser": 3,
+            "firm": 2,
+            "fund": 2,
+            "depositary": 1,
+            "management_company": 2
+          },
+          "key_entities": [
+            "UCITS",
+            "ADVISER",
+            "Financial Institutions",
+            "RIA",
+            "Investment Adviser"
+          ]
+        },
+        "UK": {
+          "total_entities": 12,
+          "entity_types": {
+            "ucits": 2,
+            "investment_adviser": 3,
+            "firm": 2,
+            "fund": 2,
+            "depositary": 1,
+            "management_company": 2
+          },
+          "key_entities": [
+            "UCITS",
+            "ADVISER",
+            "Financial Institutions",
+            "RIA",
+            "Investment Adviser"
+          ]
+        }
+      },
+      "activity_differences": {
+        "US": {
+          "total_activities": 6,
+          "activity_types": {
+            "asset_management": 1,
+            "risk_management": 2,
+            "reporting": 2,
+            "custody": 1
+          },
+          "key_activities": [
+            "Asset Management",
+            "Risk Management",
+            "Risk Assessment",
+            "Regulatory Reporting",
+            "Disclosure Requirements"
+          ]
+        },
+        "EU": {
+          "total_activities": 6,
+          "activity_types": {
+            "asset_management": 1,
+            "risk_management": 2,
+            "reporting": 2,
+            "custody": 1
+          },
+          "key_activities": [
+            "Asset Management",
+            "Risk Management",
+            "Risk Assessment",
+            "Regulatory Reporting",
+            "Disclosure Requirements"
+          ]
+        },
+        "UK": {
+          "total_activities": 6,
+          "activity_types": {
+            "asset_management": 1,
+            "risk_management": 2,
+            "reporting": 2,
+            "custody": 1
+          },
+          "key_activities": [
+            "Asset Management",
+            "Risk Management",
+            "Risk Assessment",
+            "Regulatory Reporting",
+            "Disclosure Requirements"
+          ]
+        }
+      },
+      "product_differences": {
+        "US": {
+          "total_products": 6,
+          "product_types": {
+            "etf": 1,
+            "ucits_fund": 1,
+            "collective_investment_scheme": 1,
+            "money_market_fund": 1,
+            "hedge_fund": 2
+          },
+          "key_products": [
+            "Exchange-Traded Fund",
+            "UCITS Fund",
+            "Collective Investment Scheme",
+            "Money Market Funds",
+            "Private Fund"
+          ]
+        },
+        "EU": {
+          "total_products": 6,
+          "product_types": {
+            "etf": 1,
+            "ucits_fund": 1,
+            "collective_investment_scheme": 1,
+            "money_market_fund": 1,
+            "hedge_fund": 2
+          },
+          "key_products": [
+            "Exchange-Traded Fund",
+            "UCITS Fund",
+            "Collective Investment Scheme",
+            "Money Market Funds",
+            "Private Fund"
+          ]
+        },
+        "UK": {
+          "total_products": 6,
+          "product_types": {
+            "etf": 1,
+            "ucits_fund": 1,
+            "collective_investment_scheme": 1,
+            "money_market_fund": 1,
+            "hedge_fund": 2
+          },
+          "key_products": [
+            "Exchange-Traded Fund",
+            "UCITS Fund",
+            "Collective Investment Scheme",
+            "Money Market Funds",
+            "Private Fund"
+          ]
+        }
+      },
+      "requirement_conflicts": [],
+      "compliance_complexity": {
+        "total_requirements": 1,
+        "conflicting_requirements": 1,
+        "complexity_score": 1.0,
+        "complexity_level": "High",
+        "recommendations": [
+          "Significant differences require careful compliance strategy",
+          "Recommend dedicated compliance resources for each jurisdiction",
+          "Legal consultation advised for complex requirements",
+          "Consider phased implementation approach"
+        ]
+      }
+    },
+    "unified_recommendations": {
+      "unified_customer_form": {
+        "form_structure": {
+          "personal_information": [
+            "Full legal name",
+            "Date of birth",
+            "Address",
+            "Phone number",
+            "Email address"
+          ],
+          "identification": [
+            "Government ID number",
+            "ID document type",
+            "ID expiry date"
+          ],
+          "financial_information": [
+            "Occupation",
+            "Annual income",
+            "Net worth",
+            "Source of funds",
+            "Source of wealth"
+          ],
+          "investment_profile": [
+            "Investment objectives",
+            "Time horizon",
+            "Risk tolerance",
+            "Investment experience"
+          ],
+          "compliance_screening": [
+            "PEP status",
+            "Sanctions screening",
+            "Beneficial ownership information"
+          ],
+          "jurisdiction_specific": {
+            "US": [],
+            "EU": [],
+            "UK": []
+          }
+        },
+        "data_collection_approach": "Single comprehensive form with jurisdiction-specific sections",
+        "validation_rules": [
+          "All personal information fields are mandatory",
+          "Government ID must be valid and not expired",
+          "Financial information must be consistent and verifiable",
+          "Investment profile must be complete for suitability assessment",
+          "Compliance screening must clear all jurisdictional requirements",
+          "Jurisdiction-specific fields mandatory based on account types requested"
+        ]
+      },
+      "data_mapping_strategy": {
+        "approach": "Collect once, map to multiple jurisdictions",
+        "data_storage": {
+          "master_record": "Single customer master record with all data",
+          "jurisdiction_views": "Filtered views for each jurisdiction's compliance team",
+          "audit_trail": "Complete audit trail for all data access and modifications"
+        },
+        "field_mapping": {
+          "US_specific": [],
+          "EU_specific": [],
+          "UK_specific": []
+        },
+        "data_governance": [
+          "Data privacy compliance (GDPR for EU clients)",
+          "Data retention policies per jurisdiction",
+          "Cross-border data transfer protocols",
+          "Regular data quality audits"
+        ]
+      },
+      "implementation_approach": [
+        "Phase 1: Design unified customer data model",
+        "Phase 2: Implement single data collection interface",
+        "Phase 3: Create jurisdiction-specific data views and workflows",
+        "Phase 4: Integrate with existing compliance systems",
+        "Phase 5: Test with pilot customers across all jurisdictions",
+        "Phase 6: Full rollout with comprehensive staff training"
+      ],
+      "compliance_checklist": [
+        {
+          "requirement": "disclosure",
+          "checks": [
+            "Verify compliance with US disclosure requirements",
+            "Verify compliance with EU disclosure requirements",
+            "Verify compliance with UK disclosure requirements"
+          ],
+          "documentation_needed": [
+            "US compliance documentation",
+            "EU compliance documentation",
+            "UK compliance documentation"
+          ],
+          "review_frequency": "Annual"
+        }
+      ]
+    },
+    "summary": {
+      "jurisdictions_analyzed": 3,
+      "total_entities_found": 36,
+      "total_activities_found": 18,
+      "total_products_found": 18,
+      "total_documents_processed": 3216,
+      "cross_matched_requirements": 1,
+      "analysis_completion_time": "2025-06-21T14:59:57.787128",
+      "key_findings": [
+        "Analyzed 3 jurisdictions comprehensively",
+        "Identified 1 cross-jurisdictional requirements",
+        "Processed 3216 regulatory documents",
+        "Generated unified customer data collection recommendations"
+      ]
+    },
+    "use_case_analysis": {
+      "customer_data_requirements": {
+        "common_fields": [
+          "Full legal name",
+          "Date of birth",
+          "Residential address",
+          "Mailing address",
+          "Phone number",
+          "Email address",
+          "Government ID number",
+          "Tax ID number",
+          "Occupation",
+          "Employment status",
+          "Annual income",
+          "Net worth",
+          "Investment experience",
+          "Investment objectives",
+          "Risk tolerance"
+        ],
+        "jurisdiction_specific_fields": {
+          "US": [
+            "Social Security Number (SSN) or Individual Taxpayer Identification Number (ITIN)",
+            "W-9 or W-8 form",
+            "FATCA classification",
+            "Accredited investor status",
+            "Pattern Day Trader acknowledgment",
+            "Options trading level"
+          ],
+          "EU": [
+            "EU Tax Identification Number",
+            "GDPR consent",
+            "MiFID II categorization",
+            "Appropriateness assessment",
+            "LEI (for professional clients)",
+            "Country of tax residence",
+            "PRIIPs risk tolerance"
+          ],
+          "UK": [
+            "National Insurance Number",
+            "UK tax residence status",
+            "FCA client categorization",
+            "Appropriateness test",
+            "Financial promotion restrictions acknowledgment",
+            "Post-Brexit equivalence confirmations"
+          ]
+        },
+        "data_collection_strategy": "Single comprehensive form with jurisdiction-specific sections",
+        "data_validation_rules": [
+          "All personal information must be consistent across all forms",
+          "Government IDs must be valid and not expired",
+          "Address verification documents must be recent (within 3 months)",
+          "Financial information must be reasonable and verifiable",
+          "Tax information must be complete for all relevant jurisdictions",
+          "Investment experience must be documented with examples",
+          "Risk tolerance must be consistent with investment objectives",
+          "All compliance screening must return clear results"
+        ]
+      },
+      "documentation_requirements": {
+        "identity_documents": {
+          "US": [
+            "Government-issued photo ID",
+            "Proof of address"
+          ],
+          "EU": [
+            "National ID or passport",
+            "Proof of residence",
+            "Tax certificate"
+          ],
+          "UK": [
+            "UK driving license or passport",
+            "Council tax bill or bank statement"
+          ]
+        },
+        "financial_documents": {
+          "US": [
+            "Bank statements",
+            "Tax returns (for accredited investor status)"
+          ],
+          "EU": [
+            "Bank statements",
+            "Income verification",
+            "Asset declarations"
+          ],
+          "UK": [
+            "Bank statements",
+            "Payslips or pension statements",
+            "P60 or SA302"
+          ]
+        },
+        "compliance_documents": {
+          "US": [
+            "W-9/W-8 forms",
+            "Options agreement",
+            "Day trading agreement"
+          ],
+          "EU": [
+            "MiFID II questionnaire",
+            "Appropriateness assessment",
+            "GDPR consent"
+          ],
+          "UK": [
+            "Appropriateness test",
+            "Client agreement",
+            "Risk warnings"
+          ]
+        }
+      },
+      "verification_processes": {
+        "identity_verification": {
+          "common_process": "Multi-factor identity verification",
+          "jurisdiction_differences": {
+            "US": "PATRIOT Act compliance, OFAC screening",
+            "EU": "AML 5th Directive, sanctions screening",
+            "UK": "Money Laundering Regulations, PEP screening"
+          }
+        },
+        "address_verification": {
+          "common_process": "Utility bill or bank statement verification",
+          "jurisdiction_differences": {
+            "US": "90-day recency requirement",
+            "EU": "3-month recency, GDPR-compliant storage",
+            "UK": "3-month recency, post-Brexit verification"
+          }
+        },
+        "financial_verification": {
+          "common_process": "Income and asset verification",
+          "jurisdiction_differences": {
+            "US": "Accredited investor verification if applicable",
+            "EU": "MiFID II financial assessment",
+            "UK": "FCA appropriateness assessment"
+          }
+        }
+      },
+      "ongoing_obligations": {
+        "periodic_updates": {
+          "US": "Annual suitability review, beneficial ownership updates",
+          "EU": "Periodic appropriateness review, LEI renewals",
+          "UK": "Annual appropriateness review, client categorization updates"
+        },
+        "reporting_obligations": {
+          "US": "Form 8938 (FATCA), suspicious activity reporting",
+          "EU": "CRS reporting, transaction reporting under MiFIR",
+          "UK": "Suspicious activity reporting, transaction reporting"
+        },
+        "monitoring_requirements": {
+          "US": "Pattern day trader monitoring, large trader reporting",
+          "EU": "Best execution monitoring, transaction cost analysis",
+          "UK": "Best execution monitoring, product governance"
+        }
+      },
+      "unified_onboarding_flow": {
+        "onboarding_flow": [
+          {
+            "step": 1,
+            "title": "Market Selection",
+            "description": "Customer selects which markets they want to trade (US, EU, UK)",
+            "data_collected": [
+              "Market preferences",
+              "Account types requested"
+            ]
+          },
+          {
+            "step": 2,
+            "title": "Personal Information",
+            "description": "Collect core personal information valid across all jurisdictions",
+            "data_collected": [
+              "Name",
+              "DOB",
+              "Address",
+              "Contact info",
+              "Tax info"
+            ]
+          },
+          {
+            "step": 3,
+            "title": "Identity Verification",
+            "description": "Multi-factor identity verification satisfying all jurisdictions",
+            "data_collected": [
+              "ID documents",
+              "Biometric verification",
+              "Address proof"
+            ]
+          },
+          {
+            "step": 4,
+            "title": "Financial Assessment",
+            "description": "Comprehensive financial profile for all jurisdictions",
+            "data_collected": [
+              "Income",
+              "Net worth",
+              "Investment experience",
+              "Objectives"
+            ]
+          },
+          {
+            "step": 5,
+            "title": "Jurisdiction-Specific Requirements",
+            "description": "Complete jurisdiction-specific forms and assessments",
+            "data_collected": [
+              "US: W-9/W-8",
+              "EU: MiFID II",
+              "UK: Appropriateness test"
+            ]
+          },
+          {
+            "step": 6,
+            "title": "Risk Assessment & Suitability",
+            "description": "Unified risk assessment meeting all jurisdictional requirements",
+            "data_collected": [
+              "Risk tolerance",
+              "Suitability scores",
+              "Product restrictions"
+            ]
+          },
+          {
+            "step": 7,
+            "title": "Compliance Screening",
+            "description": "AML/KYC screening across all jurisdictions",
+            "data_collected": [
+              "PEP status",
+              "Sanctions screening",
+              "Source of funds"
+            ]
+          },
+          {
+            "step": 8,
+            "title": "Agreement & Account Opening",
+            "description": "Digital signatures for all jurisdictional agreements",
+            "data_collected": [
+              "Client agreements",
+              "Risk disclosures",
+              "Account confirmations"
+            ]
+          }
+        ],
+        "estimated_completion_time": "15-30 minutes",
+        "automation_opportunities": [
+          "Auto-population across jurisdiction forms",
+          "Real-time document verification",
+          "Automated suitability scoring",
+          "Digital signature workflows"
+        ],
+        "quality_controls": [
+          "Multi-level review process",
+          "Automated compliance checks",
+          "Exception handling workflows",
+          "Audit trail maintenance"
+        ]
+      }
+    },
+    "use_case": "account_opening",
+    "business_recommendations": {
+      "strategic_recommendations": [
+        "Implement unified customer onboarding system to reduce complexity and costs",
+        "Standardize data collection to meet the highest requirements across all jurisdictions",
+        "Create jurisdiction-specific compliance teams with centralized coordination",
+        "Develop automated compliance checking to reduce manual review time"
+      ],
+      "operational_recommendations": [
+        "Establish clear escalation procedures for cross-jurisdictional issues",
+        "Create standardized documentation templates for all jurisdictions",
+        "Implement regular training programs for staff on multi-jurisdictional requirements",
+        "Develop key performance indicators for cross-jurisdictional compliance"
+      ],
+      "technology_recommendations": [
+        "Implement single customer data management system with jurisdiction-specific views",
+        "Develop automated compliance checking and reporting tools",
+        "Create real-time monitoring dashboards for cross-jurisdictional compliance",
+        "Establish secure data sharing protocols between jurisdictions"
+      ],
+      "risk_recommendations": [
+        "Conduct regular cross-jurisdictional risk assessments",
+        "Establish contingency plans for regulatory changes in any jurisdiction",
+        "Implement comprehensive audit trails for all cross-jurisdictional activities",
+        "Regular stress testing of compliance procedures across all jurisdictions"
+      ]
+    },
+    "practical_implementation": {
+      "phase_1_foundation": {
+        "duration": "1-2 months",
+        "activities": [
+          "Conduct detailed gap analysis",
+          "Design unified data model",
+          "Select technology platforms",
+          "Establish project governance"
+        ],
+        "deliverables": [
+          "Gap analysis report",
+          "Technical architecture design",
+          "Project plan and timeline",
+          "Resource allocation plan"
+        ]
+      },
+      "phase_2_development": {
+        "duration": "3-4 months",
+        "activities": [
+          "Develop unified customer interface",
+          "Build jurisdiction-specific workflows",
+          "Implement compliance automation",
+          "Create reporting dashboards"
+        ],
+        "deliverables": [
+          "Customer onboarding system",
+          "Compliance workflow engine",
+          "Automated reporting tools",
+          "Integration with existing systems"
+        ]
+      },
+      "phase_3_testing": {
+        "duration": "1-2 months",
+        "activities": [
+          "User acceptance testing",
+          "Compliance validation",
+          "Performance testing",
+          "Staff training"
+        ],
+        "deliverables": [
+          "Test results and sign-off",
+          "Compliance certification",
+          "Performance benchmarks",
+          "Training completion records"
+        ]
+      },
+      "phase_4_deployment": {
+        "duration": "1 month",
+        "activities": [
+          "Phased rollout",
+          "Monitoring and support",
+          "Issue resolution",
+          "Optimization"
+        ],
+        "deliverables": [
+          "Production deployment",
+          "Support procedures",
+          "Issue tracking system",
+          "Performance optimization"
+        ]
+      }
+    }
+  },
+  "executive_summary": {
+    "analysis_scope": "Complete RegGenome system with cross-jurisdictional intelligence",
+    "key_findings": [
+      "Identified 24 unique regulated items",
+      "Analyzed 1072 regulatory documents",
+      "Found 0 formal definitions with citations",
+      "Analyzed 3 jurisdictions (US, EU, UK)",
+      "Identified 1 cross-jurisdictional requirements",
+      "Generated unified customer onboarding recommendations"
+    ]
+  },
+  "business_recommendations": {
+    "strategic_priorities": [
+      "Implement unified regulatory compliance framework across all jurisdictions",
+      "Develop single customer onboarding system for multiple markets",
+      "Establish automated regulatory monitoring and reporting capabilities",
+      "Create center of excellence for cross-jurisdictional regulatory management"
+    ],
+    "operational_improvements": [
+      "Standardize data collection to meet highest regulatory requirements",
+      "Implement automated compliance checking and validation",
+      "Develop real-time monitoring dashboards for regulatory compliance",
+      "Establish clear escalation procedures for cross-jurisdictional issues"
+    ],
+    "technology_investments": [
+      "Single customer data management system with jurisdiction-specific views",
+      "Automated document processing and entity extraction capabilities",
+      "Real-time regulatory change monitoring and alert systems",
+      "Secure data sharing protocols between jurisdictions"
+    ],
+    "risk_mitigation": [
+      "Regular cross-jurisdictional risk assessments and gap analyses",
+      "Comprehensive audit trails for all regulatory activities",
+      "Contingency plans for regulatory changes in any jurisdiction",
+      "Stress testing of compliance procedures across all jurisdictions"
+    ]
+  },
+  "implementation_roadmap": {
+    "phase_1_assessment": {
+      "duration": "1-2 months",
+      "objectives": [
+        "Complete regulatory gap analysis across all jurisdictions",
+        "Design unified compliance architecture",
+        "Establish project governance and resource allocation"
+      ],
+      "key_deliverables": [
+        "Comprehensive gap analysis report",
+        "Technical architecture design",
+        "Project charter and timeline",
+        "Stakeholder engagement plan"
+      ]
+    },
+    "phase_2_foundation": {
+      "duration": "2-3 months",
+      "objectives": [
+        "Build unified customer data model",
+        "Develop core compliance automation capabilities",
+        "Establish jurisdiction-specific workflow engines"
+      ],
+      "key_deliverables": [
+        "Customer data management platform",
+        "Compliance workflow automation",
+        "Document processing capabilities",
+        "Initial reporting dashboards"
+      ]
+    },
+    "phase_3_integration": {
+      "duration": "2-4 months",
+      "objectives": [
+        "Integrate with existing systems",
+        "Implement cross-jurisdictional workflows",
+        "Develop advanced analytics and monitoring"
+      ],
+      "key_deliverables": [
+        "System integration and data migration",
+        "Cross-jurisdictional compliance workflows",
+        "Advanced analytics and reporting",
+        "Real-time monitoring capabilities"
+      ]
+    },
+    "phase_4_optimization": {
+      "duration": "1-2 months",
+      "objectives": [
+        "User acceptance testing and validation",
+        "Performance optimization and tuning",
+        "Staff training and change management"
+      ],
+      "key_deliverables": [
+        "Fully tested and validated system",
+        "Performance benchmarks and optimization",
+        "Training programs and documentation",
+        "Go-live readiness assessment"
+      ]
+    }
+  }
+}

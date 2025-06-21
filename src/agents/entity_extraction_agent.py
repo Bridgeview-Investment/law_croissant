@@ -1,292 +1,215 @@
-"""Entity extraction agent for identifying regulated entities in regulatory documents."""
-
-import logging
-import hashlib
-from typing import List, Dict, Any
-from pydantic import BaseModel, Field
-
-from ..models import RegGenomeDocument, RegulatedEntity, EntityType
-from ..llm_utils import extract_structured_data, llm_manager
-
-logger = logging.getLogger(__name__)
-
-
-class EntityExtractionResult(BaseModel):
-    """Result model for entity extraction."""
-    
-    entities: List[Dict[str, Any]] = Field(description="List of extracted entities")
-    confidence_score: float = Field(description="Overall confidence in extraction", ge=0.0, le=1.0)
-    reasoning: str = Field(description="Explanation of extraction process")
-
+from typing import List, Dict, Any, Optional
+import re
+from src.models import Document, RegulatedEntity, EntityType
 
 class EntityExtractionAgent:
-    """Agent for extracting regulated entities from regulatory documents."""
+    """Agent specialized in extracting regulated entities from documents"""
     
     def __init__(self):
-        self.extraction_prompt = self._build_extraction_prompt()
-    
-    def _build_extraction_prompt(self) -> str:
-        """Build the entity extraction prompt."""
-        entity_types = [e.value for e in EntityType]
+        # Entity patterns and keywords
+        self.entity_patterns = {
+            EntityType.INVESTMENT_ADVISER: [
+                r"investment adviser[s]?",
+                r"investment advisor[s]?",
+                r"adviser[s]?",
+                r"advisor[s]?",
+                r"registered investment adviser",
+                r"RIA"
+            ],
+            EntityType.INVESTMENT_COMPANY: [
+                r"investment compan(?:y|ies)",
+                r"registered investment compan(?:y|ies)",
+                r"mutual fund[s]?",
+                r"closed-end fund[s]?",
+                r"open-end fund[s]?"
+            ],
+            EntityType.UCITS: [
+                r"UCITS",
+                r"undertaking[s]? for collective investment",
+                r"UCITS fund[s]?",
+                r"UCITS scheme[s]?"
+            ],
+            EntityType.MANAGEMENT_COMPANY: [
+                r"management compan(?:y|ies)",
+                r"fund manager[s]?",
+                r"asset management compan(?:y|ies)",
+                r"UCITS management compan(?:y|ies)"
+            ],
+            EntityType.DEPOSITARY: [
+                r"depositar(?:y|ies)",
+                r"custodian[s]?",
+                r"trustee[s]?",
+                r"depositary bank[s]?"
+            ],
+            EntityType.FUND: [
+                r"fund[s]?",
+                r"collective investment scheme[s]?",
+                r"investment fund[s]?",
+                r"pooled investment vehicle[s]?"
+            ],
+            EntityType.FIRM: [
+                r"firm[s]?",
+                r"financial institution[s]?",
+                r"regulated entit(?:y|ies)",
+                r"financial service[s]? provider[s]?"
+            ]
+        }
         
-        return f"""
-You are an expert in regulatory document analysis specializing in identifying regulated entities.
-
-Your task is to extract all regulated entities mentioned in the document. These include:
-
-**Entity Types to Look For:**
-{', '.join(entity_types)}
-
-**What to Extract:**
-1. **Entity Name**: The exact name or term as it appears in the document
-2. **Entity Type**: Classify using the provided entity types
-3. **Description**: A clear description of what this entity is
-4. **Definition Context**: The surrounding text that defines or describes the entity
-5. **Regulatory Framework**: Any regulatory frameworks or rules that apply to this entity
-6. **Jurisdictions**: Geographic or regulatory jurisdictions where this applies
-
-**Instructions:**
-- Focus on entities that are explicitly defined or regulated in the document
-- Look for definitions, classifications, and regulatory requirements
-- Pay attention to section headings, defined terms, and glossaries
-- Include entities that are subject to licensing, registration, or regulatory oversight
-- Capture hierarchical relationships (e.g., subcategories of investment companies)
-- Be precise with terminology - use exact terms from the document
-- Provide confidence scores based on how clearly the entity is defined
-
-**Examples of Regulated Entities:**
-- Investment advisers, investment companies, broker-dealers
-- Mutual funds, ETFs, hedge funds, pension funds
-- Banks, credit unions, insurance companies
-- UCITS, collective investment schemes
-- Licensed/registered financial service providers
-
-Extract all relevant entities with their complete context and regulatory significance.
-"""
+        self.entity_definitions = {
+            "investment adviser": "entity providing investment advice",
+            "investment company": "company engaged in investing, reinvesting, or trading in securities",
+            "UCITS": "Undertakings for Collective Investment in Transferable Securities",
+            "management company": "entity managing collective investment schemes",
+            "depositary": "entity safekeeping assets of investment funds",
+            "fund": "pooled investment vehicle",
+            "firm": "regulated financial services entity"
+        }
     
-    async def extract_entities(self, document: RegGenomeDocument) -> List[RegulatedEntity]:
-        """Extract regulated entities from a document."""
-        logger.info(f"Extracting entities from document: {document.title}")
+    def extract_entities(self, document: Document) -> List[RegulatedEntity]:
+        """Extract regulated entities from a document"""
+        entities = []
+        processed_entities = set()  # To avoid duplicates
         
-        try:
-            # Prepare content for extraction
-            content = self._prepare_content(document)
+        # Combine all text sources
+        full_text = self._get_full_text(document)
+        
+        for entity_type, patterns in self.entity_patterns.items():
+            for pattern in patterns:
+                matches = re.finditer(pattern, full_text, re.IGNORECASE)
+                
+                for match in matches:
+                    entity_name = match.group(0)
+                    context = self._extract_context(full_text, match.start(), match.end())
+                    
+                    # Create unique key to avoid duplicates
+                    entity_key = f"{entity_name.lower()}_{entity_type.value}"
+                    
+                    if entity_key not in processed_entities:
+                        processed_entities.add(entity_key)
+                        
+                        entity = RegulatedEntity(
+                            name=entity_name,
+                            type="entity",
+                            entity_type=entity_type,
+                            description=self._generate_description(entity_name, context),
+                            source_document_id=document.document_id,
+                            source_text=context,
+                            confidence=self._calculate_confidence(entity_name, context),
+                            metadata={
+                                "document_title": document.title or "Unknown",
+                                "publishers": [p.get("name", "") for p in document.publishers] if document.publishers else [],
+                                "published_date": document.published or "Unknown"
+                            },
+                            jurisdiction=self._extract_jurisdiction(document),
+                            regulatory_framework=self._extract_framework(document)
+                        )
+                        entities.append(entity)
+        
+        return entities
+    
+    def _get_full_text(self, document: Document) -> str:
+        """Combine all text sources from document"""
+        text_parts = []
+        
+        # Add title
+        if document.title:
+            text_parts.append(document.title)
+        
+        # Add source text
+        if document.source_text:
+            for text_item in document.source_text:
+                if isinstance(text_item, dict) and "text" in text_item:
+                    text_parts.append(text_item["text"])
+                elif isinstance(text_item, str):
+                    text_parts.append(text_item)
+        
+        # Add signpost text
+        if document.signposts:
+            for signpost in document.signposts:
+                if isinstance(signpost, dict) and "text" in signpost:
+                    text_parts.append(signpost["text"])
+        
+        return " ".join(text_parts)
+    
+    def _extract_context(self, text: str, start: int, end: int, window: int = 200) -> str:
+        """Extract context around a match"""
+        context_start = max(0, start - window)
+        context_end = min(len(text), end + window)
+        return text[context_start:context_end].strip()
+    
+    def _generate_description(self, entity_name: str, context: str) -> str:
+        """Generate description based on entity and context"""
+        # Simple rule-based description generation
+        entity_lower = entity_name.lower()
+        
+        if "investment adviser" in entity_lower or "investment advisor" in entity_lower:
+            return "Entity providing investment advice to clients"
+        elif "investment company" in entity_lower:
+            return "Company engaged in investing, reinvesting, or trading in securities"
+        elif "ucits" in entity_lower:
+            return "Undertaking for Collective Investment in Transferable Securities"
+        elif "management company" in entity_lower:
+            return "Company managing collective investment schemes"
+        elif "depositary" in entity_lower or "custodian" in entity_lower:
+            return "Entity responsible for safekeeping of fund assets"
+        elif "fund" in entity_lower:
+            return "Pooled investment vehicle"
+        else:
+            return "Regulated financial services entity"
+    
+    def _calculate_confidence(self, entity_name: str, context: str) -> float:
+        """Calculate confidence score for extracted entity"""
+        score = 0.5  # Base score
+        
+        # Increase score for exact matches
+        if entity_name in self.entity_definitions:
+            score += 0.2
+        
+        # Increase score for regulatory keywords in context
+        regulatory_keywords = ["regulated", "registered", "authorized", "licensed", "approved"]
+        for keyword in regulatory_keywords:
+            if keyword in context.lower():
+                score += 0.1
+                break
+        
+        # Increase score for definition indicators
+        if any(indicator in context.lower() for indicator in ["means", "defined as", "refers to"]):
+            score += 0.2
+        
+        return min(score, 1.0)
+    
+    def _extract_jurisdiction(self, document: Document) -> Optional[str]:
+        """Extract jurisdiction from document metadata"""
+        if document.publishers:
+            for publisher in document.publishers:
+                if isinstance(publisher, dict):
+                    if "jurisdiction" in publisher:
+                        return publisher["jurisdiction"]
+                    if "name" in publisher:
+                        name = publisher["name"].lower()
+                        if "uk" in name or "united kingdom" in name:
+                            return "UK"
+                        elif "us" in name or "united states" in name:
+                            return "US"
+                        elif "eu" in name or "european" in name:
+                            return "EU"
+        return None
+    
+    def _extract_framework(self, document: Document) -> Optional[str]:
+        """Extract regulatory framework from document"""
+        if not document.title:
+            return None
             
-            # Extract entities using LLM
-            extraction_result = await extract_structured_data(
-                content=content,
-                extraction_prompt=self.extraction_prompt,
-                response_model=EntityExtractionResult,
-                model=llm_manager.get_extraction_model()
-            )
-            
-            # Convert to RegulatedEntity models
-            entities = []
-            for entity_data in extraction_result.entities:
-                entity = self._create_regulated_entity(entity_data, document)
-                entities.append(entity)
-            
-            logger.info(f"Extracted {len(entities)} entities from document {document.document_id}")
-            return entities
-            
-        except Exception as e:
-            logger.error(f"Error extracting entities from document {document.document_id}: {e}")
-            return []
-    
-    def _prepare_content(self, document: RegGenomeDocument) -> str:
-        """Prepare document content for entity extraction."""
-        content_parts = [
-            f"**Document Title:** {document.title}",
-            f"**Document Type:** {document.document_type}",
-            f"**Jurisdiction:** {document.jurisdiction}",
-            f"**Legislative Initiative:** {document.legislative_initiative}",
-            f"**Publisher:** {document.publisher}",
-        ]
+        title_lower = document.title.lower()
         
-        # Add thematic tags if available
-        if document.thematic_tags:
-            content_parts.append(f"**Thematic Tags:** {', '.join(document.thematic_tags)}")
+        if "investment advisers act" in title_lower:
+            return "Investment Advisers Act (1940)"
+        elif "investment company act" in title_lower:
+            return "Investment Company Act (1940)"
+        elif "ucits" in title_lower:
+            if document.publishers:
+                if any(isinstance(p, dict) and p.get("jurisdiction") == "UK" for p in document.publishers):
+                    return "UK UCITS Regulations"
+            return "EU UCITS Directives"
         
-        # Add main content
-        content_parts.append("**Document Content:**")
-        content_parts.append(document.content)
-        
-        # Add section information if available
-        if document.sections:
-            content_parts.append("**Document Sections:**")
-            for section in document.sections:
-                content_parts.append(f"- {section.get('title', 'Untitled')}: {section.get('content', '')}")
-        
-        return "\n\n".join(content_parts)
-    
-    def _create_regulated_entity(self, entity_data: Dict[str, Any], document: RegGenomeDocument) -> RegulatedEntity:
-        """Create a RegulatedEntity from extracted data."""
-        # Generate entity ID based on name and type
-        entity_name = entity_data.get("name", "").strip()
-        entity_type_str = entity_data.get("entity_type", "other").lower()
-        
-        # Map entity type
-        try:
-            entity_type = EntityType(entity_type_str)
-        except ValueError:
-            entity_type = EntityType.OTHER
-        
-        # Generate unique ID
-        entity_id = self._generate_entity_id(entity_name, entity_type)
-        
-        # Extract jurisdictions
-        jurisdictions = []
-        if document.jurisdiction:
-            jurisdictions.append(document.jurisdiction)
-        if entity_data.get("jurisdictions"):
-            jurisdictions.extend(entity_data["jurisdictions"])
-        
-        # Extract regulatory framework
-        regulatory_framework = []
-        if document.legislative_initiative:
-            regulatory_framework.append(document.legislative_initiative)
-        if entity_data.get("regulatory_framework"):
-            regulatory_framework.extend(entity_data["regulatory_framework"])
-        
-        return RegulatedEntity(
-            entity_id=entity_id,
-            name=entity_name,
-            entity_type=entity_type,
-            description=entity_data.get("description", ""),
-            applicable_jurisdictions=list(set(jurisdictions)),
-            regulatory_framework=list(set(regulatory_framework)),
-            source_documents=[document.document_id],
-            definition_text=entity_data.get("definition_context", ""),
-            confidence_score=entity_data.get("confidence_score", 0.5)
-        )
-    
-    def _generate_entity_id(self, name: str, entity_type: EntityType) -> str:
-        """Generate a unique entity ID."""
-        # Create a unique identifier based on name and type
-        identifier = f"{entity_type.value}_{name.lower().replace(' ', '_')}"
-        
-        # Hash to ensure consistent IDs for the same entity
-        hash_object = hashlib.md5(identifier.encode())
-        hash_hex = hash_object.hexdigest()[:8]
-        
-        return f"entity_{hash_hex}"
-    
-    async def extract_entities_batch(self, documents: List[RegGenomeDocument]) -> List[RegulatedEntity]:
-        """Extract entities from multiple documents."""
-        logger.info(f"Extracting entities from {len(documents)} documents")
-        
-        all_entities = []
-        for document in documents:
-            entities = await self.extract_entities(document)
-            all_entities.extend(entities)
-        
-        return all_entities
-
-
-class EntityMerger:
-    """Utility class for merging similar entities."""
-    
-    def __init__(self):
-        pass
-    
-    def merge_similar_entities(self, entities: List[RegulatedEntity]) -> List[RegulatedEntity]:
-        """Merge entities that refer to the same regulatory concept."""
-        # Group entities by type and similar names
-        entity_groups = self._group_similar_entities(entities)
-        
-        merged_entities = []
-        for group in entity_groups:
-            if len(group) == 1:
-                merged_entities.append(group[0])
-            else:
-                merged_entity = self._merge_entity_group(group)
-                merged_entities.append(merged_entity)
-        
-        return merged_entities
-    
-    def _group_similar_entities(self, entities: List[RegulatedEntity]) -> List[List[RegulatedEntity]]:
-        """Group entities that are likely referring to the same concept."""
-        groups = []
-        remaining_entities = entities.copy()
-        
-        while remaining_entities:
-            current_entity = remaining_entities.pop(0)
-            current_group = [current_entity]
-            
-            # Find similar entities
-            to_remove = []
-            for other_entity in remaining_entities:
-                if self._are_entities_similar(current_entity, other_entity):
-                    current_group.append(other_entity)
-                    to_remove.append(other_entity)
-            
-            # Remove similar entities from remaining list
-            for entity in to_remove:
-                remaining_entities.remove(entity)
-            
-            groups.append(current_group)
-        
-        return groups
-    
-    def _are_entities_similar(self, entity1: RegulatedEntity, entity2: RegulatedEntity) -> bool:
-        """Check if two entities are similar enough to merge."""
-        # Same type and similar names
-        if entity1.entity_type != entity2.entity_type:
-            return False
-        
-        # Simple name similarity check
-        name1 = entity1.name.lower().strip()
-        name2 = entity2.name.lower().strip()
-        
-        # Exact match
-        if name1 == name2:
-            return True
-        
-        # Contains check (for variations)
-        if name1 in name2 or name2 in name1:
-            return True
-        
-        # Word overlap check
-        words1 = set(name1.split())
-        words2 = set(name2.split())
-        overlap = len(words1.intersection(words2))
-        total_words = len(words1.union(words2))
-        
-        # If significant word overlap, consider similar
-        if total_words > 0 and overlap / total_words > 0.7:
-            return True
-        
-        return False
-    
-    def _merge_entity_group(self, entities: List[RegulatedEntity]) -> RegulatedEntity:
-        """Merge a group of similar entities into one."""
-        # Use the entity with the highest confidence as the base
-        base_entity = max(entities, key=lambda e: e.confidence_score)
-        
-        # Merge information from all entities
-        all_source_docs = []
-        all_jurisdictions = []
-        all_frameworks = []
-        definition_texts = []
-        
-        for entity in entities:
-            all_source_docs.extend(entity.source_documents)
-            all_jurisdictions.extend(entity.applicable_jurisdictions)
-            all_frameworks.extend(entity.regulatory_framework)
-            if entity.definition_text:
-                definition_texts.append(entity.definition_text)
-        
-        # Create merged entity
-        merged_entity = RegulatedEntity(
-            entity_id=base_entity.entity_id,
-            name=base_entity.name,
-            entity_type=base_entity.entity_type,
-            description=base_entity.description,
-            applicable_jurisdictions=list(set(all_jurisdictions)),
-            regulatory_framework=list(set(all_frameworks)),
-            source_documents=list(set(all_source_docs)),
-            definition_text=" | ".join(definition_texts),
-            confidence_score=max(e.confidence_score for e in entities)
-        )
-        
-        return merged_entity 
+        return None

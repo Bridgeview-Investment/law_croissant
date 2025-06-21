@@ -1,373 +1,192 @@
-#!/usr/bin/env python3
-"""
-RegGenome Deep Research Multi-agent System
-
-Main entry point for running the deep research workflow to identify regulated
-activities, entities, and products from regulatory documents.
-
-Usage:
-    python main.py --help                    # Show help
-    python main.py --mock                    # Run with mock data (no API key needed)
-    python main.py --config config.env       # Specify custom config file
-    python main.py --output results.json     # Specify output file
-"""
-
 import asyncio
-import argparse
-import logging
-import sys
 import json
-from pathlib import Path
-from typing import Optional, List
+import sys
 from datetime import datetime
+from pathlib import Path
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+from src.config import Config
+from src.deep_research_orchestrator import DeepResearchOrchestrator
+from src.terminal_formatter import format_for_terminal
 
-from src.config import config
-from src.deep_research_orchestrator import DeepResearchOrchestrator, run_deep_research
-from src.auth import token_manager
-
-
-def setup_logging(log_level: str = "INFO", log_file: Optional[str] = None):
-    """Set up logging configuration."""
+async def run_batch_mode(query: str = None):
+    """Run in batch mode with a predefined query"""
     
-    # Configure log level
-    numeric_level = getattr(logging, log_level.upper(), logging.INFO)
+    # Initialize configuration
+    config = Config()
     
-    # Create formatters
-    console_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    # Use provided query or default
+    if not query:
+        query = "How does a UK fund conduct CDD & KYC with both the EU and UK regulators when verifying foreign investors post-Brexit?"
     
-    file_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    print("=" * 80)
+    print(format_for_terminal("# DEEP RESEARCH MULTI-AGENT SYSTEM - BATCH MODE"))
+    print(format_for_terminal("## Task 1: Extract Regulated Activities, Entities, and Products"))
+    print("=" * 80)
+    print(f"\nQuery: {query}")
+    print(f"\nInitiatives to analyze:")
+    for key, name in config.initiative_filters.items():
+        print(f"  - {name}")
+    print("\n" + "-" * 80)
     
-    # Configure root logger
-    root_logger = logging.getLogger()
-    root_logger.setLevel(numeric_level)
-    
-    # Console handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(numeric_level)
-    console_handler.setFormatter(console_formatter)
-    root_logger.addHandler(console_handler)
-    
-    # File handler if specified
-    if log_file:
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(numeric_level)
-        file_handler.setFormatter(file_formatter)
-        root_logger.addHandler(file_handler)
-    
-    # Reduce noise from external libraries
-    logging.getLogger("aiohttp").setLevel(logging.WARNING)
-    logging.getLogger("httpx").setLevel(logging.WARNING)
-    logging.getLogger("urllib3").setLevel(logging.WARNING)
-
-
-def validate_configuration():
-    """Validate configuration and return validation errors."""
-    errors = config.validate_config()
-    return errors
-
-
-def print_banner():
-    """Print application banner."""
-    banner = """
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                    RegGenome Deep Research Multi-agent System                ║
-║                                                                              ║
-║   Automated extraction of regulated activities, entities, and products      ║
-║   from regulatory documents using AI-powered deep research agents           ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-"""
-    print(banner)
-
-
-def display_auth_status():
-    """Display authentication status information."""
-    print("\n=== Authentication Status ===")
-    
-    if config.reggenome.use_jwt_auth:
-        token_info = token_manager.get_token_info()
-        
-        if token_info['status'] == 'valid':
-            print("✓ JWT Authentication: ACTIVE")
-            print(f"  Username: {token_info.get('username', 'N/A')}")
-            print(f"  Email: {token_info.get('email', 'N/A')}")
-            print(f"  Expires: {token_info.get('expires_at', 'N/A')}")
-            
-            if token_info.get('is_expired'):
-                print("  ⚠️  Status: EXPIRED")
-            else:
-                print("  ✓ Status: VALID")
-                
-        elif token_info['status'] == 'no_tokens':
-            print("✗ JWT Authentication: NO TOKENS FOUND")
-            print("  Please ensure key.txt file exists and contains valid tokens")
-            
-        elif token_info['status'] == 'error':
-            print("✗ JWT Authentication: ERROR")
-            print(f"  Error: {token_info.get('error', 'Unknown error')}")
-            
-    else:
-        if config.reggenome.api_key:
-            print("✓ API Key Authentication: CONFIGURED")
-        else:
-            print("✗ No Authentication: NOT CONFIGURED")
-    
-    print("==============================\n")
-
-
-async def test_api_connection():
-    """Test connection to RegGenome API."""
-    print("Testing API connection...")
+    # Initialize orchestrator
+    orchestrator = DeepResearchOrchestrator(config)
     
     try:
-        from src.api_client import RegGenomeAPIClient
-        
-        async with RegGenomeAPIClient() as client:
-            # Try to get legislative initiatives as a simple test
-            initiatives = await client.get_legislative_initiatives()
-            print(f"✓ API Connection successful. Found {len(initiatives)} legislative initiatives.")
-            return True
-            
-    except Exception as e:
-        print(f"✗ API Connection failed: {e}")
-        return False
-
-
-async def run_research_workflow(args):
-    """Run the research workflow with the provided arguments."""
-    
-    # Validate configuration if not using mock API
-    if not args.mock:
-        validation_errors = validate_configuration()
-        if validation_errors:
-            print("❌ Configuration validation failed:")
-            for error in validation_errors:
-                print(f"   • {error}")
-            print("\nPlease check your configuration and try again.")
-            return 1
-    
-    try:
-        # Create orchestrator
-        orchestrator = DeepResearchOrchestrator(use_mock_api=args.mock)
-        
-        print(f"🔍 Starting deep research workflow...")
-        if args.mock:
-            print("🧪 Using mock API for demonstration")
-        
         # Run the research
-        taxonomy = await orchestrator.run_research(
-            query=args.query,
-            save_results=True,
-            output_file=args.output
-        )
+        print("\nStarting research process...")
+        result = await orchestrator.research(query)
+        
+        # Generate hierarchical table
+        table = orchestrator.generate_hierarchical_table(result)
+        
+        # Save results
+        output_dir = Path("output")
+        output_dir.mkdir(exist_ok=True)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Save full results as JSON
+        with open(output_dir / f"task1_hierarchical_table_{timestamp}.json", "w") as f:
+            json.dump(table, f, indent=2, default=str)
+        
+        # Save human-readable summary
+        with open(output_dir / f"task1_summary_{timestamp}.txt", "w") as f:
+            f.write(generate_summary_report(table, result))
+        
+        print(format_for_terminal(f"\n**Research complete!** Results saved to:"))
+        print(f"  - output/task1_hierarchical_table_{timestamp}.json")
+        print(f"  - output/task1_summary_{timestamp}.txt")
         
         # Print summary statistics
-        stats = orchestrator.get_summary_statistics()
-        print("\n" + "="*80)
-        print("📊 RESEARCH RESULTS SUMMARY")
-        print("="*80)
-        
-        print(f"📋 Query: {stats['query']}")
-        print(f"📄 Documents processed: {stats['totals']['documents']}")
-        print(f"🏢 Entities extracted: {stats['totals']['entities']}")
-        print(f"⚡ Activities extracted: {stats['totals']['activities']}")
-        print(f"📦 Products extracted: {stats['totals']['products']}")
-        
-        # Print breakdown by type
-        if stats['entity_breakdown']:
-            print("\n🏢 Entity Breakdown:")
-            for entity_type, count in stats['entity_breakdown'].items():
-                print(f"   • {entity_type}: {count}")
-        
-        if stats['activity_breakdown']:
-            print("\n⚡ Activity Breakdown:")
-            for activity_type, count in stats['activity_breakdown'].items():
-                print(f"   • {activity_type}: {count}")
-        
-        if stats['product_breakdown']:
-            print("\n📦 Product Breakdown:")
-            for product_type, count in stats['product_breakdown'].items():
-                print(f"   • {product_type}: {count}")
-        
-        # Print errors and warnings
-        if stats['errors']:
-            print(f"\n⚠️  Errors ({len(stats['errors'])}):")
-            for error in stats['errors']:
-                print(f"   • {error}")
-        
-        if stats['warnings']:
-            print(f"\n⚠️  Warnings ({len(stats['warnings'])}):")
-            for warning in stats['warnings']:
-                print(f"   • {warning}")
-        
-        # Create and save hierarchical table (Task 1 deliverable)
-        if args.table_output:
-            print(f"\n📋 Creating hierarchical table...")
-            hierarchical_table = await orchestrator.create_hierarchical_table()
-            
-            with open(args.table_output, 'w', encoding='utf-8') as f:
-                json.dump(hierarchical_table, f, indent=2, default=str)
-            
-            print(f"✅ Hierarchical table saved to: {args.table_output}")
-        
-        print(f"\n✅ Research completed successfully!")
-        if args.output:
-            print(f"📁 Full results saved to: {args.output}")
-        
-        return 0
+        print("\n" + "=" * 80)
+        print(format_for_terminal("# SUMMARY STATISTICS"))
+        print("=" * 80)
+        print(f"Total documents processed: {result.total_documents_processed}")
+        print(f"Unique entities found: {len(result.entities)}")
+        print(f"Unique activities found: {len(result.activities)}")
+        print(f"Unique products found: {len(result.products)}")
+        print(f"Total unique items: {len(result.entities) + len(result.activities) + len(result.products)}")
         
     except Exception as e:
-        print(f"\n❌ Research workflow failed: {e}")
-        logging.exception("Detailed error information:")
-        return 1
+        print(format_for_terminal(f"\n**Error during research:** {e}"))
+        raise
 
+def generate_summary_report(table: dict, result) -> str:
+    """Generate a human-readable summary report"""
+    report = []
+    
+    report.append("DEEP RESEARCH MULTI-AGENT SYSTEM - TASK 1 RESULTS")
+    report.append("=" * 80)
+    report.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    report.append(f"Documents Processed: {result.total_documents_processed}")
+    
+    # Entities section
+    report.append("\n\n1. REGULATED ENTITIES")
+    report.append("-" * 40)
+    for entity_group in table["regulated_entities"]:
+        report.append(f"\n{entity_group['type'].upper()} ({entity_group['count']} found):")
+        for item in entity_group["items"][:5]:  # Top 5
+            report.append(f"  • {item['name']}")
+            report.append(f"    Description: {item['description']}")
+            if item.get('jurisdiction'):
+                report.append(f"    Jurisdiction: {item['jurisdiction']}")
+            if item.get('regulatory_framework'):
+                report.append(f"    Framework: {item['regulatory_framework']}")
+            report.append(f"    Confidence: {item['confidence']:.2f}")
+            report.append("")
+    
+    # Activities section
+    report.append("\n2. REGULATED ACTIVITIES")
+    report.append("-" * 40)
+    for activity_group in table["regulated_activities"]:
+        report.append(f"\n{activity_group['type'].upper()} ({activity_group['count']} found):")
+        for item in activity_group["items"][:5]:  # Top 5
+            report.append(f"  • {item['name']}")
+            report.append(f"    Description: {item['description']}")
+            if item.get('applicable_entities'):
+                report.append(f"    Applicable to: {', '.join(item['applicable_entities'][:3])}")
+            if item.get('requirements'):
+                report.append(f"    Key requirements:")
+                for req in item['requirements'][:2]:
+                    report.append(f"      - {req}")
+            report.append(f"    Confidence: {item['confidence']:.2f}")
+            report.append("")
+    
+    # Products section
+    report.append("\n3. REGULATED PRODUCTS")
+    report.append("-" * 40)
+    for product_group in table["regulated_products"]:
+        report.append(f"\n{product_group['type'].upper()} ({product_group['count']} found):")
+        for item in product_group["items"][:5]:  # Top 5
+            report.append(f"  • {item['name']}")
+            report.append(f"    Description: {item['description']}")
+            if item.get('asset_classes'):
+                report.append(f"    Asset classes: {', '.join(item['asset_classes'])}")
+            if item.get('issuer_requirements'):
+                report.append(f"    Issuer requirements:")
+                for req in item['issuer_requirements'][:2]:
+                    report.append(f"      - {req}")
+            if item.get('investor_restrictions'):
+                report.append(f"    Investor restrictions:")
+                for rest in item['investor_restrictions'][:2]:
+                    report.append(f"      - {rest}")
+            report.append(f"    Confidence: {item['confidence']:.2f}")
+            report.append("")
+    
+    # Statistics
+    report.append("\n\nEXTRACTION STATISTICS")
+    report.append("-" * 40)
+    stats = result.extraction_metadata["statistics"]
+    report.append(f"Total items extracted: {stats['total_entities_extracted'] + stats['total_activities_extracted'] + stats['total_products_extracted']}")
+    report.append(f"After deduplication: {stats['unique_entities'] + stats['unique_activities'] + stats['unique_products']}")
+    report.append(f"Deduplication ratio: {stats['deduplication_ratio']:.1%}")
+    
+    return "\n".join(report)
 
-def parse_arguments():
-    """Parse command line arguments."""
-    
-    parser = argparse.ArgumentParser(
-        description="RegGenome Deep Research Multi-agent System",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python main.py --mock                                 # Demo with mock data
-  python main.py --output my_results.json              # Save to specific file
-  python main.py --table-output task1_table.json       # Create Task 1 table
-  python main.py --query "UCITS regulations"           # Custom research query
-  python main.py --log-level DEBUG --log-file debug.log # Detailed logging
-        """
-    )
-    
-    parser.add_argument(
-        "--mock",
-        action="store_true",
-        help="Use mock API client (no API key required, for testing)"
-    )
-    
-    parser.add_argument(
-        "--query",
-        type=str,
-        default="Identify regulated activities, entities, and products",
-        help="Research query to guide the analysis"
-    )
-    
-    parser.add_argument(
-        "--output",
-        type=str,
-        help="Output file for complete results (default: auto-generated)"
-    )
-    
-    parser.add_argument(
-        "--table-output",
-        type=str,
-        default="regulatory_hierarchy_table.json",
-        help="Output file for hierarchical table (Task 1 deliverable)"
-    )
-    
-    parser.add_argument(
-        "--config",
-        type=str,
-        help="Path to configuration file (default: .env)"
-    )
-    
-    parser.add_argument(
-        "--log-level",
-        type=str,
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        default="INFO",
-        help="Logging level"
-    )
-    
-    parser.add_argument(
-        "--log-file",
-        type=str,
-        help="Log file path (default: console only)"
-    )
-    
-    parser.add_argument(
-        "--no-banner",
-        action="store_true",
-        help="Skip printing the banner"
-    )
-    
-    parser.add_argument(
-        "--auth-status",
-        action="store_true",
-        help="Show authentication status and exit"
-    )
-    
-    parser.add_argument(
-        "--api-test",
-        action="store_true",
-        help="Test API connection and exit"
-    )
-    
-    return parser.parse_args()
-
+def print_usage():
+    """Print usage information"""
+    print("\nUsage:")
+    print("  python main.py                    # Run interactive mode")
+    print("  python main.py --batch            # Run batch mode with default query")
+    print("  python main.py --batch \"query\"    # Run batch mode with custom query")
+    print("  python main.py --help             # Show this help message")
 
 async def main():
-    """Main entry point."""
+    """Main entry point"""
     
-    # Parse arguments
-    args = parse_arguments()
+    # Check for API key
+    if not Path("key.txt").exists():
+        print("\n❌ ERROR: API key not found!")
+        print("   Please place your RegGenome JWT token in 'key.txt'")
+        return
     
-    # Set up logging
-    setup_logging(
-        log_level=args.log_level,
-        log_file=args.log_file or config.logging.log_file
-    )
+    # Parse command line arguments
+    args = sys.argv[1:]
     
-    # Print banner
-    if not args.no_banner:
-        print_banner()
-    
-    # Load custom config if specified
-    if args.config:
-        import os
-        from dotenv import load_dotenv
+    if not args:
+        # No arguments - run interactive mode
+        from interactive_cli import InteractiveCLI
+        cli = InteractiveCLI()
+        await cli.run()
         
-        if not os.path.exists(args.config):
-            print(f"❌ Configuration file not found: {args.config}")
-            return 1
+    elif args[0] == "--help" or args[0] == "-h":
+        print_usage()
         
-        load_dotenv(args.config, override=True)
-        print(f"📁 Loaded configuration from: {args.config}")
-    
-    # Display authentication status
-    display_auth_status()
-    
-    # Handle specific commands
-    if args.auth_status:
-        return 0
-    
-    if args.api_test:
-        success = await test_api_connection()
-        return 0 if success else 1
-    
-    # Run the research workflow
-    return await run_research_workflow(args)
-
+    elif args[0] == "--batch" or args[0] == "-b":
+        # Batch mode
+        query = None
+        if len(args) > 1:
+            query = " ".join(args[1:])
+        await run_batch_mode(query)
+        
+    else:
+        # Assume the arguments form a query for batch mode
+        query = " ".join(args)
+        await run_batch_mode(query)
 
 if __name__ == "__main__":
-    # Handle Windows event loop policy
-    if sys.platform.startswith('win'):
-        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-    
     try:
-        exit_code = asyncio.run(main())
-        sys.exit(exit_code)
+        asyncio.run(main())
     except KeyboardInterrupt:
-        print("\n🛑 Interrupted by user")
-        sys.exit(130)
-    except Exception as e:
-        print(f"\n💥 Unexpected error: {e}")
-        logging.exception("Unexpected error details:")
-        sys.exit(1) 
+        print("\n\n👋 Goodbye!")
+        sys.exit(0)

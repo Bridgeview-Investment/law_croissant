@@ -1,0 +1,727 @@
+{
+  "query": "How does a UK fund conduct CDD & KYC with both the EU and UK regulators when verifying foreign investors post-Brexit?",
+  "execution_timestamp": "2025-06-21T14:59:57.787110",
+  "analysis_type": "cross_jurisdictional",
+  "jurisdictions_analyzed": [
+    "US",
+    "EU",
+    "UK"
+  ],
+  "jurisdiction_results": {
+    "US": {
+      "jurisdiction": "US",
+      "entities_count": 12,
+      "activities_count": 6,
+      "products_count": 6,
+      "documents_processed": 1072,
+      "top_entities": [
+        "UCITS",
+        "ADVISER",
+        "Financial Institutions",
+        "RIA",
+        "Investment Adviser"
+      ],
+      "top_activities": [
+        "Asset Management",
+        "Risk Management",
+        "Risk Assessment",
+        "Regulatory Reporting",
+        "Disclosure Requirements"
+      ],
+      "top_products": [
+        "Exchange-Traded Fund",
+        "UCITS Fund",
+        "Collective Investment Scheme",
+        "Money Market Funds",
+        "Private Fund"
+      ],
+      "specific_requirements_count": 1,
+      "definitions_count": 0
+    },
+    "EU": {
+      "jurisdiction": "EU",
+      "entities_count": 12,
+      "activities_count": 6,
+      "products_count": 6,
+      "documents_processed": 1072,
+      "top_entities": [
+        "UCITS",
+        "ADVISER",
+        "Financial Institutions",
+        "RIA",
+        "Investment Adviser"
+      ],
+      "top_activities": [
+        "Asset Management",
+        "Risk Management",
+        "Risk Assessment",
+        "Regulatory Reporting",
+        "Disclosure Requirements"
+      ],
+      "top_products": [
+        "Exchange-Traded Fund",
+        "UCITS Fund",
+        "Collective Investment Scheme",
+        "Money Market Funds",
+        "Private Fund"
+      ],
+      "specific_requirements_count": 1,
+      "definitions_count": 0
+    },
+    "UK": {
+      "jurisdiction": "UK",
+      "entities_count": 12,
+      "activities_count": 6,
+      "products_count": 6,
+      "documents_processed": 1072,
+      "top_entities": [
+        "UCITS",
+        "ADVISER",
+        "Financial Institutions",
+        "RIA",
+        "Investment Adviser"
+      ],
+      "top_activities": [
+        "Asset Management",
+        "Risk Management",
+        "Risk Assessment",
+        "Regulatory Reporting",
+        "Disclosure Requirements"
+      ],
+      "top_products": [
+        "Exchange-Traded Fund",
+        "UCITS Fund",
+        "Collective Investment Scheme",
+        "Money Market Funds",
+        "Private Fund"
+      ],
+      "specific_requirements_count": 1,
+      "definitions_count": 0
+    }
+  },
+  "cross_matched_requirements": [
+    "CrossJurisdictionalRequirement(requirement_type='disclosure', description='Cross-jurisdictional requirements for disclosure', jurisdictions={'US': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}, 'EU': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}, 'UK': {'requirements': [['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011']], 'documents': ['National Instrument 43-101 Standards of Disclosure for Mineral Projects - 86/2011'], 'sources': ['https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/86_2011']}}, differences=['US focuses on SEC compliance while EU emphasizes MiFID II requirements', 'UK has post-Brexit specific requirements that may differ from EU'], commonalities=[], unified_approach='Implement comprehensive disclosure framework that captures the most stringent requirements from all jurisdictions, ensuring compliance across US, EU, and UK markets.')"
+  ],
+  "comparison_analysis": {
+    "entity_differences": {
+      "US": {
+        "total_entities": 12,
+        "entity_types": {
+          "ucits": 2,
+          "investment_adviser": 3,
+          "firm": 2,
+          "fund": 2,
+          "depositary": 1,
+          "management_company": 2
+        },
+        "key_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ]
+      },
+      "EU": {
+        "total_entities": 12,
+        "entity_types": {
+          "ucits": 2,
+          "investment_adviser": 3,
+          "firm": 2,
+          "fund": 2,
+          "depositary": 1,
+          "management_company": 2
+        },
+        "key_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ]
+      },
+      "UK": {
+        "total_entities": 12,
+        "entity_types": {
+          "ucits": 2,
+          "investment_adviser": 3,
+          "firm": 2,
+          "fund": 2,
+          "depositary": 1,
+          "management_company": 2
+        },
+        "key_entities": [
+          "UCITS",
+          "ADVISER",
+          "Financial Institutions",
+          "RIA",
+          "Investment Adviser"
+        ]
+      }
+    },
+    "activity_differences": {
+      "US": {
+        "total_activities": 6,
+        "activity_types": {
+          "asset_management": 1,
+          "risk_management": 2,
+          "reporting": 2,
+          "custody": 1
+        },
+        "key_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ]
+      },
+      "EU": {
+        "total_activities": 6,
+        "activity_types": {
+          "asset_management": 1,
+          "risk_management": 2,
+          "reporting": 2,
+          "custody": 1
+        },
+        "key_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ]
+      },
+      "UK": {
+        "total_activities": 6,
+        "activity_types": {
+          "asset_management": 1,
+          "risk_management": 2,
+          "reporting": 2,
+          "custody": 1
+        },
+        "key_activities": [
+          "Asset Management",
+          "Risk Management",
+          "Risk Assessment",
+          "Regulatory Reporting",
+          "Disclosure Requirements"
+        ]
+      }
+    },
+    "product_differences": {
+      "US": {
+        "total_products": 6,
+        "product_types": {
+          "etf": 1,
+          "ucits_fund": 1,
+          "collective_investment_scheme": 1,
+          "money_market_fund": 1,
+          "hedge_fund": 2
+        },
+        "key_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ]
+      },
+      "EU": {
+        "total_products": 6,
+        "product_types": {
+          "etf": 1,
+          "ucits_fund": 1,
+          "collective_investment_scheme": 1,
+          "money_market_fund": 1,
+          "hedge_fund": 2
+        },
+        "key_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ]
+      },
+      "UK": {
+        "total_products": 6,
+        "product_types": {
+          "etf": 1,
+          "ucits_fund": 1,
+          "collective_investment_scheme": 1,
+          "money_market_fund": 1,
+          "hedge_fund": 2
+        },
+        "key_products": [
+          "Exchange-Traded Fund",
+          "UCITS Fund",
+          "Collective Investment Scheme",
+          "Money Market Funds",
+          "Private Fund"
+        ]
+      }
+    },
+    "requirement_conflicts": [],
+    "compliance_complexity": {
+      "total_requirements": 1,
+      "conflicting_requirements": 1,
+      "complexity_score": 1.0,
+      "complexity_level": "High",
+      "recommendations": [
+        "Significant differences require careful compliance strategy",
+        "Recommend dedicated compliance resources for each jurisdiction",
+        "Legal consultation advised for complex requirements",
+        "Consider phased implementation approach"
+      ]
+    }
+  },
+  "unified_recommendations": {
+    "unified_customer_form": {
+      "form_structure": {
+        "personal_information": [
+          "Full legal name",
+          "Date of birth",
+          "Address",
+          "Phone number",
+          "Email address"
+        ],
+        "identification": [
+          "Government ID number",
+          "ID document type",
+          "ID expiry date"
+        ],
+        "financial_information": [
+          "Occupation",
+          "Annual income",
+          "Net worth",
+          "Source of funds",
+          "Source of wealth"
+        ],
+        "investment_profile": [
+          "Investment objectives",
+          "Time horizon",
+          "Risk tolerance",
+          "Investment experience"
+        ],
+        "compliance_screening": [
+          "PEP status",
+          "Sanctions screening",
+          "Beneficial ownership information"
+        ],
+        "jurisdiction_specific": {
+          "US": [],
+          "EU": [],
+          "UK": []
+        }
+      },
+      "data_collection_approach": "Single comprehensive form with jurisdiction-specific sections",
+      "validation_rules": [
+        "All personal information fields are mandatory",
+        "Government ID must be valid and not expired",
+        "Financial information must be consistent and verifiable",
+        "Investment profile must be complete for suitability assessment",
+        "Compliance screening must clear all jurisdictional requirements",
+        "Jurisdiction-specific fields mandatory based on account types requested"
+      ]
+    },
+    "data_mapping_strategy": {
+      "approach": "Collect once, map to multiple jurisdictions",
+      "data_storage": {
+        "master_record": "Single customer master record with all data",
+        "jurisdiction_views": "Filtered views for each jurisdiction's compliance team",
+        "audit_trail": "Complete audit trail for all data access and modifications"
+      },
+      "field_mapping": {
+        "US_specific": [],
+        "EU_specific": [],
+        "UK_specific": []
+      },
+      "data_governance": [
+        "Data privacy compliance (GDPR for EU clients)",
+        "Data retention policies per jurisdiction",
+        "Cross-border data transfer protocols",
+        "Regular data quality audits"
+      ]
+    },
+    "implementation_approach": [
+      "Phase 1: Design unified customer data model",
+      "Phase 2: Implement single data collection interface",
+      "Phase 3: Create jurisdiction-specific data views and workflows",
+      "Phase 4: Integrate with existing compliance systems",
+      "Phase 5: Test with pilot customers across all jurisdictions",
+      "Phase 6: Full rollout with comprehensive staff training"
+    ],
+    "compliance_checklist": [
+      {
+        "requirement": "disclosure",
+        "checks": [
+          "Verify compliance with US disclosure requirements",
+          "Verify compliance with EU disclosure requirements",
+          "Verify compliance with UK disclosure requirements"
+        ],
+        "documentation_needed": [
+          "US compliance documentation",
+          "EU compliance documentation",
+          "UK compliance documentation"
+        ],
+        "review_frequency": "Annual"
+      }
+    ]
+  },
+  "summary": {
+    "jurisdictions_analyzed": 3,
+    "total_entities_found": 36,
+    "total_activities_found": 18,
+    "total_products_found": 18,
+    "total_documents_processed": 3216,
+    "cross_matched_requirements": 1,
+    "analysis_completion_time": "2025-06-21T14:59:57.787128",
+    "key_findings": [
+      "Analyzed 3 jurisdictions comprehensively",
+      "Identified 1 cross-jurisdictional requirements",
+      "Processed 3216 regulatory documents",
+      "Generated unified customer data collection recommendations"
+    ]
+  },
+  "use_case_analysis": {
+    "customer_data_requirements": {
+      "common_fields": [
+        "Full legal name",
+        "Date of birth",
+        "Residential address",
+        "Mailing address",
+        "Phone number",
+        "Email address",
+        "Government ID number",
+        "Tax ID number",
+        "Occupation",
+        "Employment status",
+        "Annual income",
+        "Net worth",
+        "Investment experience",
+        "Investment objectives",
+        "Risk tolerance"
+      ],
+      "jurisdiction_specific_fields": {
+        "US": [
+          "Social Security Number (SSN) or Individual Taxpayer Identification Number (ITIN)",
+          "W-9 or W-8 form",
+          "FATCA classification",
+          "Accredited investor status",
+          "Pattern Day Trader acknowledgment",
+          "Options trading level"
+        ],
+        "EU": [
+          "EU Tax Identification Number",
+          "GDPR consent",
+          "MiFID II categorization",
+          "Appropriateness assessment",
+          "LEI (for professional clients)",
+          "Country of tax residence",
+          "PRIIPs risk tolerance"
+        ],
+        "UK": [
+          "National Insurance Number",
+          "UK tax residence status",
+          "FCA client categorization",
+          "Appropriateness test",
+          "Financial promotion restrictions acknowledgment",
+          "Post-Brexit equivalence confirmations"
+        ]
+      },
+      "data_collection_strategy": "Single comprehensive form with jurisdiction-specific sections",
+      "data_validation_rules": [
+        "All personal information must be consistent across all forms",
+        "Government IDs must be valid and not expired",
+        "Address verification documents must be recent (within 3 months)",
+        "Financial information must be reasonable and verifiable",
+        "Tax information must be complete for all relevant jurisdictions",
+        "Investment experience must be documented with examples",
+        "Risk tolerance must be consistent with investment objectives",
+        "All compliance screening must return clear results"
+      ]
+    },
+    "documentation_requirements": {
+      "identity_documents": {
+        "US": [
+          "Government-issued photo ID",
+          "Proof of address"
+        ],
+        "EU": [
+          "National ID or passport",
+          "Proof of residence",
+          "Tax certificate"
+        ],
+        "UK": [
+          "UK driving license or passport",
+          "Council tax bill or bank statement"
+        ]
+      },
+      "financial_documents": {
+        "US": [
+          "Bank statements",
+          "Tax returns (for accredited investor status)"
+        ],
+        "EU": [
+          "Bank statements",
+          "Income verification",
+          "Asset declarations"
+        ],
+        "UK": [
+          "Bank statements",
+          "Payslips or pension statements",
+          "P60 or SA302"
+        ]
+      },
+      "compliance_documents": {
+        "US": [
+          "W-9/W-8 forms",
+          "Options agreement",
+          "Day trading agreement"
+        ],
+        "EU": [
+          "MiFID II questionnaire",
+          "Appropriateness assessment",
+          "GDPR consent"
+        ],
+        "UK": [
+          "Appropriateness test",
+          "Client agreement",
+          "Risk warnings"
+        ]
+      }
+    },
+    "verification_processes": {
+      "identity_verification": {
+        "common_process": "Multi-factor identity verification",
+        "jurisdiction_differences": {
+          "US": "PATRIOT Act compliance, OFAC screening",
+          "EU": "AML 5th Directive, sanctions screening",
+          "UK": "Money Laundering Regulations, PEP screening"
+        }
+      },
+      "address_verification": {
+        "common_process": "Utility bill or bank statement verification",
+        "jurisdiction_differences": {
+          "US": "90-day recency requirement",
+          "EU": "3-month recency, GDPR-compliant storage",
+          "UK": "3-month recency, post-Brexit verification"
+        }
+      },
+      "financial_verification": {
+        "common_process": "Income and asset verification",
+        "jurisdiction_differences": {
+          "US": "Accredited investor verification if applicable",
+          "EU": "MiFID II financial assessment",
+          "UK": "FCA appropriateness assessment"
+        }
+      }
+    },
+    "ongoing_obligations": {
+      "periodic_updates": {
+        "US": "Annual suitability review, beneficial ownership updates",
+        "EU": "Periodic appropriateness review, LEI renewals",
+        "UK": "Annual appropriateness review, client categorization updates"
+      },
+      "reporting_obligations": {
+        "US": "Form 8938 (FATCA), suspicious activity reporting",
+        "EU": "CRS reporting, transaction reporting under MiFIR",
+        "UK": "Suspicious activity reporting, transaction reporting"
+      },
+      "monitoring_requirements": {
+        "US": "Pattern day trader monitoring, large trader reporting",
+        "EU": "Best execution monitoring, transaction cost analysis",
+        "UK": "Best execution monitoring, product governance"
+      }
+    },
+    "unified_onboarding_flow": {
+      "onboarding_flow": [
+        {
+          "step": 1,
+          "title": "Market Selection",
+          "description": "Customer selects which markets they want to trade (US, EU, UK)",
+          "data_collected": [
+            "Market preferences",
+            "Account types requested"
+          ]
+        },
+        {
+          "step": 2,
+          "title": "Personal Information",
+          "description": "Collect core personal information valid across all jurisdictions",
+          "data_collected": [
+            "Name",
+            "DOB",
+            "Address",
+            "Contact info",
+            "Tax info"
+          ]
+        },
+        {
+          "step": 3,
+          "title": "Identity Verification",
+          "description": "Multi-factor identity verification satisfying all jurisdictions",
+          "data_collected": [
+            "ID documents",
+            "Biometric verification",
+            "Address proof"
+          ]
+        },
+        {
+          "step": 4,
+          "title": "Financial Assessment",
+          "description": "Comprehensive financial profile for all jurisdictions",
+          "data_collected": [
+            "Income",
+            "Net worth",
+            "Investment experience",
+            "Objectives"
+          ]
+        },
+        {
+          "step": 5,
+          "title": "Jurisdiction-Specific Requirements",
+          "description": "Complete jurisdiction-specific forms and assessments",
+          "data_collected": [
+            "US: W-9/W-8",
+            "EU: MiFID II",
+            "UK: Appropriateness test"
+          ]
+        },
+        {
+          "step": 6,
+          "title": "Risk Assessment & Suitability",
+          "description": "Unified risk assessment meeting all jurisdictional requirements",
+          "data_collected": [
+            "Risk tolerance",
+            "Suitability scores",
+            "Product restrictions"
+          ]
+        },
+        {
+          "step": 7,
+          "title": "Compliance Screening",
+          "description": "AML/KYC screening across all jurisdictions",
+          "data_collected": [
+            "PEP status",
+            "Sanctions screening",
+            "Source of funds"
+          ]
+        },
+        {
+          "step": 8,
+          "title": "Agreement & Account Opening",
+          "description": "Digital signatures for all jurisdictional agreements",
+          "data_collected": [
+            "Client agreements",
+            "Risk disclosures",
+            "Account confirmations"
+          ]
+        }
+      ],
+      "estimated_completion_time": "15-30 minutes",
+      "automation_opportunities": [
+        "Auto-population across jurisdiction forms",
+        "Real-time document verification",
+        "Automated suitability scoring",
+        "Digital signature workflows"
+      ],
+      "quality_controls": [
+        "Multi-level review process",
+        "Automated compliance checks",
+        "Exception handling workflows",
+        "Audit trail maintenance"
+      ]
+    }
+  },
+  "use_case": "account_opening",
+  "business_recommendations": {
+    "strategic_recommendations": [
+      "Implement unified customer onboarding system to reduce complexity and costs",
+      "Standardize data collection to meet the highest requirements across all jurisdictions",
+      "Create jurisdiction-specific compliance teams with centralized coordination",
+      "Develop automated compliance checking to reduce manual review time"
+    ],
+    "operational_recommendations": [
+      "Establish clear escalation procedures for cross-jurisdictional issues",
+      "Create standardized documentation templates for all jurisdictions",
+      "Implement regular training programs for staff on multi-jurisdictional requirements",
+      "Develop key performance indicators for cross-jurisdictional compliance"
+    ],
+    "technology_recommendations": [
+      "Implement single customer data management system with jurisdiction-specific views",
+      "Develop automated compliance checking and reporting tools",
+      "Create real-time monitoring dashboards for cross-jurisdictional compliance",
+      "Establish secure data sharing protocols between jurisdictions"
+    ],
+    "risk_recommendations": [
+      "Conduct regular cross-jurisdictional risk assessments",
+      "Establish contingency plans for regulatory changes in any jurisdiction",
+      "Implement comprehensive audit trails for all cross-jurisdictional activities",
+      "Regular stress testing of compliance procedures across all jurisdictions"
+    ]
+  },
+  "practical_implementation": {
+    "phase_1_foundation": {
+      "duration": "1-2 months",
+      "activities": [
+        "Conduct detailed gap analysis",
+        "Design unified data model",
+        "Select technology platforms",
+        "Establish project governance"
+      ],
+      "deliverables": [
+        "Gap analysis report",
+        "Technical architecture design",
+        "Project plan and timeline",
+        "Resource allocation plan"
+      ]
+    },
+    "phase_2_development": {
+      "duration": "3-4 months",
+      "activities": [
+        "Develop unified customer interface",
+        "Build jurisdiction-specific workflows",
+        "Implement compliance automation",
+        "Create reporting dashboards"
+      ],
+      "deliverables": [
+        "Customer onboarding system",
+        "Compliance workflow engine",
+        "Automated reporting tools",
+        "Integration with existing systems"
+      ]
+    },
+    "phase_3_testing": {
+      "duration": "1-2 months",
+      "activities": [
+        "User acceptance testing",
+        "Compliance validation",
+        "Performance testing",
+        "Staff training"
+      ],
+      "deliverables": [
+        "Test results and sign-off",
+        "Compliance certification",
+        "Performance benchmarks",
+        "Training completion records"
+      ]
+    },
+    "phase_4_deployment": {
+      "duration": "1 month",
+      "activities": [
+        "Phased rollout",
+        "Monitoring and support",
+        "Issue resolution",
+        "Optimization"
+      ],
+      "deliverables": [
+        "Production deployment",
+        "Support procedures",
+        "Issue tracking system",
+        "Performance optimization"
+      ]
+    }
+  }
+}

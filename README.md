@@ -1,448 +1,166 @@
-# RegGenome Deep Research Multi-agent System
+# Deep Research Multi-Agent System for RegGenome
 
-A comprehensive AI-powered system for analyzing regulatory documents and extracting regulated activities, entities, and products. Built using the [LangChain open_deep_research](https://github.com/langchain-ai/open_deep_research) architecture and specifically designed for the RegGenome challenge.
+A sophisticated multi-agent system designed to extract regulated activities, entities, and products from regulatory documents using the RegGenome API.
 
-## 🎯 Objectives
+## Overview
 
-This system addresses the **RegGenome Challenge** by accomplishing three key tasks:
+This system implements a hierarchical multi-agent architecture inspired by leading open-source deep research implementations. It's specifically designed for Task 1 of the RegGenome challenge: creating a deduplicated table of regulated activities, entities, and products from regulatory documents.
 
-1. **📋 Task 1**: Create a table of regulated activities, entities, and products discussed in regulatory documents (free of redundancy and repetition)
-2. **🎯 Task 2**: Predict document relevance to regulated activities, entities, and products at both document and sub-document level
-3. **🔗 Task 3**: Link each regulated item to documents where they are formally defined with full definition text
+## Architecture
 
-## 🏗️ Architecture
-
-The system uses a **multi-agent architecture** with specialized agents for different extraction tasks:
+The system uses a supervisor-researcher pattern with specialized agents:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                Deep Research Orchestrator                      │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
-│  │   Entity        │  │   Activity      │  │   Product       │  │
-│  │ Extraction      │  │ Extraction      │  │ Extraction      │  │
-│  │   Agent         │  │   Agent         │  │   Agent         │  │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
-│           │                     │                     │         │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
-│  │   Entity        │  │   Activity      │  │   Product       │  │
-│  │   Merger        │  │   Merger        │  │   Merger        │  │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                RegGenome API Client                             │
-└─────────────────────────────────────────────────────────────────┘
+DeepResearchOrchestrator (Supervisor)
+    ├── EntityExtractionAgent
+    ├── ActivityExtractionAgent  
+    ├── ProductExtractionAgent
+    └── DeduplicationAgent
 ```
 
-## 🔐 Authentication
+### Key Components
 
-The system supports both API key and JWT authentication for the RegGenome API:
+1. **DeepResearchOrchestrator**: Coordinates the research process, manages document fetching, and orchestrates parallel agent execution.
 
-### JWT Authentication (Recommended)
-Place your JWT authentication tokens in a `key.txt` file in the root directory. The system will automatically:
-- Parse the JWT tokens from the file
-- Validate token expiration
-- Use the access token for API authentication
-- Provide detailed authentication status
+2. **EntityExtractionAgent**: Specializes in identifying regulated entities such as:
+   - Investment advisers
+   - Investment companies
+   - UCITS funds
+   - Management companies
+   - Depositaries
 
-### API Key Authentication (Fallback)
-Set the `REGGENOME_API_KEY` environment variable if JWT authentication is not available.
+3. **ActivityExtractionAgent**: Extracts regulated activities including:
+   - Asset management
+   - Investment advice
+   - Portfolio management
+   - Custody services
+   - Distribution and marketing
 
-## ⚙️ Configuration
+4. **ProductExtractionAgent**: Identifies financial products like:
+   - Mutual funds
+   - ETFs
+   - UCITS funds
+   - Hedge funds
+   - Money market funds
 
-### JSON Configuration (Recommended)
-The system uses `config.json` for easy configuration. The file allows you to specify:
+5. **DeduplicationAgent**: Consolidates results by:
+   - Merging duplicate entries
+   - Normalizing names
+   - Combining metadata from multiple sources
+   - Calculating confidence scores
 
-```json
-{
-  "llm": {
-    "provider": "openai",
-    "models": {
-      "research": "gpt-4o",
-      "extraction": "gpt-4o-mini",
-      "classification": "gpt-4o-mini",
-      "default": "gpt-4o-mini"
-    },
-    "parameters": {
-      "temperature": 0.1,
-      "max_tokens": 4000,
-      "timeout": 60
-    }
-  },
-  "reggenome": {
-    "authentication": {
-      "use_jwt": true,
-      "jwt_token_file": "key.txt"
-    },
-    "api": {
-      "base_url": "https://api.reg-genome.com/api/v1",
-      "max_documents_per_batch": 50,
-      "max_retries": 3,
-      "request_timeout": 30
-    }
-  },
-  "research": {
-    "confidence_threshold": 0.7,
-    "enable_caching": true
-  }
-}
-```
+## Features
 
-### Environment Variables (Fallback)
-You can also use environment variables. See `config.env.template` for all options.
+- **Parallel Processing**: Agents work concurrently for faster extraction
+- **Smart Deduplication**: Advanced similarity matching to eliminate redundancy
+- **Confidence Scoring**: Each extracted item includes a confidence score
+- **Hierarchical Output**: Results organized by type with detailed metadata
+- **Flexible Configuration**: Easily adjust API parameters and extraction settings
 
-## 🚀 Quick Start
+## Installation
 
-### Prerequisites
-1. **RegGenome API Access**: Either a `key.txt` file with JWT tokens or `REGGENOME_API_KEY` environment variable
-2. **LLM API Key**: Set either `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`
-
-### Installation
-
-1. **Clone the repository**:
-```bash
-git clone <repository-url>
-cd law_croissant
-```
-
-2. **Install dependencies**:
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Configure environment**:
-```bash
-# Copy the template
-cp config.env.template .env
+2. Place your RegGenome JWT token in `key.txt`
 
-# Edit the configuration file
-nano .env
-```
+## Usage
 
-Required environment variables:
-```env
-# AI Model Configuration (at least one required)
-OPENAI_API_KEY=your_openai_api_key_here
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-
-# RegGenome API Configuration (optional for demo)
-REGGENOME_API_KEY=your_reggenome_api_key_here
-
-# RegGenome API Configuration
-USE_JWT_AUTH=true
-JWT_TOKEN_FILE=key.txt
-REGGENOME_BASE_URL=https://api.reg-genome.com/api/v1
-
-# LLM Configuration
-DEFAULT_LLM_PROVIDER=openai
-DEFAULT_LLM_MODEL=gpt-4o-mini
-
-# Research Configuration
-LEGISLATIVE_INITIATIVES=US - Investment Advisers Act (1940),US - Investment Company Act (1940),EU - UCITS Directives,UK - The Undertakings for Collective Investment in Transferable Securities (UCITS) Regulations
-```
-
-## 🎯 One-For-All Interface
-
-The simplest way to generate all RegGenome deliverables with a single command:
-
-### Command Line Interface
-```bash
-# Basic usage - generates all deliverables
-python reggenome_research.py "investment advisers"
-
-# With custom output directory
-python reggenome_research.py "UCITS funds" --output my_results
-
-# With specific model
-python reggenome_research.py "hedge funds" --model gpt-4o
-
-# Quick mode (faster, minimal config)
-python reggenome_research.py "pension funds" --quick
-
-# Using mock data (no API required)
-python reggenome_research.py "mutual funds" --mock
-```
-
-### Programmatic Interface
-```python
-from src.unified_interface import run_complete_analysis
-
-# One function call generates all deliverables
-results = run_complete_analysis(
-    query="UCITS fund regulations and compliance",
-    output_dir="my_analysis",
-    use_real_api=True
-)
-
-print(f"Found {len(results.taxonomy.entities)} entities")
-print(f"Task 1 file: {results.output_files['hierarchical_table']}")
-```
-
-### Ultra-Simple Interface
-```python
-from src.unified_interface import quick_research
-
-# One line for complete research
-summary_file = quick_research("investment advisers", "my_results")
-print(f"Results saved to: {summary_file}")
-```
-
-## 📋 Generated Deliverables
-
-The unified interface automatically generates all RegGenome challenge requirements:
-
-### Task 1: Hierarchical Table
-- **File**: `task1_hierarchical_table_*.json`
-- **Content**: Structured table of regulated activities, entities, and products (free of redundancy)
-
-### Task 2: Document Relevance Assessment
-- **File**: `task2_document_relevance_*.json`
-- **Content**: Document-level and sub-document level relevance predictions
-
-### Task 3: Regulatory Taxonomy
-- **File**: `task3_regulatory_taxonomy_*.json`
-- **Content**: Complete regulatory taxonomy with source document links and full definition text
-
-### Complete Summary
-- **File**: `complete_results_summary_*.json`
-- **Content**: Comprehensive summary with metadata, processing info, and file locations
-
-## 🎛️ Advanced Usage
-
-### Custom Model Configuration
-```python
-from src.unified_interface import run_complete_analysis
-
-# Use custom models for different tasks
-custom_config = {
-    "llm": {
-        "provider": "openai",
-        "models": {
-            "research": "gpt-4o",        # Most powerful for complex analysis
-            "extraction": "gpt-4o-mini", # Faster for data extraction
-            "classification": "gpt-4o-mini"
-        },
-        "parameters": {
-            "temperature": 0.0,  # More deterministic
-            "max_tokens": 8000   # Longer responses
-        }
-    }
-}
-
-results = run_complete_analysis(
-    query="Complex derivatives regulations",
-    custom_config=custom_config
-)
-```
-
-### Batch Processing Multiple Topics
-```python
-topics = ["investment advisers", "UCITS funds", "hedge funds", "pension funds"]
-
-for topic in topics:
-    print(f"Processing {topic}...")
-    results = run_complete_analysis(
-        query=f"Regulations for {topic}",
-        output_dir=f"analysis_{topic.replace(' ', '_')}",
-        use_real_api=True
-    )
-    print(f"✅ {topic}: {len(results.taxonomy.entities)} entities found")
-```
-
-### Traditional CLI Interface
-For more granular control, you can still use the traditional interface:
+### Interactive Mode (Default)
 
 ```bash
-# Check authentication status
-python main.py --auth-status
-
-# Test API connection
-python main.py --api-test
-
-# Run with specific query
-python main.py --query "Investment advisers and fund regulations"
-
-# Generate only Task 1 deliverable
-python main.py --table-output regulatory_hierarchy.json
-
-# Debug mode
-python main.py --log-level DEBUG --mock
+python main.py
 ```
 
-## 📊 Output Files
+This launches an interactive terminal interface where you can:
+- Enter research queries directly
+- View example queries and help
+- Check configuration and available initiatives
+- Review history of previous research
+- Get instant results with summaries
 
-The system generates multiple output files:
-
-### 1. Hierarchical Table (`regulatory_hierarchy_table.json`) - **Task 1 Deliverable**
-```json
-{
-  "regulated_entities": {
-    "investment_adviser": [
-      {
-        "id": "entity_abc123",
-        "name": "Investment Adviser",
-        "description": "Person who provides investment advice for compensation",
-        "jurisdictions": ["US"],
-        "regulatory_framework": ["Investment Advisers Act of 1940"],
-        "source_documents": ["doc_123"],
-        "confidence_score": 0.95
-      }
-    ]
-  },
-  "regulated_activities": {
-    "investment_advisory": [...]
-  },
-  "regulated_products": {
-    "mutual_fund": [...]
-  }
-}
-```
-
-### 2. Complete Taxonomy (`regulatory_taxonomy_YYYYMMDD_HHMMSS.json`)
-Contains the full research results including document relevance mappings and metadata.
-
-## 🧠 AI Models Supported
-
-The system supports multiple AI providers:
-
-- **OpenAI**: GPT-4o, GPT-4o-mini, GPT-4-turbo
-- **Anthropic**: Claude-3.5-Sonnet, Claude-3-Haiku
-
-Configure different models for different tasks:
-```env
-RESEARCH_MODEL=gpt-4o          # For complex analysis
-EXTRACTION_MODEL=gpt-4o-mini   # For structured extraction
-CLASSIFICATION_MODEL=gpt-4o-mini # For relevance classification
-```
-
-## 📚 Regulatory Document Coverage
-
-The system processes documents from these **Legislative Initiatives**:
-
-- **US - Investment Advisers Act (1940)**
-- **US - Investment Company Act (1940)**
-- **EU - UCITS Directives**
-- **UK - The Undertakings for Collective Investment in Transferable Securities (UCITS) Regulations, 2011-2016**
-
-## 🎛️ Configuration Options
-
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REGGENOME_API_KEY` | RegGenome API access key | None |
-| `OPENAI_API_KEY` | OpenAI API key | None |
-| `ANTHROPIC_API_KEY` | Anthropic API key | None |
-| `DEFAULT_LLM_MODEL` | Default model to use | `gpt-4o-mini` |
-| `MAX_DOCUMENTS_PER_BATCH` | Documents per API batch | `50` |
-| `LOG_LEVEL` | Logging verbosity | `INFO` |
-
-### Command Line Options
+### Batch Mode
 
 ```bash
-python main.py --help
+# Run with default query
+python main.py --batch
+
+# Run with custom query
+python main.py --batch "What are the compliance requirements for UCITS funds?"
+
+# Or simply pass the query as arguments
+python main.py What are the main regulated entities in UCITS directives?
 ```
 
-## 🏗️ System Components
+### Interactive CLI Features
 
-### Core Modules
+The interactive interface provides several commands:
 
-- **`config.py`**: Configuration management
-- **`models.py`**: Data models for entities, activities, products
-- **`api_client.py`**: RegGenome API integration
-- **`llm_utils.py`**: AI model utilities and prompts
-- **`deep_research_orchestrator.py`**: Main workflow orchestrator
+- `help` - Show available commands and usage
+- `examples` - Display example research queries
+- `config` - View current configuration settings
+- `initiatives` - List regulatory initiatives in scope
+- `history` - Show recent research queries and results
+- `clear` - Clear the terminal screen
+- `exit/quit` - Exit the program
 
-### Extraction Agents
+Simply type your research query to start the analysis!
 
-- **`entity_extraction_agent.py`**: Identifies regulated entities (investment advisers, banks, etc.)
-- **`activity_extraction_agent.py`**: Extracts regulated activities (advisory services, trading, etc.)
-- **`product_extraction_agent.py`**: Finds regulated products (mutual funds, ETFs, etc.)
+### Example Queries
 
-## 📈 Performance Features
-
-- **Parallel Processing**: Extraction agents run concurrently for speed
-- **Intelligent Deduplication**: AI-powered merging of similar items
-- **Confidence Scoring**: Each extraction includes confidence assessment
-- **Error Handling**: Robust error recovery and logging
-- **Rate Limiting**: Respectful API usage with automatic retries
-
-## 🔧 Advanced Usage
-
-### Custom Configuration File
-```bash
-python main.py --config my_custom.env
+```
+What are the main regulated entities in UCITS directives?
+How does a UK fund conduct CDD & KYC with EU and UK regulators?
+Fund distribution and marketing activities
+Investment adviser compliance requirements
+Depositary requirements for UCITS funds
+Cross-border fund distribution requirements post-Brexit
 ```
 
-### Programmatic Usage
-```python
-import asyncio
-from src.deep_research_orchestrator import run_deep_research
+### Output Format
 
-async def main():
-    taxonomy = await run_deep_research(
-        query="Extract UCITS-related regulations",
-        use_mock_api=False,
-        save_results=True
-    )
-    print(f"Found {len(taxonomy.entities)} entities")
+Results are saved in two formats:
 
-asyncio.run(main())
-```
+1. **JSON** (`task1_hierarchical_table_[timestamp].json`) - Structured data with full details
+2. **Text Summary** (`task1_summary_[timestamp].txt`) - Human-readable report
 
-### Extending the System
+The interactive mode also displays:
+- Real-time progress updates
+- Summary statistics
+- Top findings from each category
+- Confidence scores for extracted items
 
-Add new entity types in `src/models.py`:
-```python
-class EntityType(str, Enum):
-    # Existing types...
-    CRYPTOCURRENCY_EXCHANGE = "cryptocurrency_exchange"
-    ROBO_ADVISOR = "robo_advisor"
-```
+## Configuration
 
-## 🧪 Testing
+Edit `src/config.py` to customize:
 
-Run with mock data for testing:
-```bash
-python main.py --mock --log-level DEBUG
-```
+- API endpoints
+- Page size and limits
+- Concurrent agent count
+- Initiative filters
 
-The mock client provides sample regulatory documents to demonstrate the system's capabilities without requiring API access.
+## Extending the System
 
-## 🐛 Troubleshooting
+The modular architecture makes it easy to:
 
-### Common Issues
+1. Add new agent types
+2. Implement additional extraction patterns
+3. Integrate with LLMs for enhanced extraction
+4. Add new output formats
 
-1. **"No API key provided"**: Set up your `.env` file with API keys
-2. **Rate limiting errors**: The system handles this automatically with exponential backoff
-3. **Memory issues**: Reduce `MAX_DOCUMENTS_PER_BATCH` in configuration
-4. **Model errors**: Try switching to a different AI model in configuration
+## Performance Considerations
 
-### Debug Mode
-```bash
-python main.py --log-level DEBUG --log-file debug.log --mock
-```
+- Documents are processed in batches to manage memory
+- Agents run in parallel using asyncio and thread pools
+- Deduplication uses efficient similarity algorithms
+- API calls include retry logic for reliability
 
-## 📄 License
+## Next Steps
 
-This project is built for the RegGenome Challenge and uses the MIT license framework from the [langchain-ai/open_deep_research](https://github.com/langchain-ai/open_deep_research) project.
+This system provides the foundation for Tasks 2 and 3:
+- Task 2: Predict document relevance using extracted data
+- Task 3: Link to formal definitions in source documents
 
-## 🤝 Contributing
-
-This system is designed for the RegGenome challenge. For improvements:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## 📧 Support
-
-For questions about the RegGenome Challenge or this implementation:
-
-- Check the debug logs with `--log-level DEBUG`
-- Review the task description in `task_description.md`
-- Examine the configuration in `config.env.template`
-
----
-
-**Built with ❤️ for regulatory compliance automation using AI-powered deep research agents.** 
+The extracted entities, activities, and products serve as the knowledge base for these advanced tasks.

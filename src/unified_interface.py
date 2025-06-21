@@ -1,839 +1,497 @@
-"""
-Unified Interface for RegGenome Deep Research System
-
-This module provides a one-for-all interface that users can call to generate
-all required RegGenome challenge deliverables with a single function call.
-"""
-
 import asyncio
+from typing import Dict, Any, Optional
 import json
-import logging
+import re
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict, Any, List, Union
-import os
 
-from .config import config
-from .deep_research_orchestrator import DeepResearchOrchestrator
-from .auth import token_manager
+from src.config import Config
+from src.deep_research_orchestrator import DeepResearchOrchestrator
+from src.agents.document_relevance_predictor import DocumentRelevancePredictor
+from src.agents.definition_extractor import DefinitionExtractor
+from src.deliverable_formatter import DeliverableFormatter
+from src.terminal_formatter import format_for_terminal
 
-logger = logging.getLogger(__name__)
-
-
-async def generate_all_deliverables(
-    query: str = "Research and analyze regulations related to investment funds, including regulated activities, entities, and products",
-    output_dir: str = "output",
-    use_real_api: bool = True,
-    model_name: Optional[str] = None,
-    config_path: Optional[str] = None
-) -> Dict[str, Any]:
-    """
-    Generate all RegGenome challenge deliverables with human-readable outputs.
+class UnifiedResearchInterface:
+    """Unified interface for all three research tasks"""
     
-    Addresses all three objectives:
-    1. Hierarchical table of regulated items (redundancy-free)
-    2. Document relevance predictions (document & sub-document level)
-    3. Definition linking with full text extraction
-    """
-    
-    # Create output directory
-    output_path = Path(output_dir)
-    output_path.mkdir(exist_ok=True)
-    
-    # Generate timestamp
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    
-    logger.info(f"Starting RegGenome challenge deliverables generation")
-    logger.info(f"Query: {query}")
-    logger.info(f"Output directory: {output_dir}")
-    logger.info(f"API Mode: {'Real' if use_real_api else 'Mock'}")
-    
-    # Initialize orchestrator
-    orchestrator = DeepResearchOrchestrator(use_mock_api=not use_real_api)
-    
-    # Log authentication status if using real API
-    auth_status = {}
-    if use_real_api:
-        logger.info(f"Using {'real API' if use_real_api else 'mock data'}")
-        auth_status = token_manager.get_token_info()
-        if auth_status.get('status') == 'valid':
-            logger.info(f"✅ JWT Authentication valid for: {auth_status.get('username', 'Unknown user')}")
-        else:
-            logger.warning(f"⚠️ JWT Authentication issue: {auth_status}")
-    
-    try:
-        # Run the research workflow
-        start_time = datetime.now()
-        taxonomy = await orchestrator.run_research(query=query, save_results=False)
-        end_time = datetime.now()
-        processing_time = (end_time - start_time).total_seconds()
+    def __init__(self, config: Config):
+        self.config = config
+        self.orchestrator = DeepResearchOrchestrator(config)
+        self.relevance_predictor = DocumentRelevancePredictor()
+        self.definition_extractor = DefinitionExtractor()
+        self.deliverable_formatter = DeliverableFormatter()
         
-        # Generate human-readable reports for all three objectives
+    async def run_all_tasks(self, query: str) -> Dict[str, Any]:
+        """Run all three tasks and return comprehensive results"""
         
-        # === OBJECTIVE 1: HIERARCHICAL TABLE (Redundancy-Free) ===
-        hierarchical_table = await generate_hierarchical_table(orchestrator, timestamp, output_path)
+        print(f"\n{'='*80}")
+        print("COMPREHENSIVE REGULATORY RESEARCH SYSTEM")
+        print(f"{'='*80}")
+        print(f"Query: {query}")
+        print(f"{'='*80}\n")
         
-        # === OBJECTIVE 2: DOCUMENT RELEVANCE PREDICTIONS ===
-        document_relevance = await generate_document_relevance_analysis(orchestrator, timestamp, output_path)
+        # Task 1: Extract entities, activities, and products
+        print(format_for_terminal("## TASK 1: Extracting Regulated Items..."))
+        print("-" * 40)
+        task1_result = await self.orchestrator.research(query)
+        hierarchical_table = self.orchestrator.generate_hierarchical_table(task1_result)
         
-        # === OBJECTIVE 3: DEFINITION LINKING (Stretch Goal) ===
-        definition_links = await generate_definition_links(orchestrator, timestamp, output_path)
+        print(format_for_terminal("**Task 1 Complete:**"))
+        print(f"   - Entities: {len(task1_result.entities)}")
+        print(f"   - Activities: {len(task1_result.activities)}")
+        print(f"   - Products: {len(task1_result.products)}")
         
-        # === COMPREHENSIVE HUMAN-READABLE REPORT ===
-        comprehensive_report = await generate_comprehensive_report(
-            orchestrator, query, timestamp, processing_time, auth_status, output_path
+        # Get all documents for tasks 2 and 3
+        documents = await self._fetch_all_documents()
+        
+        # Task 2: Predict document relevance
+        print(format_for_terminal("\n## TASK 2: Predicting Document Relevance..."))
+        print("-" * 40)
+        task2_result = self.relevance_predictor.predict_relevance(
+            documents,
+            task1_result.entities,
+            task1_result.activities,
+            task1_result.products
         )
         
-        # Generate summary statistics
-        stats = {
-            "entities": {
-                "total": len(taxonomy.entities),
-                "by_type": {}
-            },
-            "activities": {
-                "total": len(taxonomy.activities),
-                "by_type": {}
-            },
-            "products": {
-                "total": len(taxonomy.products),
-                "by_type": {}
-            }
-        }
+        print(format_for_terminal("**Task 2 Complete:**"))
+        print(f"   - Relevant documents: {len(task2_result['document_relevance'])}")
+        print(f"   - Coverage: {task2_result['summary']['relevance_percentage']}%")
         
-        # Count by type
-        for entity in taxonomy.entities:
-            entity_type = entity.entity_type.value
-            stats["entities"]["by_type"][entity_type] = stats["entities"]["by_type"].get(entity_type, 0) + 1
+        # Task 3: Extract definitions
+        print(format_for_terminal("\n## TASK 3: Extracting Formal Definitions..."))
+        print("-" * 40)
+        task3_result = self.definition_extractor.extract_definitions(
+            documents,
+            task1_result.entities,
+            task1_result.activities,
+            task1_result.products
+        )
         
-        for activity in taxonomy.activities:
-            activity_type = activity.activity_type.value
-            stats["activities"]["by_type"][activity_type] = stats["activities"]["by_type"].get(activity_type, 0) + 1
+        print(format_for_terminal("**Task 3 Complete:**"))
+        print(f"   - Definitions found: {task3_result['summary']['total_definitions_found']}")
+        print(f"   - Item coverage: {task3_result['summary']['coverage_percentage']}%")
         
-        for product in taxonomy.products:
-            product_type = product.product_type.value
-            stats["products"]["by_type"][product_type] = stats["products"]["by_type"].get(product_type, 0) + 1
-        
-        # Save complete summary
-        complete_summary = {
+        # Compile comprehensive results
+        comprehensive_results = {
             "query": query,
-            "timestamp": timestamp,
-            "authentication_status": auth_status,
-            "api_mode": "real" if use_real_api else "mock",
-            "results_summary": stats,
-            "output_files": {
-                "hierarchical_table": hierarchical_table["filename"],
-                "document_relevance": document_relevance["filename"],
-                "definition_links": definition_links["filename"],
-                "comprehensive_report": comprehensive_report["filename"],
-                "human_readable_summary": f"output/HUMAN_READABLE_SUMMARY_{timestamp}.md"
-            },
-            "processing_metadata": {
-                "processing_time_seconds": processing_time,
-                "llm_model_used": model_name or "gpt-4o-mini",
-                "confidence_threshold": config.research.confidence_threshold,
-                "total_documents_processed": len(orchestrator.current_state.documents),
-                "total_extractions": sum([
-                    len(taxonomy.entities),
-                    len(taxonomy.activities), 
-                    len(taxonomy.products)
-                ])
+            "execution_timestamp": datetime.now().isoformat(),
+            "task1_hierarchical_table": hierarchical_table,
+            "task2_document_relevance": task2_result,
+            "task3_definitions": task3_result,
+            "overall_summary": self._generate_overall_summary(
+                task1_result, task2_result, task3_result
+            )
+        }
+        
+        return comprehensive_results
+    
+    async def _fetch_all_documents(self):
+        """Fetch all documents for analysis"""
+        from src.api_client import RegGenomeAPIClient
+        
+        async with RegGenomeAPIClient(self.config) as client:
+            initiative_names = list(self.config.initiative_filters.values())
+            documents = await client.fetch_all_documents_for_initiatives(initiative_names)
+            return documents
+    
+    def _generate_overall_summary(self, task1_result, task2_result, task3_result) -> Dict[str, Any]:
+        """Generate overall summary of all tasks"""
+        return {
+            "total_items_extracted": len(task1_result.entities) + len(task1_result.activities) + len(task1_result.products),
+            "documents_processed": task1_result.total_documents_processed,
+            "relevant_documents_identified": len(task2_result["document_relevance"]),
+            "definitions_found": task3_result["summary"]["total_definitions_found"],
+            "overall_coverage": {
+                "items_with_definitions": task3_result["summary"]["items_with_definitions"],
+                "definition_coverage_percentage": task3_result["summary"]["coverage_percentage"],
+                "document_relevance_percentage": task2_result["summary"]["relevance_percentage"]
             }
         }
-        
-        # Save JSON summary
-        summary_file = output_path / f"complete_results_summary_{timestamp}.json"
-        with open(summary_file, 'w', encoding='utf-8') as f:
-            json.dump(complete_summary, f, indent=2, default=str)
-        
-        # Generate final human-readable summary
-        await generate_final_human_summary(complete_summary, output_path, timestamp)
-        
-        logger.info("✅ All RegGenome challenge deliverables generated successfully!")
-        
-        return complete_summary
-        
-    except Exception as e:
-        logger.error(f"Failed to generate deliverables: {e}")
-        raise
-    finally:
-        # Cleanup
-        if hasattr(orchestrator, 'api_client'):
-            try:
-                await orchestrator.api_client.close()
-            except:
-                pass
-
-async def generate_hierarchical_table(orchestrator, timestamp: str, output_path: Path) -> Dict[str, Any]:
-    """Generate Objective 1: Hierarchical table of regulated items (redundancy-free)"""
     
-    hierarchical_data = await orchestrator.create_hierarchical_table()
+    def save_results(self, results: Dict[str, Any], output_dir: Path = None):
+        """Save results in multiple formats"""
+        if output_dir is None:
+            output_dir = Path("output")
+        
+        output_dir.mkdir(exist_ok=True)
+        
+        # Create subfolder based on query
+        query_folder = self._create_query_folder(results["query"], output_dir)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Save complete results as JSON
+        with open(query_folder / f"complete_results_summary_{timestamp}.json", "w") as f:
+            json.dump(results, f, indent=2, default=str)
+        
+        # Save Task 1 results separately
+        with open(query_folder / f"task1_hierarchical_table_{timestamp}.json", "w") as f:
+            json.dump(results["task1_hierarchical_table"], f, indent=2, default=str)
+        
+        # Save Task 2 results as JSON
+        with open(query_folder / f"task2_document_relevance_{timestamp}.json", "w") as f:
+            json.dump(results["task2_document_relevance"], f, indent=2, default=str)
+        
+        # Save Task 3 results as JSON
+        with open(query_folder / f"task3_regulatory_taxonomy_{timestamp}.json", "w") as f:
+            json.dump(results["task3_definitions"], f, indent=2, default=str)
+        
+        # Save Task 1 in markdown format
+        with open(query_folder / f"TASK1_HIERARCHICAL_TABLE_{timestamp}.md", "w") as f:
+            f.write(self._format_task1_markdown(results["task1_hierarchical_table"]))
+        
+        # Save MERGED Task 2 & 3 in single report
+        with open(query_folder / f"TASK2_3_DOCUMENT_ANALYSIS_{timestamp}.md", "w") as f:
+            f.write(self._format_task2_3_document_analysis(results))
+        
+        # Save comprehensive human-readable summary
+        with open(query_folder / f"COMPREHENSIVE_REGGENOME_REPORT_{timestamp}.md", "w") as f:
+            f.write(self._format_comprehensive_report(results))
+        
+        # Save human-readable summary
+        with open(query_folder / f"HUMAN_READABLE_SUMMARY_{timestamp}.md", "w") as f:
+            f.write(self._format_comprehensive_summary(results))
+        
+        # Generate RegGenome Challenge Deliverables (CSV + JSON format)
+        print(format_for_terminal("\n## Generating RegGenome Challenge Deliverables..."))
+        deliverable_files = self.deliverable_formatter.format_all_deliverables(results, query_folder)
+        
+        # Save deliverable summary
+        summary_report = self.deliverable_formatter.generate_summary_report(deliverable_files, results["query"])
+        with open(query_folder / f"REGGENOME_DELIVERABLES_SUMMARY_{timestamp}.md", "w") as f:
+            f.write(summary_report)
+        
+        print(format_for_terminal(f"\n**All results saved to {query_folder}/**"))
+        print(f"   - Complete JSON: complete_results_summary_{timestamp}.json")
+        print(f"   - Task 1 Table: TASK1_HIERARCHICAL_TABLE_{timestamp}.md")
+        print(f"   - Task 2&3 Analysis: TASK2_3_DOCUMENT_ANALYSIS_{timestamp}.md")
+        print(f"   - Comprehensive Report: COMPREHENSIVE_REGGENOME_REPORT_{timestamp}.md")
+        print(f"   - Human Summary: HUMAN_READABLE_SUMMARY_{timestamp}.md")
+        print(format_for_terminal("\n### RegGenome Challenge Deliverables:"))
+        print(f"   - Deliverable 1 (CSV): {Path(deliverable_files['taxonomy_csv']).name}")
+        print(f"   - Deliverable 2 (CSV): {Path(deliverable_files['relevance_csv']).name}")  
+        print(f"   - Deliverable 3 (CSV): {Path(deliverable_files['definitions_csv']).name}")
+        print(f"   - Deliverables Summary: REGGENOME_DELIVERABLES_SUMMARY_{timestamp}.md")
+        
+        return timestamp
     
-    # Save JSON version
-    json_file = output_path / f"task1_hierarchical_table_{timestamp}.json"
-    with open(json_file, 'w', encoding='utf-8') as f:
-        json.dump(hierarchical_data, f, indent=2, default=str)
+    def _create_query_folder(self, query: str, output_dir: Path) -> Path:
+        """Create a folder based on the first 10 chars of the query"""
+        # Clean the query for folder name
+        clean_query = re.sub(r'[^\w\s-]', '', query)  # Remove special chars
+        clean_query = re.sub(r'[-\s]+', '_', clean_query)  # Replace spaces/hyphens with underscore
+        folder_name = clean_query[:10].strip('_')  # First 10 chars
+        
+        # Add timestamp to ensure uniqueness
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        folder_name = f"{folder_name}_{timestamp}"
+        
+        # Create the folder
+        query_folder = output_dir / folder_name
+        query_folder.mkdir(exist_ok=True)
+        
+        return query_folder
     
-    # Generate human-readable version
-    md_file = output_path / f"TASK1_HIERARCHICAL_TABLE_{timestamp}.md"
-    
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write("# 📊 OBJECTIVE 1: HIERARCHICAL TABLE OF REGULATED ITEMS\n\n")
-        f.write("*Comprehensive, redundancy-free classification of regulatory elements*\n\n")
-        f.write("---\n\n")
+    def _format_task1_markdown(self, table: Dict[str, Any]) -> str:
+        """Format Task 1 results as markdown"""
+        lines = []
+        lines.append("# TASK 1: HIERARCHICAL TABLE OF REGULATED ITEMS")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        lines.append("\n## Summary")
+        lines.append(f"- Total unique items: {table['summary']['total_unique_items']}")
+        lines.append(f"- Documents processed: {table['summary']['documents_processed']}")
         
-        # Regulated Entities Section
-        f.write("## 🏢 REGULATED ENTITIES\n\n")
-        if hierarchical_data.get("regulated_entities"):
-            for entity_type, entities in hierarchical_data["regulated_entities"].items():
-                f.write(f"### {entity_type.replace('_', ' ').title()}\n\n")
-                for i, entity in enumerate(entities, 1):
-                    f.write(f"**{i}. {entity['name']}**\n")
-                    f.write(f"- **Description:** {entity['description']}\n")
-                    f.write(f"- **Jurisdictions:** {', '.join(entity['jurisdictions'])}\n")
-                    f.write(f"- **Regulatory Framework:** {entity['regulatory_framework']}\n")
-                    f.write(f"- **Confidence Score:** {entity['confidence_score']:.2f}\n")
-                    f.write(f"- **Source Documents:** {len(entity['source_documents'])} documents\n\n")
-        else:
-            f.write("*No regulated entities identified in the analyzed documents.*\n\n")
-        
-        # Regulated Activities Section  
-        f.write("## ⚡ REGULATED ACTIVITIES\n\n")
-        if hierarchical_data.get("regulated_activities"):
-            for activity_type, activities in hierarchical_data["regulated_activities"].items():
-                f.write(f"### {activity_type.replace('_', ' ').title()}\n\n")
-                for i, activity in enumerate(activities, 1):
-                    f.write(f"**{i}. {activity['name']}**\n")
-                    f.write(f"- **Description:** {activity['description']}\n")
-                    f.write(f"- **Applicable Entities:** {', '.join(activity['applicable_entities'])}\n")
-                    f.write(f"- **Required Licenses:** {', '.join(activity['required_licenses'])}\n")
-                    f.write(f"- **Regulatory Requirements:** {', '.join(activity['regulatory_requirements'])}\n")
-                    f.write(f"- **Confidence Score:** {activity['confidence_score']:.2f}\n")
-                    f.write(f"- **Source Documents:** {len(activity['source_documents'])} documents\n\n")
-        else:
-            f.write("*No regulated activities identified in the analyzed documents.*\n\n")
-        
-        # Regulated Products Section
-        f.write("## 📦 REGULATED PRODUCTS\n\n")
-        if hierarchical_data.get("regulated_products"):
-            for product_type, products in hierarchical_data["regulated_products"].items():
-                f.write(f"### {product_type.replace('_', ' ').title()}\n\n")
-                for i, product in enumerate(products, 1):
-                    f.write(f"**{i}. {product['name']}**\n")
-                    f.write(f"- **Description:** {product['description']}\n")
-                    f.write(f"- **Applicable Entities:** {', '.join(product['applicable_entities'])}\n")
-                    f.write(f"- **Regulatory Classification:** {product['regulatory_classification']}\n")
-                    f.write(f"- **Compliance Requirements:** {', '.join(product['compliance_requirements'])}\n")
-                    f.write(f"- **Confidence Score:** {product['confidence_score']:.2f}\n")
-                    f.write(f"- **Source Documents:** {len(product['source_documents'])} documents\n\n")
-        else:
-            f.write("*No regulated products identified in the analyzed documents.*\n\n")
-        
-        # Metadata
-        f.write("---\n\n")
-        f.write("## 📋 METADATA\n\n")
-        metadata = hierarchical_data.get("metadata", {})
-        f.write(f"- **Generated:** {metadata.get('created_at', 'Unknown')}\n")
-        f.write(f"- **Total Items:** {metadata.get('total_items', 0)}\n")
-        f.write(f"- **Source Documents:** {metadata.get('source_documents', 0)}\n")
-    
-    return {
-        "filename": md_file.name,
-        "data": hierarchical_data,
-        "human_readable_file": md_file.name
-    }
-
-async def generate_document_relevance_analysis(orchestrator, timestamp: str, output_path: Path) -> Dict[str, Any]:
-    """Generate Objective 2: Document relevance predictions"""
-    
-    relevance_data = {
-        "document_relevance_analysis": [],
-        "metadata": {
-            "analysis_timestamp": datetime.utcnow().isoformat(),
-            "total_documents": len(orchestrator.current_state.documents),
-            "analysis_method": "AI-powered regulatory extraction and relevance scoring"
-        }
-    }
-    
-    # Analyze each document's relevance to extracted items
-    for doc in orchestrator.current_state.documents:
-        doc_analysis = {
-            "document_id": doc.document_id,
-            "title": doc.title,
-            "publisher": doc.publisher,
-            "jurisdiction": doc.jurisdiction,
-            "legislative_initiative": doc.legislative_initiative,
-            "entity_relevance": {},
-            "activity_relevance": {},
-            "product_relevance": {},
-            "overall_relevance_score": 0.0,
-            "key_sections": []
-        }
-        
-        # Calculate relevance to entities
-        for entity in orchestrator.current_state.taxonomy.entities:
-            if doc.document_id in entity.source_documents:
-                doc_analysis["entity_relevance"][entity.name] = {
-                    "confidence_score": entity.confidence_score,
-                    "entity_type": entity.entity_type.value,
-                    "regulatory_framework": entity.regulatory_framework
-                }
-        
-        # Calculate relevance to activities  
-        for activity in orchestrator.current_state.taxonomy.activities:
-            if doc.document_id in activity.source_documents:
-                doc_analysis["activity_relevance"][activity.name] = {
-                    "confidence_score": activity.confidence_score,
-                    "activity_type": activity.activity_type.value,
-                    "applicable_entities": activity.applicable_entities
-                }
-        
-        # Calculate relevance to products
-        for product in orchestrator.current_state.taxonomy.products:
-            if doc.document_id in product.source_documents:
-                doc_analysis["product_relevance"][product.name] = {
-                    "confidence_score": product.confidence_score,
-                    "product_type": product.product_type.value,
-                    "regulatory_classification": product.regulatory_classification
-                }
-        
-        # Calculate overall relevance score
-        all_scores = []
-        all_scores.extend([item["confidence_score"] for item in doc_analysis["entity_relevance"].values()])
-        all_scores.extend([item["confidence_score"] for item in doc_analysis["activity_relevance"].values()])
-        all_scores.extend([item["confidence_score"] for item in doc_analysis["product_relevance"].values()])
-        
-        if all_scores:
-            doc_analysis["overall_relevance_score"] = sum(all_scores) / len(all_scores)
-        
-        # Extract key sections (simplified - using document sections if available)
-        if hasattr(doc, 'sections') and doc.sections:
-            doc_analysis["key_sections"] = [
-                {
-                    "section_id": section.get("id", "unknown"),
-                    "title": section.get("title", "Unknown Section"),
-                    "relevance": "High" if doc_analysis["overall_relevance_score"] > 0.7 else "Medium" if doc_analysis["overall_relevance_score"] > 0.4 else "Low"
-                }
-                for section in doc.sections[:5]  # Top 5 sections
-            ]
-        
-        relevance_data["document_relevance_analysis"].append(doc_analysis)
-    
-    # Sort by overall relevance score
-    relevance_data["document_relevance_analysis"].sort(
-        key=lambda x: x["overall_relevance_score"], reverse=True
-    )
-    
-    # Save JSON version
-    json_file = output_path / f"task2_document_relevance_{timestamp}.json"
-    with open(json_file, 'w', encoding='utf-8') as f:
-        json.dump(relevance_data, f, indent=2, default=str)
-    
-    # Generate human-readable version
-    md_file = output_path / f"TASK2_DOCUMENT_RELEVANCE_{timestamp}.md"
-    
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write("# 🎯 OBJECTIVE 2: DOCUMENT RELEVANCE ANALYSIS\n\n")
-        f.write("*AI-powered predictions of document relevance to regulatory elements*\n\n")
-        f.write("---\n\n")
-        
-        f.write("## 📊 SUMMARY STATISTICS\n\n")
-        total_docs = len(relevance_data["document_relevance_analysis"])
-        high_relevance = len([d for d in relevance_data["document_relevance_analysis"] if d["overall_relevance_score"] > 0.7])
-        medium_relevance = len([d for d in relevance_data["document_relevance_analysis"] if 0.4 < d["overall_relevance_score"] <= 0.7])
-        low_relevance = len([d for d in relevance_data["document_relevance_analysis"] if d["overall_relevance_score"] <= 0.4])
-        
-        f.write(f"- **Total Documents Analyzed:** {total_docs}\n")
-        f.write(f"- **High Relevance (>70%):** {high_relevance} documents\n")
-        f.write(f"- **Medium Relevance (40-70%):** {medium_relevance} documents\n")
-        f.write(f"- **Low Relevance (<40%):** {low_relevance} documents\n\n")
-        
-        f.write("## 📋 DETAILED DOCUMENT ANALYSIS\n\n")
-        
-        for i, doc in enumerate(relevance_data["document_relevance_analysis"], 1):
-            relevance_percentage = doc["overall_relevance_score"] * 100
-            relevance_level = "🔴 High" if relevance_percentage > 70 else "🟡 Medium" if relevance_percentage > 40 else "⚪ Low"
+        # Entities section
+        lines.append("\n## 1. REGULATED ENTITIES")
+        for entity_group in table["regulated_entities"]:
+            lines.append(f"\n### {entity_group['type'].replace('_', ' ').title()} ({entity_group['count']} items)")
+            lines.append("\n| Name | Description | Jurisdiction | Framework | Confidence |")
+            lines.append("|------|-------------|--------------|-----------|------------|")
             
-            f.write(f"### {i}. {doc['title'][:100]}{'...' if len(doc['title']) > 100 else ''}\n\n")
-            f.write(f"**Relevance Level:** {relevance_level} ({relevance_percentage:.1f}%)\n\n")
-            f.write(f"- **Publisher:** {doc['publisher']}\n")
-            f.write(f"- **Jurisdiction:** {doc['jurisdiction']}\n")
-            f.write(f"- **Legislative Initiative:** {doc['legislative_initiative']}\n\n")
-            
-            # Entity relevance
-            if doc["entity_relevance"]:
-                f.write("**🏢 Relevant to Entities:**\n")
-                for entity_name, details in doc["entity_relevance"].items():
-                    f.write(f"- {entity_name} ({details['entity_type']}) - {details['confidence_score']:.2f}\n")
-                f.write("\n")
-            
-            # Activity relevance
-            if doc["activity_relevance"]:
-                f.write("**⚡ Relevant to Activities:**\n")
-                for activity_name, details in doc["activity_relevance"].items():
-                    f.write(f"- {activity_name} ({details['activity_type']}) - {details['confidence_score']:.2f}\n")
-                f.write("\n")
-            
-            # Product relevance
-            if doc["product_relevance"]:
-                f.write("**📦 Relevant to Products:**\n")
-                for product_name, details in doc["product_relevance"].items():
-                    f.write(f"- {product_name} ({details['product_type']}) - {details['confidence_score']:.2f}\n")
-                f.write("\n")
-            
-            # Key sections
-            if doc["key_sections"]:
-                f.write("**📑 Key Relevant Sections:**\n")
-                for section in doc["key_sections"]:
-                    f.write(f"- {section['title']} (Relevance: {section['relevance']})\n")
-                f.write("\n")
-            
-            f.write("---\n\n")
-    
-    return {
-        "filename": md_file.name,
-        "data": relevance_data,
-        "human_readable_file": md_file.name
-    }
-
-async def generate_definition_links(orchestrator, timestamp: str, output_path: Path) -> Dict[str, Any]:
-    """Generate Objective 3: Definition links with full text (Stretch Goal)"""
-    
-    definition_data = {
-        "regulatory_definitions": {
-            "entities": [],
-            "activities": [],
-            "products": []
-        },
-        "metadata": {
-            "extraction_timestamp": datetime.utcnow().isoformat(),
-            "methodology": "AI-powered definition extraction from regulatory documents",
-            "confidence_threshold": config.research.confidence_threshold
-        }
-    }
-    
-    # Extract definitions for entities
-    for entity in orchestrator.current_state.taxonomy.entities:
-        definition_entry = {
-            "name": entity.name,
-            "type": entity.entity_type.value,
-            "formal_definitions": [],
-            "source_documents": entity.source_documents,
-            "regulatory_framework": entity.regulatory_framework
-        }
+            for item in entity_group["items"][:10]:  # Top 10
+                lines.append(f"| {item['name']} | {item['description'][:50]}... | {item.get('jurisdiction', 'N/A')} | {item.get('regulatory_framework', 'N/A')} | {item['confidence']:.2f} |")
         
-        # Look for definitions in source documents
-        for doc_id in entity.source_documents:
-            doc = next((d for d in orchestrator.current_state.documents if d.document_id == doc_id), None)
-            if doc:
-                # Extract potential definition text (simplified approach)
-                definition_text = extract_definition_from_content(entity.name, doc.content)
-                if definition_text:
-                    definition_entry["formal_definitions"].append({
-                        "document_id": doc_id,
-                        "document_title": doc.title,
-                        "definition_text": definition_text,
-                        "document_url": doc.url,
-                        "jurisdiction": doc.jurisdiction
-                    })
-        
-        definition_data["regulatory_definitions"]["entities"].append(definition_entry)
-    
-    # Extract definitions for activities
-    for activity in orchestrator.current_state.taxonomy.activities:
-        definition_entry = {
-            "name": activity.name,
-            "type": activity.activity_type.value,
-            "formal_definitions": [],
-            "source_documents": activity.source_documents,
-            "applicable_entities": activity.applicable_entities
-        }
-        
-        for doc_id in activity.source_documents:
-            doc = next((d for d in orchestrator.current_state.documents if d.document_id == doc_id), None)
-            if doc:
-                definition_text = extract_definition_from_content(activity.name, doc.content)
-                if definition_text:
-                    definition_entry["formal_definitions"].append({
-                        "document_id": doc_id,
-                        "document_title": doc.title,
-                        "definition_text": definition_text,
-                        "document_url": doc.url,
-                        "jurisdiction": doc.jurisdiction
-                    })
-        
-        definition_data["regulatory_definitions"]["activities"].append(definition_entry)
-    
-    # Extract definitions for products
-    for product in orchestrator.current_state.taxonomy.products:
-        definition_entry = {
-            "name": product.name,
-            "type": product.product_type.value,
-            "formal_definitions": [],
-            "source_documents": product.source_documents,
-            "regulatory_classification": product.regulatory_classification
-        }
-        
-        for doc_id in product.source_documents:
-            doc = next((d for d in orchestrator.current_state.documents if d.document_id == doc_id), None)
-            if doc:
-                definition_text = extract_definition_from_content(product.name, doc.content)
-                if definition_text:
-                    definition_entry["formal_definitions"].append({
-                        "document_id": doc_id,
-                        "document_title": doc.title,
-                        "definition_text": definition_text,
-                        "document_url": doc.url,
-                        "jurisdiction": doc.jurisdiction
-                    })
-        
-        definition_data["regulatory_definitions"]["products"].append(definition_entry)
-    
-    # Save JSON version
-    json_file = output_path / f"task3_regulatory_taxonomy_{timestamp}.json"
-    with open(json_file, 'w', encoding='utf-8') as f:
-        json.dump(definition_data, f, indent=2, default=str)
-    
-    # Generate human-readable version
-    md_file = output_path / f"TASK3_DEFINITION_LINKS_{timestamp}.md"
-    
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write("# 🔗 OBJECTIVE 3: REGULATORY DEFINITION LINKS\n\n")
-        f.write("*Formal definitions extracted from regulatory documents with source links*\n\n")
-        f.write("---\n\n")
-        
-        # Entities definitions
-        f.write("## 🏢 ENTITY DEFINITIONS\n\n")
-        for entity in definition_data["regulatory_definitions"]["entities"]:
-            f.write(f"### {entity['name']}\n\n")
-            f.write(f"**Type:** {entity['type'].replace('_', ' ').title()}\n")
-            f.write(f"**Regulatory Framework:** {entity['regulatory_framework']}\n\n")
+        # Activities section
+        lines.append("\n## 2. REGULATED ACTIVITIES")
+        for activity_group in table["regulated_activities"]:
+            lines.append(f"\n### {activity_group['type'].replace('_', ' ').title()} ({activity_group['count']} items)")
+            lines.append("\n| Name | Description | Applicable Entities | Confidence |")
+            lines.append("|------|-------------|---------------------|------------|")
             
-            if entity["formal_definitions"]:
-                f.write("**📜 Formal Definitions:**\n\n")
-                for i, definition in enumerate(entity["formal_definitions"], 1):
-                    f.write(f"**Definition {i}** (Source: {definition['document_title']})\n")
-                    f.write(f"- **Jurisdiction:** {definition['jurisdiction']}\n")
-                    f.write(f"- **Document URL:** {definition['document_url'] or 'Not available'}\n")
-                    f.write(f"- **Definition Text:**\n\n")
-                    f.write(f"> {definition['definition_text']}\n\n")
-            else:
-                f.write("*No formal definitions found in analyzed documents.*\n\n")
-            
-            f.write("---\n\n")
+            for item in activity_group["items"][:10]:
+                entities = ", ".join(item.get('applicable_entities', [])[:3])
+                lines.append(f"| {item['name']} | {item['description'][:50]}... | {entities} | {item['confidence']:.2f} |")
         
-        # Activities definitions
-        f.write("## ⚡ ACTIVITY DEFINITIONS\n\n")
-        for activity in definition_data["regulatory_definitions"]["activities"]:
-            f.write(f"### {activity['name']}\n\n")
-            f.write(f"**Type:** {activity['type'].replace('_', ' ').title()}\n")
-            f.write(f"**Applicable Entities:** {', '.join(activity['applicable_entities'])}\n\n")
+        # Products section
+        lines.append("\n## 3. REGULATED PRODUCTS")
+        for product_group in table["regulated_products"]:
+            lines.append(f"\n### {product_group['type'].replace('_', ' ').title()} ({product_group['count']} items)")
+            lines.append("\n| Name | Description | Asset Classes | Confidence |")
+            lines.append("|------|-------------|---------------|------------|")
             
-            if activity["formal_definitions"]:
-                f.write("**📜 Formal Definitions:**\n\n")
-                for i, definition in enumerate(activity["formal_definitions"], 1):
-                    f.write(f"**Definition {i}** (Source: {definition['document_title']})\n")
-                    f.write(f"- **Jurisdiction:** {definition['jurisdiction']}\n")
-                    f.write(f"- **Document URL:** {definition['document_url'] or 'Not available'}\n")
-                    f.write(f"- **Definition Text:**\n\n")
-                    f.write(f"> {definition['definition_text']}\n\n")
-            else:
-                f.write("*No formal definitions found in analyzed documents.*\n\n")
-            
-            f.write("---\n\n")
+            for item in product_group["items"][:10]:
+                assets = ", ".join(item.get('asset_classes', [])[:3])
+                lines.append(f"| {item['name']} | {item['description'][:50]}... | {assets} | {item['confidence']:.2f} |")
         
-        # Products definitions
-        f.write("## 📦 PRODUCT DEFINITIONS\n\n")
-        for product in definition_data["regulatory_definitions"]["products"]:
-            f.write(f"### {product['name']}\n\n")
-            f.write(f"**Type:** {product['type'].replace('_', ' ').title()}\n")
-            f.write(f"**Regulatory Classification:** {product['regulatory_classification']}\n\n")
+        return "\n".join(lines)
+    
+    def _format_task2_3_document_analysis(self, results: Dict[str, Any]) -> str:
+        """Format Task 2 & 3 as a unified document analysis report"""
+        lines = []
+        lines.append("# TASK 2 & 3: DOCUMENT ANALYSIS WITH CITATIONS")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        lines.append(f"\n**Query:** {results['query']}")
+        
+        relevance_data = results["task2_document_relevance"]
+        definitions_data = results["task3_definitions"]
+        
+        # Summary Section
+        lines.append("\n## EXECUTIVE SUMMARY")
+        lines.append("-" * 80)
+        lines.append(f"\n- **Documents Analyzed:** {relevance_data['summary']['total_documents_analyzed']}")
+        lines.append(f"- **Relevant Documents:** {relevance_data['summary']['relevant_documents']} ({relevance_data['summary']['relevance_percentage']}%)")
+        lines.append(f"- **Formal Definitions Found:** {definitions_data['summary']['total_definitions_found']}")
+        lines.append(f"- **Items with Definitions:** {definitions_data['summary']['items_with_definitions']} / {definitions_data['summary']['total_items']} ({definitions_data['summary']['coverage_percentage']}%)")
+        
+        # Document Relevance Analysis
+        lines.append("\n## DOCUMENT RELEVANCE ANALYSIS")
+        lines.append("-" * 80)
+        
+        # Create a map of item to definitions for easy lookup
+        definition_map = {}
+        for entity_def in definitions_data["entity_definitions"]:
+            definition_map[entity_def["name"]] = entity_def["definitions"]
+        for activity_def in definitions_data["activity_definitions"]:
+            definition_map[activity_def["name"]] = activity_def["definitions"]
+        for product_def in definitions_data["product_definitions"]:
+            definition_map[product_def["name"]] = product_def["definitions"]
+        
+        # Most Referenced Items with Definitions
+        lines.append("\n### HIGHLY REFERENCED ITEMS WITH FORMAL DEFINITIONS")
+        
+        # Entities
+        if relevance_data["summary"]["top_relevant_entities"]:
+            lines.append("\n#### Entities")
+            for entity, count in relevance_data["summary"]["top_relevant_entities"][:5]:
+                lines.append(f"\n**{entity}** - Referenced in {count} documents")
+                
+                # Check if we have a definition
+                if entity in definition_map and definition_map[entity]:
+                    best_def = definition_map[entity][0]  # Highest confidence
+                    lines.append(f"\n**Definition:** {best_def['definition']}")
+                    lines.append(f"\n**Citation:**")
+                    lines.append(f"   - Document: {best_def['source']['document_title']}")
+                    lines.append(f"   - Document ID: `{best_def['source']['document_id']}`")
+                    if best_def['source'].get('document_url'):
+                        lines.append(f"   - URL: {best_def['source']['document_url']}")
+                else:
+                    lines.append("\n*No formal definition found*")
+        
+        # Activities
+        if relevance_data["summary"]["top_relevant_activities"]:
+            lines.append("\n#### Activities")
+            for activity, count in relevance_data["summary"]["top_relevant_activities"][:5]:
+                lines.append(f"\n**{activity}** - Referenced in {count} documents")
+                
+                if activity in definition_map and definition_map[activity]:
+                    best_def = definition_map[activity][0]
+                    lines.append(f"\n**Definition:** {best_def['definition']}")
+                    lines.append(f"\n**Citation:**")
+                    lines.append(f"   - Document: {best_def['source']['document_title']}")
+                    lines.append(f"   - Document ID: `{best_def['source']['document_id']}`")
+                    if best_def['source'].get('document_url'):
+                        lines.append(f"   - URL: {best_def['source']['document_url']}")
+                else:
+                    lines.append("\n*No formal definition found*")
+        
+        # Products
+        if relevance_data["summary"]["top_relevant_products"]:
+            lines.append("\n#### Products")
+            for product, count in relevance_data["summary"]["top_relevant_products"][:5]:
+                lines.append(f"\n**{product}** - Referenced in {count} documents")
+                
+                if product in definition_map and definition_map[product]:
+                    best_def = definition_map[product][0]
+                    lines.append(f"\n**Definition:** {best_def['definition']}")
+                    lines.append(f"\n**Citation:**")
+                    lines.append(f"   - Document: {best_def['source']['document_title']}")
+                    lines.append(f"   - Document ID: `{best_def['source']['document_id']}`")
+                    if best_def['source'].get('document_url'):
+                        lines.append(f"   - URL: {best_def['source']['document_url']}")
+                else:
+                    lines.append("\n*No formal definition found*")
+        
+        # Key Documents with High Relevance
+        lines.append("\n### KEY REGULATORY DOCUMENTS")
+        lines.append("\n| Document Title | Relevance Score | Primary Focus | Document ID |")
+        lines.append("|----------------|-----------------|---------------|-------------|")
+        
+        for doc in relevance_data["document_relevance"][:15]:
+            title = doc["title"][:50] + "..." if len(doc["title"]) > 50 else doc["title"]
+            doc_id = doc["document_id"][:12] + "..." if len(doc["document_id"]) > 12 else doc["document_id"]
+            lines.append(f"| {title} | {doc['total_relevance_score']:.1f} | {doc['primary_focus']} | `{doc_id}` |")
+        
+        # Sub-document Analysis
+        lines.append("\n### SUB-DOCUMENT LEVEL ANALYSIS")
+        
+        docs_with_subdocs = [d for d in relevance_data["document_relevance"] if d["subdocument_relevance"]]
+        
+        if docs_with_subdocs:
+            lines.append(f"\n{len(docs_with_subdocs)} documents contain relevant sub-sections:")
             
-            if product["formal_definitions"]:
-                f.write("**📜 Formal Definitions:**\n\n")
-                for i, definition in enumerate(product["formal_definitions"], 1):
-                    f.write(f"**Definition {i}** (Source: {definition['document_title']})\n")
-                    f.write(f"- **Jurisdiction:** {definition['jurisdiction']}\n")
-                    f.write(f"- **Document URL:** {definition['document_url'] or 'Not available'}\n")
-                    f.write(f"- **Definition Text:**\n\n")
-                    f.write(f"> {definition['definition_text']}\n\n")
-            else:
-                f.write("*No formal definitions found in analyzed documents.*\n\n")
-            
-            f.write("---\n\n")
+            for doc in docs_with_subdocs[:5]:
+                lines.append(f"\n**{doc['title']}**")
+                for subdoc in doc["subdocument_relevance"][:2]:
+                    lines.append(f"- Signpost {subdoc['signpost_index']}: {', '.join(subdoc['tags'][:3])}")
+                    
+                    relevant_items = []
+                    for e in subdoc.get("relevant_entities", {}).keys():
+                        relevant_items.append(f"{e} (Entity)")
+                    for a in subdoc.get("relevant_activities", {}).keys():
+                        relevant_items.append(f"{a} (Activity)")
+                    for p in subdoc.get("relevant_products", {}).keys():
+                        relevant_items.append(f"{p} (Product)")
+                    
+                    if relevant_items:
+                        lines.append(f"  Relevant to: {', '.join(relevant_items[:3])}")
+        
+        # Definition Coverage Analysis
+        lines.append("\n## DEFINITION COVERAGE ANALYSIS")
+        lines.append("-" * 80)
+        
+        coverage = definitions_data["summary"]["coverage_by_type"]
+        lines.append("\n| Category | Total Items | With Definitions | Coverage % |")
+        lines.append("|----------|-------------|------------------|------------|")
+        
+        for item_type, stats in coverage.items():
+            coverage_pct = (stats["with_definitions"] / stats["total"] * 100) if stats["total"] > 0 else 0
+            lines.append(f"| {item_type.title()} | {stats['total']} | {stats['with_definitions']} | {coverage_pct:.1f}% |")
+        
+        # Items Without Definitions
+        lines.append("\n### ITEMS REQUIRING DEFINITION CLARIFICATION")
+        
+        # Find items without definitions from top referenced items
+        missing_definitions = []
+        
+        for entity, count in relevance_data["summary"]["top_relevant_entities"][:10]:
+            if entity not in definition_map or not definition_map[entity]:
+                missing_definitions.append((entity, "Entity", count))
+        
+        for activity, count in relevance_data["summary"]["top_relevant_activities"][:10]:
+            if activity not in definition_map or not definition_map[activity]:
+                missing_definitions.append((activity, "Activity", count))
+        
+        for product, count in relevance_data["summary"]["top_relevant_products"][:10]:
+            if product not in definition_map or not definition_map[product]:
+                missing_definitions.append((product, "Product", count))
+        
+        if missing_definitions:
+            missing_definitions.sort(key=lambda x: x[2], reverse=True)  # Sort by reference count
+            lines.append("\nThe following frequently referenced items lack formal definitions:")
+            for item, item_type, count in missing_definitions[:10]:
+                lines.append(f"- **{item}** ({item_type}) - Referenced in {count} documents")
+        
+        return "\n".join(lines)
     
-    return {
-        "filename": md_file.name,
-        "data": definition_data,
-        "human_readable_file": md_file.name
-    }
-
-def extract_definition_from_content(term: str, content: str) -> Optional[str]:
-    """Extract definition text for a term from document content"""
-    if not content or not term:
-        return None
+    def _format_task2_markdown(self, relevance_data: Dict[str, Any]) -> str:
+        """Format Task 2 results as markdown"""
+        lines = []
+        lines.append("# TASK 2: DOCUMENT RELEVANCE PREDICTIONS")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        summary = relevance_data["summary"]
+        lines.append("\n## Summary")
+        lines.append(f"- Documents analyzed: {summary['total_documents_analyzed']}")
+        lines.append(f"- Relevant documents: {summary['relevant_documents']}")
+        lines.append(f"- Relevance percentage: {summary['relevance_percentage']}%")
+        
+        return "\n".join(lines)
     
-    # Simple definition extraction logic
-    content_lower = content.lower()
-    term_lower = term.lower()
+    def _format_task3_markdown(self, definitions_data: Dict[str, Any]) -> str:
+        """Format Task 3 results as markdown with proper citations"""
+        lines = []
+        lines.append("# TASK 3: FORMAL DEFINITIONS WITH DOCUMENT CITATIONS")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        summary = definitions_data["summary"]
+        lines.append("\n## Summary")
+        lines.append(f"- Total items: {summary['total_items']}")
+        lines.append(f"- Items with definitions: {summary['items_with_definitions']}")
+        lines.append(f"- Coverage: {summary['coverage_percentage']}%")
+        
+        return "\n".join(lines)
     
-    # Look for common definition patterns
-    patterns = [
-        f'"{term_lower}" means',
-        f"'{term_lower}' means", 
-        f"{term_lower} means",
-        f"the term \"{term_lower}\"",
-        f"the term '{term_lower}'",
-        f"{term_lower} is defined as",
-        f"{term_lower}\" means",
-        f"{term_lower}' means"
-    ]
-    
-    for pattern in patterns:
-        start_idx = content_lower.find(pattern)
-        if start_idx != -1:
-            # Extract text from pattern start to next sentence end
-            start = start_idx
-            end = content.find('.', start_idx + len(pattern))
-            if end == -1:
-                end = min(start_idx + 500, len(content))  # Max 500 chars
-            else:
-                end += 1  # Include the period
-            
-            definition = content[start:end].strip()
-            if len(definition) > 20:  # Minimum length check
-                return definition
-    
-    return None
-
-async def generate_comprehensive_report(
-    orchestrator, query: str, timestamp: str, processing_time: float, 
-    auth_status: Dict, output_path: Path
-) -> Dict[str, Any]:
-    """Generate comprehensive human-readable report"""
-    
-    md_file = output_path / f"COMPREHENSIVE_REGGENOME_REPORT_{timestamp}.md"
-    
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write("# 🏛️ COMPREHENSIVE REGGENOME ANALYSIS REPORT\n\n")
-        f.write("*AI-Powered Regulatory Intelligence Analysis*\n\n")
-        f.write("---\n\n")
+    def _format_comprehensive_summary(self, results: Dict[str, Any]) -> str:
+        """Format comprehensive human-readable summary"""
+        lines = []
+        lines.append("# COMPREHENSIVE REGGENOME RESEARCH REPORT")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        lines.append(f"\n**Query:** {results['query']}")
         
         # Executive Summary
-        f.write("## 📋 EXECUTIVE SUMMARY\n\n")
-        f.write(f"**Research Query:** {query}\n\n")
-        f.write(f"**Analysis Date:** {datetime.now().strftime('%B %d, %Y at %H:%M UTC')}\n")
-        f.write(f"**Processing Time:** {processing_time:.2f} seconds\n")
-        f.write(f"**Authentication:** {'✅ Verified' if auth_status.get('status') == 'valid' else '❌ Invalid'}\n")
-        if auth_status.get('username'):
-            f.write(f"**Analyst:** {auth_status['username']}\n")
-        f.write("\n")
+        lines.append("\n## EXECUTIVE SUMMARY")
+        overall = results["overall_summary"]
+        lines.append(f"\nThis research analyzed **{overall['documents_processed']} regulatory documents** and identified:")
+        lines.append(f"- **{overall['total_items_extracted']} unique regulated items** (entities, activities, and products)")
+        lines.append(f"- **{overall['relevant_documents_identified']} documents** directly relevant to these items")
+        lines.append(f"- **{overall['definitions_found']} formal definitions** with document citations")
+        lines.append(f"- **{overall['overall_coverage']['definition_coverage_percentage']}%** of items have formal definitions")
         
-        # Key Findings
-        total_entities = len(orchestrator.current_state.taxonomy.entities)
-        total_activities = len(orchestrator.current_state.taxonomy.activities)
-        total_products = len(orchestrator.current_state.taxonomy.products)
-        total_documents = len(orchestrator.current_state.documents)
-        
-        f.write("### 🎯 KEY FINDINGS\n\n")
-        f.write(f"- **{total_documents}** regulatory documents analyzed\n")
-        f.write(f"- **{total_entities}** regulated entities identified\n")
-        f.write(f"- **{total_activities}** regulated activities identified\n")
-        f.write(f"- **{total_products}** regulated products identified\n")
-        f.write(f"- **{total_entities + total_activities + total_products}** total regulatory elements extracted\n\n")
-        
-        # Methodology
-        f.write("## 🔬 METHODOLOGY\n\n")
-        f.write("This analysis was conducted using advanced AI-powered regulatory intelligence:\n\n")
-        f.write("1. **Document Retrieval:** RegGenome API with JWT authentication\n")
-        f.write("2. **AI Processing:** GPT-4 for regulatory element extraction\n") 
-        f.write("3. **Classification:** Multi-agent system for entities, activities, and products\n")
-        f.write("4. **Deduplication:** Advanced similarity matching to eliminate redundancy\n")
-        f.write("5. **Relevance Scoring:** Confidence-based relevance assessment\n\n")
-        
-        # Document Sources
-        f.write("## 📚 DOCUMENT SOURCES\n\n")
-        if orchestrator.current_state.documents:
-            f.write("### Analyzed Documents\n\n")
-            for i, doc in enumerate(orchestrator.current_state.documents[:10], 1):  # Show first 10
-                f.write(f"**{i}. {doc.title}**\n")
-                f.write(f"- Publisher: {doc.publisher}\n")
-                f.write(f"- Jurisdiction: {doc.jurisdiction}\n")
-                f.write(f"- Initiative: {doc.legislative_initiative}\n\n")
-            
-            if len(orchestrator.current_state.documents) > 10:
-                f.write(f"*... and {len(orchestrator.current_state.documents) - 10} additional documents*\n\n")
-        
-        # Confidence Assessment
-        f.write("## 📊 CONFIDENCE ASSESSMENT\n\n")
-        
-        # Calculate confidence statistics
-        entity_scores = [e.confidence_score for e in orchestrator.current_state.taxonomy.entities]
-        activity_scores = [a.confidence_score for a in orchestrator.current_state.taxonomy.activities]
-        product_scores = [p.confidence_score for p in orchestrator.current_state.taxonomy.products]
-        
-        all_scores = entity_scores + activity_scores + product_scores
-        
-        if all_scores:
-            avg_confidence = sum(all_scores) / len(all_scores)
-            high_confidence = len([s for s in all_scores if s > 0.8])
-            medium_confidence = len([s for s in all_scores if 0.6 <= s <= 0.8])
-            low_confidence = len([s for s in all_scores if s < 0.6])
-            
-            f.write(f"**Overall Confidence:** {avg_confidence:.2f} ({avg_confidence*100:.1f}%)\n\n")
-            f.write(f"- **High Confidence (>80%):** {high_confidence} items\n")
-            f.write(f"- **Medium Confidence (60-80%):** {medium_confidence} items\n")
-            f.write(f"- **Low Confidence (<60%):** {low_confidence} items\n\n")
-        
-        # Recommendations
-        f.write("## 💡 RECOMMENDATIONS\n\n")
-        f.write("Based on this analysis, we recommend:\n\n")
-        f.write("1. **Regulatory Compliance Review:** Focus on high-confidence regulatory elements\n")
-        f.write("2. **Risk Assessment:** Prioritize entities and activities with complex requirements\n")
-        f.write("3. **Documentation:** Maintain links to formal definitions for compliance\n")
-        f.write("4. **Monitoring:** Set up alerts for regulatory changes in identified frameworks\n\n")
-        
-        # Footer
-        f.write("---\n\n")
-        f.write("*This report was generated using RegGenome Deep Research AI system.*\n")
-        f.write(f"*Report ID: {timestamp}*\n")
-        f.write("*For questions or clarifications, please contact the RegGenome team.*\n")
+        return "\n".join(lines)
     
-    return {
-        "filename": md_file.name,
-        "report_path": str(md_file)
-    }
-
-async def generate_final_human_summary(complete_summary: Dict, output_path: Path, timestamp: str):
-    """Generate final executive summary in human-readable format"""
-    
-    md_file = output_path / f"HUMAN_READABLE_SUMMARY_{timestamp}.md"
-    
-    with open(md_file, 'w', encoding='utf-8') as f:
-        f.write("# 🎯 REGGENOME CHALLENGE - FINAL RESULTS\n\n")
-        f.write("*All Three Objectives Successfully Completed*\n\n")
-        f.write("---\n\n")
+    def _format_comprehensive_report(self, results: Dict[str, Any]) -> str:
+        """Format a comprehensive report combining all three tasks"""
+        lines = []
+        lines.append("# COMPREHENSIVE REGGENOME RESEARCH REPORT")
+        lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        lines.append(f"\n**Research Query:** {results['query']}")
         
-        # Results Overview
-        stats = complete_summary["results_summary"]
-        f.write("## 📊 RESULTS OVERVIEW\n\n")
-        f.write(f"**🏢 Entities Identified:** {stats['entities']['total']}\n")
-        f.write(f"**⚡ Activities Identified:** {stats['activities']['total']}\n")
-        f.write(f"**📦 Products Identified:** {stats['products']['total']}\n")
-        f.write(f"**📋 Total Documents:** {complete_summary['processing_metadata']['total_documents_processed']}\n")
-        f.write(f"**⏱️ Processing Time:** {complete_summary['processing_metadata']['processing_time_seconds']:.1f} seconds\n\n")
+        # Executive Summary
+        lines.append("\n" + "="*80)
+        lines.append("\n## EXECUTIVE SUMMARY")
+        lines.append("="*80)
         
-        # Challenge Objectives Status
-        f.write("## ✅ CHALLENGE OBJECTIVES STATUS\n\n")
-        f.write("### 1️⃣ Objective 1: Hierarchical Table ✅ COMPLETED\n")
-        f.write("- **Deliverable:** Redundancy-free table of regulated items\n")
-        f.write(f"- **File:** `{complete_summary['output_files']['hierarchical_table']}`\n")
-        f.write("- **Status:** ✅ Successfully generated with human-readable format\n\n")
+        overall = results["overall_summary"]
+        table = results["task1_hierarchical_table"]
+        relevance = results["task2_document_relevance"]["summary"]
+        definitions = results["task3_definitions"]["summary"]
         
-        f.write("### 2️⃣ Objective 2: Document Relevance Analysis ✅ COMPLETED\n")
-        f.write("- **Deliverable:** AI-powered relevance predictions\n")
-        f.write(f"- **File:** `{complete_summary['output_files']['document_relevance']}`\n")
-        f.write("- **Status:** ✅ Document and sub-document level analysis complete\n\n")
+        lines.append(f"\nThis comprehensive analysis of regulatory documents has identified and analyzed:")
+        lines.append(f"- **{overall['total_items_extracted']}** unique regulated items across entities, activities, and products")
+        lines.append(f"- **{overall['documents_processed']}** regulatory documents processed")
+        lines.append(f"- **{overall['relevant_documents_identified']}** documents ({relevance['relevance_percentage']}%) directly relevant to identified items")
+        lines.append(f"- **{overall['definitions_found']}** formal definitions extracted with citations")
+        lines.append(f"- **{overall['overall_coverage']['definition_coverage_percentage']}%** of items have formal definitions")
         
-        f.write("### 3️⃣ Objective 3: Definition Links (Stretch Goal) ✅ COMPLETED\n")
-        f.write("- **Deliverable:** Formal definitions with source document links\n")
-        f.write(f"- **File:** `{complete_summary['output_files']['definition_links']}`\n")
-        f.write("- **Status:** ✅ AI-extracted definitions with full text and sources\n\n")
+        # Key Findings by Task
+        lines.append("\n## KEY FINDINGS")
         
-        # API and Authentication
-        auth = complete_summary["authentication_status"]
-        f.write("## 🔐 AUTHENTICATION & API\n\n")
-        f.write(f"**API Mode:** {complete_summary['api_mode'].upper()} RegGenome API\n")
-        if auth.get('status') == 'valid':
-            f.write(f"**Authentication:** ✅ Valid JWT Token\n")
-            f.write(f"**User:** {auth.get('username', 'Unknown')}\n")
-            f.write(f"**Token Expires:** {auth.get('expires_at', 'Unknown')}\n")
-        else:
-            f.write("**Authentication:** ❌ Invalid\n")
-        f.write("\n")
+        # Task 1 highlights
+        lines.append("\n### Task 1: Regulated Items Identified")
+        entity_count = sum(g["count"] for g in table["regulated_entities"])
+        activity_count = sum(g["count"] for g in table["regulated_activities"])
+        product_count = sum(g["count"] for g in table["regulated_products"])
+        lines.append(f"- **Entities:** {entity_count} unique regulated entities")
+        lines.append(f"- **Activities:** {activity_count} unique regulated activities")
+        lines.append(f"- **Products:** {product_count} unique regulated products")
         
-        # Generated Files
-        f.write("## 📁 GENERATED FILES\n\n")
-        f.write("All deliverables have been generated in both JSON and human-readable formats:\n\n")
-        for key, filename in complete_summary['output_files'].items():
-            f.write(f"- **{key.replace('_', ' ').title()}:** `{filename}`\n")
-        f.write("\n")
+        # Task 2 highlights
+        lines.append("\n### Task 2: Document Relevance")
+        lines.append(f"- **{relevance['relevance_percentage']}%** of documents are relevant to identified items")
+        lines.append(f"- **Top referenced categories:**")
+        if relevance["top_relevant_entities"]:
+            top_entity = relevance["top_relevant_entities"][0]
+            lines.append(f"  - Entity: {top_entity[0]} ({top_entity[1]} documents)")
+        if relevance["top_relevant_activities"]:
+            top_activity = relevance["top_relevant_activities"][0]
+            lines.append(f"  - Activity: {top_activity[0]} ({top_activity[1]} documents)")
         
-        # Next Steps
-        f.write("## 🚀 NEXT STEPS\n\n")
-        f.write("1. **Review Generated Reports:** Examine all human-readable `.md` files\n")
-        f.write("2. **Validate Results:** Cross-reference with source documents\n")
-        f.write("3. **Integrate Findings:** Use results for compliance and risk assessment\n")
-        f.write("4. **Set Up Monitoring:** Track regulatory changes using identified frameworks\n\n")
+        # Task 3 highlights
+        lines.append("\n### Task 3: Definition Coverage")
+        lines.append(f"- **{definitions['coverage_percentage']}%** of items have formal definitions")
+        lines.append(f"- **{definitions['documents_with_definitions']}** documents contain definitions")
+        lines.append(f"- **Average confidence:** {definitions['average_confidence']}")
         
-        # Contact
-        f.write("---\n\n")
-        f.write("**🎉 RegGenome Challenge Successfully Completed!**\n\n")
-        f.write("*All objectives achieved with AI-powered regulatory intelligence.*\n")
-
-
-# Synchronous wrapper for easy use
-def run_complete_analysis(
-    query: str = "Research and analyze regulations related to investment funds, including regulated activities, entities, and products",
-    output_dir: str = "output",
-    use_real_api: bool = True,
-    model_name: Optional[str] = None,
-    config_path: Optional[str] = None
-) -> Dict[str, Any]:
-    """
-    Synchronous wrapper for the complete RegGenome analysis workflow.
-    
-    Args:
-        query: Research query to guide the analysis
-        output_dir: Directory to save output files (default: 'output')
-        use_real_api: Whether to use real RegGenome API (True) or mock data (False)
-        model_name: LLM model to use for analysis
-        config_path: Path to custom configuration file
-    
-    Returns:
-        Dict[str, Any]: Complete results with all deliverables
-    """
-    return asyncio.run(generate_all_deliverables(
-        query=query,
-        output_dir=output_dir,
-        use_real_api=use_real_api,
-        model_name=model_name,
-        config_path=config_path
-    ))
-
-
-# CLI-friendly function
-def quick_research(topic: str, save_to: str = "output") -> str:
-    """
-    Ultra-simple interface for quick research.
-    
-    Args:
-        topic: What you want to research (e.g., "investment advisers", "UCITS", "hedge funds")
-        save_to: Directory to save results
-    
-    Returns:
-        Path to the summary file with all results
-    
-    Example:
-        >>> summary_file = quick_research("investment advisers", "my_analysis")
-        >>> print(f"Results saved to: {summary_file}")
-    """
-    results = run_complete_analysis(
-        query=f"Research and analyze regulations related to {topic}",
-        output_dir=save_to,
-        use_real_api=True
-    )
-    return results.get("output_files", {}).get("human_readable_summary", "")
-
-
-if __name__ == "__main__":
-    # Example usage
-    print("Running example RegGenome research...")
-    results = run_complete_analysis(
-        query="Investment management and fund regulations",
-        output_dir="example_output",
-        use_real_api=True
-    )
-    print(f"✓ Research completed!")
-    stats = results.get("results_summary", {})
-    print(f"✓ Found {stats.get('entities', {}).get('total', 0)} entities, {stats.get('activities', {}).get('total', 0)} activities, {stats.get('products', {}).get('total', 0)} products")
-    print(f"✓ Results saved to: {results.get('output_files', {}).get('human_readable_summary', '')}") 
+        return "\n".join(lines)

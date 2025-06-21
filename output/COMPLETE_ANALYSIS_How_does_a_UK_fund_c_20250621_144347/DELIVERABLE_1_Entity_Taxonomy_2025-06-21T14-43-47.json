@@ -1,0 +1,254 @@
+[
+  {
+    "EntityID": "E001",
+    "EntityName": "Financial Entity",
+    "EntityType": "ROOT_CATEGORY",
+    "ParentEntityID": ""
+  },
+  {
+    "EntityID": "E002",
+    "EntityName": "Financial Product",
+    "EntityType": "ROOT_CATEGORY",
+    "ParentEntityID": ""
+  },
+  {
+    "EntityID": "E003",
+    "EntityName": "Financial Activity",
+    "EntityType": "ROOT_CATEGORY",
+    "ParentEntityID": ""
+  },
+  {
+    "EntityID": "E004",
+    "EntityName": "Depositary",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E005",
+    "EntityName": "trustees",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E004"
+  },
+  {
+    "EntityID": "E006",
+    "EntityName": "Firm",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E007",
+    "EntityName": "firm",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E006"
+  },
+  {
+    "EntityID": "E008",
+    "EntityName": "Financial Institutions",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E006"
+  },
+  {
+    "EntityID": "E009",
+    "EntityName": "Fund",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E010",
+    "EntityName": "fund",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E009"
+  },
+  {
+    "EntityID": "E011",
+    "EntityName": "investment funds",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E009"
+  },
+  {
+    "EntityID": "E012",
+    "EntityName": "Investment Adviser",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E013",
+    "EntityName": "ADVISER",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E012"
+  },
+  {
+    "EntityID": "E014",
+    "EntityName": "RIA",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E012"
+  },
+  {
+    "EntityID": "E015",
+    "EntityName": "Investment Adviser",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E012"
+  },
+  {
+    "EntityID": "E016",
+    "EntityName": "Management Company",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E017",
+    "EntityName": "Fund Managers",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E016"
+  },
+  {
+    "EntityID": "E018",
+    "EntityName": "Management Companies",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E016"
+  },
+  {
+    "EntityID": "E019",
+    "EntityName": "Ucits",
+    "EntityType": "ENTITY_CATEGORY",
+    "ParentEntityID": "E001"
+  },
+  {
+    "EntityID": "E020",
+    "EntityName": "UCITS",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E019"
+  },
+  {
+    "EntityID": "E021",
+    "EntityName": "Undertakings for Collective Investment",
+    "EntityType": "ENTITY",
+    "ParentEntityID": "E019"
+  },
+  {
+    "EntityID": "E022",
+    "EntityName": "Asset Management",
+    "EntityType": "ACTIVITY_CATEGORY",
+    "ParentEntityID": "E003"
+  },
+  {
+    "EntityID": "E023",
+    "EntityName": "Asset Management",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E022"
+  },
+  {
+    "EntityID": "E024",
+    "EntityName": "Custody",
+    "EntityType": "ACTIVITY_CATEGORY",
+    "ParentEntityID": "E003"
+  },
+  {
+    "EntityID": "E025",
+    "EntityName": "Custodial Services",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E024"
+  },
+  {
+    "EntityID": "E026",
+    "EntityName": "Reporting",
+    "EntityType": "ACTIVITY_CATEGORY",
+    "ParentEntityID": "E003"
+  },
+  {
+    "EntityID": "E027",
+    "EntityName": "Regulatory Reporting",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E026"
+  },
+  {
+    "EntityID": "E028",
+    "EntityName": "Disclosure Requirements",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E026"
+  },
+  {
+    "EntityID": "E029",
+    "EntityName": "Risk Management",
+    "EntityType": "ACTIVITY_CATEGORY",
+    "ParentEntityID": "E003"
+  },
+  {
+    "EntityID": "E030",
+    "EntityName": "Risk Management",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E029"
+  },
+  {
+    "EntityID": "E031",
+    "EntityName": "Risk Assessment",
+    "EntityType": "ACTIVITY",
+    "ParentEntityID": "E029"
+  },
+  {
+    "EntityID": "E032",
+    "EntityName": "Collective Investment Scheme",
+    "EntityType": "PRODUCT_CATEGORY",
+    "ParentEntityID": "E002"
+  },
+  {
+    "EntityID": "E033",
+    "EntityName": "Collective Investment Scheme",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E032"
+  },
+  {
+    "EntityID": "E034",
+    "EntityName": "Etf",
+    "EntityType": "PRODUCT_CATEGORY",
+    "ParentEntityID": "E002"
+  },
+  {
+    "EntityID": "E035",
+    "EntityName": "Exchange-Traded Fund",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E034"
+  },
+  {
+    "EntityID": "E036",
+    "EntityName": "Hedge Fund",
+    "EntityType": "PRODUCT_CATEGORY",
+    "ParentEntityID": "E002"
+  },
+  {
+    "EntityID": "E037",
+    "EntityName": "Private Fund",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E036"
+  },
+  {
+    "EntityID": "E038",
+    "EntityName": "Alternative Investment Fund",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E036"
+  },
+  {
+    "EntityID": "E039",
+    "EntityName": "Money Market Fund",
+    "EntityType": "PRODUCT_CATEGORY",
+    "ParentEntityID": "E002"
+  },
+  {
+    "EntityID": "E040",
+    "EntityName": "Money Market Funds",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E039"
+  },
+  {
+    "EntityID": "E041",
+    "EntityName": "Ucits Fund",
+    "EntityType": "PRODUCT_CATEGORY",
+    "ParentEntityID": "E002"
+  },
+  {
+    "EntityID": "E042",
+    "EntityName": "UCITS Fund",
+    "EntityType": "PRODUCT",
+    "ParentEntityID": "E041"
+  }
+]

@@ -1,296 +1,290 @@
-"""Activity extraction agent for identifying regulated activities in regulatory documents."""
-
-import logging
-import hashlib
-from typing import List, Dict, Any
-from pydantic import BaseModel, Field
-
-from ..models import RegGenomeDocument, RegulatedActivity, ActivityType
-from ..llm_utils import extract_structured_data, llm_manager
-
-logger = logging.getLogger(__name__)
-
-
-class ActivityExtractionResult(BaseModel):
-    """Result model for activity extraction."""
-    
-    activities: List[Dict[str, Any]] = Field(description="List of extracted activities")
-    confidence_score: float = Field(description="Overall confidence in extraction", ge=0.0, le=1.0)
-    reasoning: str = Field(description="Explanation of extraction process")
-
+from typing import List, Dict, Any, Optional
+import re
+from src.models import Document, RegulatedActivity, ActivityType
 
 class ActivityExtractionAgent:
-    """Agent for extracting regulated activities from regulatory documents."""
+    """Agent specialized in extracting regulated activities from documents"""
     
     def __init__(self):
-        self.extraction_prompt = self._build_extraction_prompt()
-    
-    def _build_extraction_prompt(self) -> str:
-        """Build the activity extraction prompt."""
-        activity_types = [a.value for a in ActivityType]
+        # Activity patterns and keywords
+        self.activity_patterns = {
+            ActivityType.ASSET_MANAGEMENT: [
+                r"asset management",
+                r"portfolio management",
+                r"managing (?:client|investor) assets",
+                r"discretionary (?:asset|portfolio) management",
+                r"collective investment management"
+            ],
+            ActivityType.INVESTMENT_ADVICE: [
+                r"investment advice",
+                r"investment advisory",
+                r"providing (?:investment )?advice",
+                r"advising (?:on|regarding) investments",
+                r"investment recommendations"
+            ],
+            ActivityType.PORTFOLIO_MANAGEMENT: [
+                r"portfolio management",
+                r"managing portfolios",
+                r"discretionary management",
+                r"portfolio construction",
+                r"portfolio optimization"
+            ],
+            ActivityType.CUSTODY: [
+                r"custody (?:services|of assets)",
+                r"safekeeping (?:services|of assets)",
+                r"custodial services",
+                r"asset custody",
+                r"holding client assets"
+            ],
+            ActivityType.DISTRIBUTION: [
+                r"distribution (?:of funds|services)",
+                r"marketing (?:of funds|services)",
+                r"fund distribution",
+                r"selling (?:fund )?shares",
+                r"placement of units"
+            ],
+            ActivityType.FUND_ADMINISTRATION: [
+                r"fund administration",
+                r"administrative services",
+                r"transfer agency",
+                r"registrar services",
+                r"fund accounting"
+            ],
+            ActivityType.RISK_MANAGEMENT: [
+                r"risk management",
+                r"risk (?:assessment|monitoring)",
+                r"risk control",
+                r"managing (?:investment )?risks",
+                r"risk mitigation"
+            ],
+            ActivityType.COMPLIANCE: [
+                r"compliance (?:monitoring|services)",
+                r"regulatory compliance",
+                r"compliance oversight",
+                r"ensuring compliance",
+                r"compliance procedures"
+            ],
+            ActivityType.REPORTING: [
+                r"regulatory reporting",
+                r"reporting (?:requirements|obligations)",
+                r"filing reports",
+                r"disclosure requirements",
+                r"transparency reporting"
+            ]
+        }
         
-        return f"""
-You are an expert in regulatory document analysis specializing in identifying regulated activities.
-
-Your task is to extract all regulated activities mentioned in the document. These include:
-
-**Activity Types to Look For:**
-{', '.join(activity_types)}
-
-**What to Extract:**
-1. **Activity Name**: The exact name or term as it appears in the document
-2. **Activity Type**: Classify using the provided activity types
-3. **Description**: A clear description of what this activity involves
-4. **Definition Context**: The surrounding text that defines or describes the activity
-5. **Regulatory Requirements**: Any specific regulatory requirements, licenses, or permissions needed
-6. **Applicable Entities**: Types of entities that can perform this activity
-7. **Jurisdictions**: Geographic or regulatory jurisdictions where this applies
-
-**Instructions:**
-- Focus on activities that are explicitly regulated, licensed, or supervised
-- Look for definitions of business activities, services, or operations
-- Pay attention to licensing requirements, registration obligations, and regulatory oversight
-- Include activities that require regulatory approval or notification
-- Capture compliance requirements and restrictions
-- Be precise with terminology - use exact terms from the document
-- Provide confidence scores based on how clearly the activity is defined
-
-**Examples of Regulated Activities:**
-- Investment advisory services, portfolio management
-- Securities trading, market making, underwriting
-- Fund management, custody services
-- Research services, prime brokerage
-- Risk management, compliance monitoring
-- Financial advice, wealth management
-- Clearing and settlement services
-
-Extract all relevant activities with their complete regulatory context and requirements.
-"""
+        self.activity_verbs = [
+            "managing", "advising", "providing", "offering", "conducting",
+            "performing", "executing", "administering", "distributing",
+            "marketing", "selling", "holding", "safekeeping", "monitoring"
+        ]
     
-    async def extract_activities(self, document: RegGenomeDocument) -> List[RegulatedActivity]:
-        """Extract regulated activities from a document."""
-        logger.info(f"Extracting activities from document: {document.title}")
+    def extract_activities(self, document: Document) -> List[RegulatedActivity]:
+        """Extract regulated activities from a document"""
+        activities = []
+        processed_activities = set()
         
-        try:
-            # Prepare content for extraction
-            content = self._prepare_content(document)
-            
-            # Extract activities using LLM
-            extraction_result = await extract_structured_data(
-                content=content,
-                extraction_prompt=self.extraction_prompt,
-                response_model=ActivityExtractionResult,
-                model=llm_manager.get_extraction_model()
-            )
-            
-            # Convert to RegulatedActivity models
-            activities = []
-            for activity_data in extraction_result.activities:
-                activity = self._create_regulated_activity(activity_data, document)
-                activities.append(activity)
-            
-            logger.info(f"Extracted {len(activities)} activities from document {document.document_id}")
-            return activities
-            
-        except Exception as e:
-            logger.error(f"Error extracting activities from document {document.document_id}: {e}")
-            return []
+        full_text = self._get_full_text(document)
+        
+        for activity_type, patterns in self.activity_patterns.items():
+            for pattern in patterns:
+                matches = re.finditer(pattern, full_text, re.IGNORECASE)
+                
+                for match in matches:
+                    activity_name = match.group(0)
+                    context = self._extract_context(full_text, match.start(), match.end())
+                    
+                    # Create unique key
+                    activity_key = f"{activity_name.lower()}_{activity_type.value}"
+                    
+                    if activity_key not in processed_activities:
+                        processed_activities.add(activity_key)
+                        
+                        activity = RegulatedActivity(
+                            name=self._normalize_activity_name(activity_name),
+                            type="activity",
+                            activity_type=activity_type,
+                            description=self._generate_description(activity_name, context),
+                            source_document_id=document.document_id,
+                            source_text=context,
+                            confidence=self._calculate_confidence(activity_name, context),
+                            metadata={
+                                "document_title": document.title or "Unknown",
+                                "publishers": [p.get("name", "") for p in document.publishers] if document.publishers else [],
+                                "published_date": document.published or "Unknown"
+                            },
+                            applicable_entities=self._extract_applicable_entities(context),
+                            requirements=self._extract_requirements(context)
+                        )
+                        activities.append(activity)
+        
+        # Also look for activities defined in signposts
+        activities.extend(self._extract_from_signposts(document))
+        
+        return activities
     
-    def _prepare_content(self, document: RegGenomeDocument) -> str:
-        """Prepare document content for activity extraction."""
-        content_parts = [
-            f"**Document Title:** {document.title}",
-            f"**Document Type:** {document.document_type}",
-            f"**Jurisdiction:** {document.jurisdiction}",
-            f"**Legislative Initiative:** {document.legislative_initiative}",
-            f"**Publisher:** {document.publisher}",
+    def _get_full_text(self, document: Document) -> str:
+        """Combine all text sources from document"""
+        text_parts = []
+        
+        if document.title:
+            text_parts.append(document.title)
+        
+        if document.source_text:
+            for text_item in document.source_text:
+                if isinstance(text_item, dict) and "text" in text_item:
+                    text_parts.append(text_item["text"])
+                elif isinstance(text_item, str):
+                    text_parts.append(text_item)
+        
+        if document.signposts:
+            for signpost in document.signposts:
+                if isinstance(signpost, dict) and "text" in signpost:
+                    text_parts.append(signpost["text"])
+        
+        return " ".join(text_parts)
+    
+    def _extract_context(self, text: str, start: int, end: int, window: int = 300) -> str:
+        """Extract context around a match"""
+        context_start = max(0, start - window)
+        context_end = min(len(text), end + window)
+        return text[context_start:context_end].strip()
+    
+    def _normalize_activity_name(self, activity_name: str) -> str:
+        """Normalize activity name for consistency"""
+        # Remove extra spaces and capitalize properly
+        normalized = " ".join(activity_name.split())
+        return normalized.title()
+    
+    def _generate_description(self, activity_name: str, context: str) -> str:
+        """Generate description based on activity and context"""
+        activity_lower = activity_name.lower()
+        
+        descriptions = {
+            "asset management": "Professional management of client assets and investments",
+            "investment advice": "Providing recommendations and guidance on investment decisions",
+            "portfolio management": "Managing investment portfolios on behalf of clients",
+            "custody": "Safekeeping and administration of financial assets",
+            "distribution": "Marketing and selling of investment products",
+            "fund administration": "Administrative and operational services for investment funds",
+            "risk management": "Identifying, assessing and mitigating investment risks",
+            "compliance": "Ensuring adherence to regulatory requirements",
+            "reporting": "Preparing and submitting regulatory reports and disclosures"
+        }
+        
+        for key, desc in descriptions.items():
+            if key in activity_lower:
+                return desc
+        
+        return f"Regulated activity involving {activity_name}"
+    
+    def _calculate_confidence(self, activity_name: str, context: str) -> float:
+        """Calculate confidence score for extracted activity"""
+        score = 0.6  # Base score
+        
+        # Check for activity verbs
+        for verb in self.activity_verbs:
+            if verb in context.lower():
+                score += 0.1
+                break
+        
+        # Check for regulatory context
+        regulatory_indicators = ["must", "shall", "required", "obligation", "duty", "prohibited"]
+        for indicator in regulatory_indicators:
+            if indicator in context.lower():
+                score += 0.15
+                break
+        
+        # Check for formal definition
+        if any(phrase in context.lower() for phrase in ["means", "defined as", "includes"]):
+            score += 0.15
+        
+        return min(score, 1.0)
+    
+    def _extract_applicable_entities(self, context: str) -> List[str]:
+        """Extract entities to which the activity applies"""
+        entities = []
+        
+        entity_patterns = [
+            r"investment adviser[s]?",
+            r"investment compan(?:y|ies)",
+            r"management compan(?:y|ies)",
+            r"UCITS",
+            r"fund[s]?",
+            r"depositar(?:y|ies)",
+            r"firm[s]?"
         ]
         
-        # Add thematic tags if available
-        if document.thematic_tags:
-            content_parts.append(f"**Thematic Tags:** {', '.join(document.thematic_tags)}")
+        for pattern in entity_patterns:
+            if re.search(pattern, context, re.IGNORECASE):
+                entities.append(pattern.replace(r"[s]?", "").replace(r"(?:y|ies)", "y"))
         
-        # Add main content
-        content_parts.append("**Document Content:**")
-        content_parts.append(document.content)
-        
-        # Add section information if available
-        if document.sections:
-            content_parts.append("**Document Sections:**")
-            for section in document.sections:
-                content_parts.append(f"- {section.get('title', 'Untitled')}: {section.get('content', '')}")
-        
-        return "\n\n".join(content_parts)
+        return entities
     
-    def _create_regulated_activity(self, activity_data: Dict[str, Any], document: RegGenomeDocument) -> RegulatedActivity:
-        """Create a RegulatedActivity from extracted data."""
-        # Generate activity ID based on name and type
-        activity_name = activity_data.get("name", "").strip()
-        activity_type_str = activity_data.get("activity_type", "other").lower()
+    def _extract_requirements(self, context: str) -> List[str]:
+        """Extract specific requirements for the activity"""
+        requirements = []
         
-        # Map activity type
-        try:
-            activity_type = ActivityType(activity_type_str)
-        except ValueError:
-            activity_type = ActivityType.OTHER
+        # Look for requirement patterns
+        req_patterns = [
+            r"must [\w\s]+",
+            r"shall [\w\s]+",
+            r"required to [\w\s]+",
+            r"obligation to [\w\s]+"
+        ]
         
-        # Generate unique ID
-        activity_id = self._generate_activity_id(activity_name, activity_type)
+        for pattern in req_patterns:
+            matches = re.finditer(pattern, context, re.IGNORECASE)
+            for match in matches:
+                req_text = match.group(0).strip()
+                if len(req_text) < 100:  # Avoid very long matches
+                    requirements.append(req_text)
         
-        # Extract applicable entities
-        applicable_entities = activity_data.get("applicable_entities", [])
-        
-        # Extract regulatory requirements
-        regulatory_requirements = activity_data.get("regulatory_requirements", [])
-        required_licenses = activity_data.get("required_licenses", [])
-        
-        # Add document context to requirements
-        if document.legislative_initiative:
-            regulatory_requirements.append(f"Subject to {document.legislative_initiative}")
-        
-        return RegulatedActivity(
-            activity_id=activity_id,
-            name=activity_name,
-            activity_type=activity_type,
-            description=activity_data.get("description", ""),
-            applicable_entities=applicable_entities,
-            required_licenses=required_licenses,
-            regulatory_requirements=list(set(regulatory_requirements)),
-            source_documents=[document.document_id],
-            definition_text=activity_data.get("definition_context", ""),
-            confidence_score=activity_data.get("confidence_score", 0.5)
-        )
+        return requirements[:5]  # Limit to top 5 requirements
     
-    def _generate_activity_id(self, name: str, activity_type: ActivityType) -> str:
-        """Generate a unique activity ID."""
-        # Create a unique identifier based on name and type
-        identifier = f"{activity_type.value}_{name.lower().replace(' ', '_')}"
+    def _extract_from_signposts(self, document: Document) -> List[RegulatedActivity]:
+        """Extract activities from document signposts"""
+        activities = []
         
-        # Hash to ensure consistent IDs for the same activity
-        hash_object = hashlib.md5(identifier.encode())
-        hash_hex = hash_object.hexdigest()[:8]
-        
-        return f"activity_{hash_hex}"
-    
-    async def extract_activities_batch(self, documents: List[RegGenomeDocument]) -> List[RegulatedActivity]:
-        """Extract activities from multiple documents."""
-        logger.info(f"Extracting activities from {len(documents)} documents")
-        
-        all_activities = []
-        for document in documents:
-            activities = await self.extract_activities(document)
-            all_activities.extend(activities)
-        
-        return all_activities
-
-
-class ActivityMerger:
-    """Utility class for merging similar activities."""
-    
-    def __init__(self):
-        pass
-    
-    def merge_similar_activities(self, activities: List[RegulatedActivity]) -> List[RegulatedActivity]:
-        """Merge activities that refer to the same regulatory concept."""
-        # Group activities by type and similar names
-        activity_groups = self._group_similar_activities(activities)
-        
-        merged_activities = []
-        for group in activity_groups:
-            if len(group) == 1:
-                merged_activities.append(group[0])
-            else:
-                merged_activity = self._merge_activity_group(group)
-                merged_activities.append(merged_activity)
-        
-        return merged_activities
-    
-    def _group_similar_activities(self, activities: List[RegulatedActivity]) -> List[List[RegulatedActivity]]:
-        """Group activities that are likely referring to the same concept."""
-        groups = []
-        remaining_activities = activities.copy()
-        
-        while remaining_activities:
-            current_activity = remaining_activities.pop(0)
-            current_group = [current_activity]
+        if not document.signposts:
+            return activities
             
-            # Find similar activities
-            to_remove = []
-            for other_activity in remaining_activities:
-                if self._are_activities_similar(current_activity, other_activity):
-                    current_group.append(other_activity)
-                    to_remove.append(other_activity)
-            
-            # Remove similar activities from remaining list
-            for activity in to_remove:
-                remaining_activities.remove(activity)
-            
-            groups.append(current_group)
+        for signpost in document.signposts:
+            if isinstance(signpost, dict):
+                tags = signpost.get("tags", [])
+                text = signpost.get("text", "")
+                
+                # Map signpost tags to activity types
+                tag_to_activity = {
+                    "asset-management": ActivityType.ASSET_MANAGEMENT,
+                    "investment-advice": ActivityType.INVESTMENT_ADVICE,
+                    "portfolio-management": ActivityType.PORTFOLIO_MANAGEMENT,
+                    "custody": ActivityType.CUSTODY,
+                    "distribution": ActivityType.DISTRIBUTION,
+                    "risk-management": ActivityType.RISK_MANAGEMENT,
+                    "compliance": ActivityType.COMPLIANCE,
+                    "reporting": ActivityType.REPORTING
+                }
+                
+                for tag in tags:
+                    tag_lower = tag.lower()
+                    for tag_key, activity_type in tag_to_activity.items():
+                        if tag_key in tag_lower:
+                            activity = RegulatedActivity(
+                                name=tag.replace("-", " ").title(),
+                                type="activity",
+                                activity_type=activity_type,
+                                description=f"Activity identified from regulatory signpost: {tag}",
+                                source_document_id=document.document_id,
+                                source_text=text[:500] if text else tag,
+                                confidence=0.8,  # High confidence for signpost-based extraction
+                                metadata={
+                                    "document_title": document.title or "Unknown",
+                                    "signpost_tag": tag,
+                                    "extraction_method": "signpost"
+                                }
+                            )
+                            activities.append(activity)
+                            break
         
-        return groups
-    
-    def _are_activities_similar(self, activity1: RegulatedActivity, activity2: RegulatedActivity) -> bool:
-        """Check if two activities are similar enough to merge."""
-        # Same type and similar names
-        if activity1.activity_type != activity2.activity_type:
-            return False
-        
-        # Simple name similarity check
-        name1 = activity1.name.lower().strip()
-        name2 = activity2.name.lower().strip()
-        
-        # Exact match
-        if name1 == name2:
-            return True
-        
-        # Contains check (for variations)
-        if name1 in name2 or name2 in name1:
-            return True
-        
-        # Word overlap check
-        words1 = set(name1.split())
-        words2 = set(name2.split())
-        overlap = len(words1.intersection(words2))
-        total_words = len(words1.union(words2))
-        
-        # If significant word overlap, consider similar
-        if total_words > 0 and overlap / total_words > 0.7:
-            return True
-        
-        return False
-    
-    def _merge_activity_group(self, activities: List[RegulatedActivity]) -> RegulatedActivity:
-        """Merge a group of similar activities into one."""
-        # Use the activity with the highest confidence as the base
-        base_activity = max(activities, key=lambda a: a.confidence_score)
-        
-        # Merge information from all activities
-        all_source_docs = []
-        all_entities = []
-        all_licenses = []
-        all_requirements = []
-        definition_texts = []
-        
-        for activity in activities:
-            all_source_docs.extend(activity.source_documents)
-            all_entities.extend(activity.applicable_entities)
-            all_licenses.extend(activity.required_licenses)
-            all_requirements.extend(activity.regulatory_requirements)
-            if activity.definition_text:
-                definition_texts.append(activity.definition_text)
-        
-        # Create merged activity
-        merged_activity = RegulatedActivity(
-            activity_id=base_activity.activity_id,
-            name=base_activity.name,
-            activity_type=base_activity.activity_type,
-            description=base_activity.description,
-            applicable_entities=list(set(all_entities)),
-            required_licenses=list(set(all_licenses)),
-            regulatory_requirements=list(set(all_requirements)),
-            source_documents=list(set(all_source_docs)),
-            definition_text=" | ".join(definition_texts),
-            confidence_score=max(a.confidence_score for a in activities)
-        )
-        
-        return merged_activity 
+        return activities
